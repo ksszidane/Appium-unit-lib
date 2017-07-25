@@ -184,6 +184,10 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 		//Reporter.log("<a href=\"" + FileNamePath + "\">Finish</a>");
 	}
 	
+	/**
+	 * Fail시 스크린 캡쳐를 동작하는 메소드
+	 * 
+	 */
 	public void FailCaptureScreen (ITestResult result) throws Exception {
 		
 		Date date = new Date();
@@ -210,6 +214,10 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 
 	}
 	
+	/**
+	 * 테스트 시작시 스크린 캡쳐를 동작하는 메소드
+	 * 
+	 */
 	public void StartCaptureScreen () throws Exception {
 		
 		Date date = new Date();
@@ -276,7 +284,6 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 	
 	/** 
 	 * 무작위 숫자 생성
-	 * @throws Exception 
 	 */
 	public int getRandomNum() {
 
@@ -355,6 +362,7 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 	 * 모든 링크 검색
 	 * @param 링크를 검색 할 상위 element
 	 * @throws Exception 
+	 * getAttribute가 href안에 http:// or https://로 시작되는 경우만 검색됨
 	 */
 	public List<WebElement> findAllLinks(By locator) throws Exception {
 
@@ -369,13 +377,17 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 
 				finalList.add(element);
 			}
+			else if ((href != null) && href.contains("https://")) {
+
+				finalList.add(element);
+			}
 		}
 		return finalList;
 	}
 	
 	/**
 	 * 페이지 전체의 url 링크의 정상 여부 확인
-	 * 
+	 * locator에 href가 있는 경우 isChechedLink 동작
 	 * @throws Exception
 	 */
 	public boolean isBrokenLinkExist() {
@@ -399,8 +411,8 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 	}
 
 	/**
-	 * 페이지 전체의 url 링크의 정상 여부 확인
-	 * 
+	 * 선택한 엘리먼트에 url 링크의 정상 여부 확인
+	 * href가 있는 경우 isChechedLink 동작
 	 * @throws Exception
 	 */
 	public boolean isBrokenLinkExist(By locator) {
@@ -491,6 +503,12 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 		}		
 		return result;
 	}
+	
+	/** 
+	 * x box 노출 확인
+	 * @param By.TagName ("img")
+	 * @throws Exception 
+	 */
 	public boolean isCheckedImage(WebElement element) {
 		Boolean ImagePresent = (Boolean) ((JavascriptExecutor) this).executeScript(
 				"return arguments[0].complete && typeof arguments[0].naturalWidth != \"undefined\" && arguments[0].naturalWidth > 0",
@@ -616,6 +634,10 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 		return false;
 	}
 	
+	/**
+	 * 마지막에 열린 창이 뜰때까지 기다리는 메소드
+	 * @throws Exception
+	 */
 	public boolean waitForLastWindow() throws Exception {
 
 		String tempHandle = null;
@@ -662,7 +684,7 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 	
 	/**
 	 * 특정 윈도우로 포커스 전환 메소드
-	 * @param 윈도우 핸들어
+	 * @param 사전 정의해둔 윈도우 핸들어
 	 * @throws Exception
 	 */
 	public void selectWindow(String winHandle) throws Exception {
@@ -672,7 +694,7 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 	
 	/**
 	 * 특정 윈도우 close 메소드
-	 * @param 윈도우 핸들어
+	 * @param 사전 정의해둔 윈도우 핸들어
 	 * @throws Exception
 	 */
 	public void closeWindow(String winHandle) throws Exception {
@@ -745,6 +767,10 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 		executeJavascript (this, MAXIMIZE_BROWSER_WINDOW);
 	}*/
 	
+	/**
+	  * 브라우저 사이즈를 최대화 시키는 메소드
+	  * @return void
+	  */
 	public void windowMaximize() {
 		manage().window().maximize();
 	}
@@ -892,7 +918,10 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 	    action.moveToElement(element, offset_X, offset_Y).perform();	    
 	    waitForPageToLoad();
 	 }
-	
+	/**
+	  * 파일을 선택하는 메소드 
+	  * @param filePath 파일경로
+	  */
 	public void selectFile (String filePath) throws Exception {
 		
 	    StringSelection path = new StringSelection(filePath);
@@ -1006,7 +1035,12 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 	}
 	
 	
-	
+	/**
+	 * Element가 존재할때까지 대기하는 메소드
+	 * @param locator 존재 확인 할 Element를 지정
+	 * @return locator에 존재하는 WebElement List(element, null)
+	 * @throws Exception - Selenium Exception
+	 */
 	public WebElement waitForIsElementPresent (By locator) throws InterruptedException {
 		
 		int tryCount = 0;
@@ -1471,24 +1505,44 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 		    }
 		};
 	}
+	
+	/**
+	 * 얼럿창의 확인 or 다음 버튼 클릭
+	 * @throws Exception - Exception
+	 */
 	public void chooseOkOnNextConfirmation() throws Exception {
 	    executeJavascript(this, "window.confirm = function(msg) {return true;}");
 	   }
-	   
+	
+	/**
+	 * 얼럿창의 취소버튼 클릭
+	 * @throws Exception - Exception
+	 */
 	public void chooseCancelOnNextConfirmation() throws Exception {
 	   executeJavascript(this, "window.confirm = function(msg) {return false;}");
 	   }
 	
+	
+	/**
+	 * 페이지 스크롤 값을 받아 스크롤 위치 변경
+	 * @throws Exception - Exception
+	 */
 	public void PageScrollControl(int scroll_value) throws Exception {
 		
 		executeScript("window.scrollBy(0,"+scroll_value+");");
 	  }
+	/**
+	 * 얼럿창의 메세지를 읽어오는 메소드
+	 */
 	 public String getAlert(By locator) throws Exception {   
 	   executeJavascript(this, "window.alert = function(msg) {window.lastAlertMessage = msg;}");
 	   findElementWait(locator).click();  
 	   return (String) executeJavascript(this, "return window.lastAlertMessage");     
 	  }
 	  
+	 /**
+	 * 얼럿창의 메세지를 읽어오는 메소드
+	 */
 	  public String getConfirm(By locator) throws Exception {
 	   executeJavascript(this, "window.confirm = function(msg) {window.lastConfirmMessage = msg;}");
 	   findElementWait(locator).click();   
@@ -1574,7 +1628,9 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 	
 	
 
-	
+	/**
+	 * 화면 뷰 전환시 사용되는 메소드, 모바일에서 사용
+	 */
 	public void rotate(ScreenOrientation orientation) {
 	    execute(DriverCommand.SET_SCREEN_ORIENTATION, ImmutableMap.of("orientation", orientation));
 	  }
@@ -1647,6 +1703,13 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 			return false;
 		}
 	  
+		/**
+		 * Element가 enabled(사용) 되었는지 확인하는 메소드
+		 * 
+		 * @param locator존재
+		 *            확인 할 Element를 지정
+		 * @return boolean
+		 */     
 		public boolean isEnabled(By locator) {
 			manage().timeouts().implicitlyWait(MIN_WAIT_TIME, TimeUnit.SECONDS);
 
@@ -1666,7 +1729,13 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 		
 	  
 		
-		
+		/**
+		 * Element가 있는지 확인하고 클릭하는 메소드
+		 * 
+		 * @param locator존재
+		 *            확인 할 Element를 지정
+		 * @return boolean
+		 */ 
 	  public boolean isElementPresentClick(By locator) throws Exception {
 	        
 		  WebElement result = null;
@@ -1687,6 +1756,13 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 	        }
 	    }
 	  
+	  /**
+		 * Element가 존재하는지 확인하는 메소드
+		 * 
+		 * @param locator존재
+		 *            확인 할 Element를 지정
+		 * @return boolean
+		 */ 
 	  public boolean isElementPresentCheck(By locator) throws Exception {
 			
 			WebElement result = null;
@@ -1707,6 +1783,13 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 			}
 		}
 	  
+	  /**
+		 * Element가 있는지 확인하고 클릭하는 메소드(대기모드)
+		 * 
+		 * @param locator존재
+		 *            확인 할 Element를 지정
+		 * @return boolean
+		 */ 
 	  public WebElement waitForIsElementCheck (By locator) throws InterruptedException {
 			
 			int tryCount = 0;
