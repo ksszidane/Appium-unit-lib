@@ -1,12 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   
-  <groupId>com.keies.ksszidane</groupId>
+  <groupId>com.github.ksszidane</groupId>
   <artifactId>webdriver-unit-lib</artifactId>
-  <version>1.0.6</version>
+  <version>1.0.17</version>
   <packaging>jar</packaging>
   
   <name>webdriver-unit-lib</name>
+  <description>Web UI Automation Webdriver Library</description>
   <url>https://github.com/ksszidane/webdriver_util_lib</url>
   
   <licenses> 
@@ -131,18 +132,28 @@
 			<configuration>
 				<source>1.8</source>
 				<target>1.8</target>
+				<encoding>UTF-8</encoding>
+				<outputEncoding>UTF-8</outputEncoding>
 			</configuration>
 		</plugin>
 		<plugin> 
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-jar-plugin</artifactId> 
 			<version>2.3.2</version> 
+			<configuration>
+            	<encoding>UTF-8</encoding>
+            	<outputEncoding>UTF-8</outputEncoding>
+            </configuration>
 		</plugin>
 
 		<plugin>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-source-plugin</artifactId>
 			<version>2.3</version>
+			<configuration>
+            	<encoding>UTF-8</encoding>
+            	<outputEncoding>UTF-8</outputEncoding>
+            </configuration>
 			<executions> 
 				<execution> 
 				<id>attach-sources</id> 
@@ -153,11 +164,16 @@
 			</execution> 
 		</executions>
 		</plugin>
-		<!-- 
+		
 		<plugin> 
 			<groupId>org.apache.maven.plugins</groupId> 
 			<artifactId>maven-javadoc-plugin</artifactId> 
 			<version>2.9.1</version> 
+			<configuration>
+            	<additionalparam>-Xdoclint:none</additionalparam>
+            	<encoding>UTF-8</encoding>
+            	<outputEncoding>UTF-8</outputEncoding>
+            </configuration>
 			<executions> 
 				<execution> 
 					<id>attach-javadocs</id> 
@@ -167,13 +183,17 @@
 					</goals> 
 				</execution> 
 			</executions> 
-		</plugin> --> 
+		</plugin>
 		
 		<!-- GPG sign --> 
 		<plugin> 
 			<groupId>org.apache.maven.plugins</groupId> 
 			<artifactId>maven-gpg-plugin</artifactId> 
 			<version>1.5</version> 
+			<configuration>
+            	<encoding>UTF-8</encoding>
+            	<outputEncoding>UTF-8</outputEncoding>
+            </configuration>
 			<executions> 
 				<execution> 
 					<id>sign-artifacts</id> 

@@ -1,5 +1,6 @@
 package unit;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 
 import org.openqa.selenium.Platform;
@@ -12,9 +13,9 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class Capabilities {
 	
-	public static DesiredCapabilities gridSetUp (String browser) throws MalformedURLException {		
+	public static DesiredCapabilities gridSetUp (String browser) throws IOException {		
 		DesiredCapabilities capability = null;	
-		
+
 		//****************** firefox Capabilities
 		 if(browser.equalsIgnoreCase("firefox")) {			
 			 FirefoxProfile profile = new FirefoxProfile();
