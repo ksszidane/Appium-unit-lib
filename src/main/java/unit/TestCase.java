@@ -61,9 +61,11 @@ public class TestCase {
 		
 		if (result.getStatus() == ITestResult.FAILURE) { 
 			 String screenShotPath = util.ErrorScreenshots(util, "screenShotName");
-			 	test.fail("테스트 실패");
-	            test.log(Status.FAIL, result.getThrowable());
-	            test.log(Status.FAIL, "Snapshot below: " + test.addScreenCaptureFromPath(screenShotPath));
+			 test.fail("테스트 실패");
+	         test.log(Status.FAIL, result.getThrowable());
+	         test.log(Status.FAIL, "Snapshot below: " + test.addScreenCaptureFromPath(screenShotPath));
+		} else if (result.getStatus() == ITestResult.SUCCESS) {
+			test.pass(" 테스트 성공.");
 		}
 		
 		//util.CaptureScreen(result);
