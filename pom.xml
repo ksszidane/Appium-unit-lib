@@ -3,7 +3,7 @@
   
   <groupId>com.github.ksszidane</groupId>
   <artifactId>webdriver-unit-lib</artifactId>
-  <version>1.0.22</version>
+  <version>1.0.23</version>
   <packaging>jar</packaging>
   
   <name>webdriver-unit-lib</name>
