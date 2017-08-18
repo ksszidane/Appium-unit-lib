@@ -47,7 +47,7 @@ public class TestCase {
 		
 		//util.closeAllOpenedBrowser();
 		//util.windowMaximize();
-		util.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS); 
+		util.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS); 
 		//util.waitForPageToLoad();
 		//util.AddCookie("notSupportBrowserAlert", "true"); //chrome 51 부터 지원 안함.
 		

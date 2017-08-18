@@ -314,6 +314,12 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 		return elements.size();
 	}
 	
+	public String waitGetCurrentUrl() {
+		
+		waitForPageToLoad();
+		return getCurrentUrl();
+	}
+	
 	/** 
 	 * url 링크 접속 후 상태 확인
 	 * @param url
@@ -799,6 +805,21 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 	public void windowMaximize() {
 		manage().window().maximize();
 	}
+	
+	/**
+	 * 현재 열려있는 창의 인덱스 수집 후 그 번호에 맞는 창전환
+	 * @param 윈도우 인덱스 번호
+	 * @throws Exception
+	 */
+	public void switchToWindwosIndex(int windowIndex) throws Exception {
+		
+		ArrayList<String> AllWindows = new ArrayList<String>(getWindowHandles());
+        switchTo().window(AllWindows.get(windowIndex));
+	}
+	
+	
+	
+	
 	
 	public Object executeJavascript(Utilities util, String script) {
 		JavascriptExecutor js = (JavascriptExecutor)util;
@@ -1378,15 +1399,24 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 	 * @return 읽어들인 text (string)
 	 * @throws Exception - Selenium Exception
 	 */
-	/*
 	public String getText(By locator) throws Exception {
 		
 		WebElement element = waitForIsElementPresent(locator);
 		return element.getText();
 		
-		return text;
 	}
-	*/
+	/**
+	 * locator가 노출될 때까지 기다렸다 Attribute를 읽어들이는 메소드
+	 * @param locator 링크
+	 * @return 읽어들인 Attribute의 Vaule
+	 * @throws Exception - Selenium Exception
+	 */
+	public String getAttribute(By locator, String Attribute) throws Exception {
+		
+		WebElement element = waitForIsElementPresent(locator);
+		return element.getAttribute(Attribute);
+		
+	}
 	
 	
 	/*
