@@ -466,6 +466,25 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 		return result;
 	}
 	
+	/**
+	 * url 링크 접속 후 Code를 리턴 
+	 * 
+	 * @param url
+	 * @return boolean HTTPResponseCode값을 리턴해 준다. 200.400.404.500
+	 * @throws Exception
+	 */
+	public int getStatusCode(URL url) throws Exception {
+	    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.connect();
+		connection.disconnect();
+	    
+		int code = connection.getResponseCode();
+	    
+	    return code;
+	}
+	
+	
+	
 	/** 
 	 * x box 노출 확인
 	 * @param By.TagName ("img")
