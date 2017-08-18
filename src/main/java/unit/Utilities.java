@@ -445,7 +445,10 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 	 * @throws Exception
 	 */
 	public boolean isCheckedLink(URL url) {
+		
+		
 		boolean result = true;
+		
 
 		try {
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -473,7 +476,10 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 	 * @return boolean HTTPResponseCode값을 리턴해 준다. 200.400.404.500
 	 * @throws Exception
 	 */
-	public int getStatusCode(URL url) throws Exception {
+	public int getStatusCode(String urlAddress) throws Exception {
+		
+		URL url = new URL(urlAddress);
+		
 	    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.connect();
 		connection.disconnect();
