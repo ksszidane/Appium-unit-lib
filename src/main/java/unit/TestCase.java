@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.LocalFileDetector;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -44,10 +45,10 @@ public class TestCase {
 		browserClassName = browser;
 		browserName = "브라우저정보 : "+browserValue;
 		
-		
+		util.setFileDetector(new LocalFileDetector());
 		//util.closeAllOpenedBrowser();
 		//util.windowMaximize();
-		util.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS); 
+		util.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS); 
 		//util.waitForPageToLoad();
 		//util.AddCookie("notSupportBrowserAlert", "true"); //chrome 51 부터 지원 안함.
 		

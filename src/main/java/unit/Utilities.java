@@ -49,9 +49,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.HasTouchScreen;
+import org.openqa.selenium.interactions.TouchScreen;
+import org.openqa.selenium.interactions.touch.TouchActions;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.DriverCommand;
+import org.openqa.selenium.remote.RemoteTouchScreen;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
@@ -83,8 +87,11 @@ import org.testng.ITestResult;
 
 import com.google.common.collect.ImmutableMap;
 
-
-public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotatable { 
+public class Utilities extends RemoteWebDriver implements HasTouchScreen, TakesScreenshot, Rotatable { 
+	
+	
+	RemoteTouchScreen touch;
+	public TouchActions action;
 	
 	// RemoteWebDriver Hub Address
 	public static String hubAddress;
@@ -117,7 +124,7 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 	protected final int MAX_WAIT_TIME = 20;
 	
 	//protected final String WAIT_TIME_OUT = "15000";
-	private final int PAGE_LOAD_TIME_OUT = 30;
+	private final int PAGE_LOAD_TIME_OUT = 10;
 	private final int MAX_TRY_COUNT = 10;
 	
 	
@@ -267,7 +274,7 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 	 *            특수문자 포함 여부
 	 * @return String 랜덤문자들로 생성된
 	 */
-	public String getRandomString(int length) {
+	public String setRandomString(int length) {
 
 		final String characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJLMNOPQRSTUVWXYZ1234567890!@#$%^&*()_+";
 
@@ -283,24 +290,51 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 	}
 	
 	/** 
-	 * 무작위 숫자 생성
+	 * 1~1000안의 무작위 숫자 생성
 	 */
-	public int getRandomNum() {
+	public int setRandomNum() {
 
 		return (int)(Math.random() * 1000 + 1);
 	}
 	
-	public int getRandomNum(int min, int max) {
+	/** 
+	 * 지정된 범위안에  무작위 숫자 생성
+	 */
+	
+	public int setRandomNum(int min, int max) {
 
 		//return (int)(Math.random() * max + min);
 		return (int)(Math.random() * (max - min)) + min;
+	}
+	
+	/** 
+	 * 지정된 범위안에  무작위 숫자 생성
+	 * 중복없이 계산
+	 */
+	public int setRandomOverlapNum(int min, int max) {
+		
+		int num = 0; 
+		
+		int[] numbers = new int[max - min];
+		for (int i=0; i < numbers.length; i++) {
+			numbers[i] = (int)(Math.random() * (max - min)) + min;
+			for(int j=0; j<i; j++) {
+				if(numbers[i] == numbers[j]) {
+					i--;
+					num = numbers[i];
+					break;
+				}
+			}
+		}
+		return num;
 	}	
 	
-	public int getRandomPath (By locator) throws Exception {
+	public int setRandomPath (By locator) throws Exception {
 	
 		int max = this.getXpathCount(locator);
 		return (int)(Math.random() * (max - 1)) + 1;
 	}
+	
 	
 	/**
 	 * locator가 노출될 때까지 기다렸다 xpath count를 읽어들이는 메소드
@@ -813,8 +847,58 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 	 */
 	public void switchToWindwosIndex(int windowIndex) throws Exception {
 		
+		
 		ArrayList<String> AllWindows = new ArrayList<String>(getWindowHandles());
         switchTo().window(AllWindows.get(windowIndex));
+	}
+	
+	/**
+	 * 현재 열려있는 창의 인덱스 수집 후 갯수 카운터로 반환
+	 * @param 윈도우 인덱스 번호
+	 * @throws Exception
+	 */
+	public int allWindwosIndexCount() throws Exception {
+		
+		
+		ArrayList<String> AllWindows = new ArrayList<String>(getWindowHandles());
+		return AllWindows.size();
+       
+	}
+	
+	/**
+	 * 현재 열려있는 창의 인덱스 수집 후 그 번호에 맞는 창전환
+	 * @param 윈도우 타이틀 값의 contains
+	 * @throws Exception
+	 */
+	public void switchToWindwosTitle(String Title) throws Exception {
+		
+		Set<String> allWindows = getWindowHandles();
+		if(!allWindows.isEmpty()) {
+			for (String windowId : allWindows) {
+				if(switchTo().window(windowId).getTitle().contains(Title)) {
+					waitForPageToLoad();
+					break;
+				}
+			}
+		}
+	}
+	
+	/**
+	 * 현재 열려있는 창의 인덱스 수집 후 그 번호에 맞는 창전환
+	 * @param 윈도우 URL 값의 contains
+	 * @throws Exception
+	 */
+	public void switchToWindwosURL(String URL) throws Exception {
+		
+		Set<String> allWindows = getWindowHandles();
+		if(!allWindows.isEmpty()) {
+			for (String windowId : allWindows) {
+				if(switchTo().window(windowId).getCurrentUrl().contains(URL)) {
+					waitForPageToLoad();
+					break;
+				}
+			}
+		}
 	}
 	
 	
@@ -836,6 +920,7 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 	public void type (By locator, String inputText) throws Exception {
 		
 		WebElement element = waitForIsElementPresent(locator);
+		element.clear();
 		element.sendKeys(inputText);
 	}
 
@@ -848,7 +933,20 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 	public void type (By locator, Keys keyValue) throws Exception {
 		
 		WebElement element = waitForIsElementPresent(locator);
+		element.clear();
 		element.sendKeys(keyValue);
+		
+		waitForPageToLoad();
+	}
+	/**
+	  * inputbox에 입력된 값을 지우는 메소드
+	  * @param locator	내용을 입력받을 element 정보
+	  * @return void
+	  */
+	public void clear (By locator) throws Exception {
+		
+		WebElement element = waitForIsElementPresent(locator);
+		element.clear();
 		
 		waitForPageToLoad();
 	}
@@ -884,6 +982,18 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 		//WebElement element = locator.findElement((SearchContext) this);
 		
 		element.sendKeys(value);
+		waitForPageToLoad();
+	}
+	
+	/**
+	  * 물리적인 keyboard 입력을 처리하는 메소드
+	  * @param value	Press할 키보드 값
+	  * @return void
+	  */
+	public void pressKeys(Keys value) throws Exception {
+		
+		Actions actions = new Actions(this);
+		actions.sendKeys(value).perform();
 	}
 	
 	
@@ -964,6 +1074,91 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 	    action.moveToElement(element, offset_X, offset_Y).perform();	    
 	    waitForPageToLoad();
 	 }
+	
+	public void tap(By locator) throws Exception {
+		WebDriverWait wait = new WebDriverWait(this, PAGE_LOAD_TIME_OUT);
+		wait.until(ExpectedConditions.elementToBeClickable(locator));    
+		WebElement superElement = findElement(locator);
+		
+		if (wait instanceof HasTouchScreen) {
+			TouchActions tap = new TouchActions((WebDriver) wait).singleTap(superElement);
+			tap.perform();
+		} else {
+			superElement.click();
+		}
+	}
+	
+	
+	public void longPress(By locator) throws Exception {
+		WebElement TargetElement = findElementWait(locator);
+		
+		Thread.sleep(700);
+		action.longPress(TargetElement).build().perform();
+		Thread.sleep(700);
+	}
+	
+	public void singleTap(By locator) throws Exception {
+		WebElement TargetElement = findElementWait(locator);
+		
+		Thread.sleep(700);
+		action.singleTap(TargetElement).build().perform();
+		Thread.sleep(700);
+	}
+	
+	public void TargetFilck(By locator, int xOffset) throws Exception { 
+		WebElement TargetElement = findElementWait(locator);
+		
+		action.flick(TargetElement, xOffset, 0, 500).build().perform();
+		Thread.sleep(700);
+	}
+	
+	public void Filck(int xSpeed, int ySpeed) throws Exception {
+		
+		action.flick(xSpeed, ySpeed).build().perform();
+		Thread.sleep(700);
+	}
+	
+	public void TargetScroll(By locator, int yOffset) throws Exception {
+		WebElement TargetElement = findElementWait(locator);
+		
+		action.scroll(TargetElement, 0, yOffset).build().perform();
+		Thread.sleep(700);
+	}
+	
+	public void Scroll(int yOffset) throws Exception {
+		
+		action.scroll(0, yOffset).build().perform();
+		Thread.sleep(700);
+	}
+	
+	public void moveToElement(By locator) throws Exception {
+		WebElement TargetElement = findElementWait(locator);
+		
+		action.moveToElement(TargetElement).build().perform();
+		Thread.sleep(700);
+	}
+	
+	
+	
+	
+	/**
+	  * 파일을 선택하는 메소드 
+	  * @param locator xpath
+	  * @param filePath 파일경로
+	  */
+	public void selectFile (By locator, String filePath) throws Exception {
+		
+		WebElement upload = findElement(locator);
+		upload.sendKeys(filePath);
+	}
+	
+	
+	/** 
+	 * locator 클릭 후 기다리는 메소드
+	 * @param locator 링크
+	 * @throws Exception 
+	 */
+	
 	/**
 	  * 파일을 선택하는 메소드 
 	  * @param filePath 파일경로
@@ -1144,7 +1339,19 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 		return result;
 	}
 	
-	
+	/**
+	 * Element가 화면에 노출되고 있는지 확인하는 메소드
+	 * @param locator 존재 확인 할 Element를 지정
+	 * @return locator에 화면 노출여부 (true, flase)
+	 * @throws Exception - Selenium Exception
+	 */
+	public boolean isDisplayedWait(By locator) throws Exception {
+		WebDriverWait wait = (WebDriverWait) new WebDriverWait(this, PAGE_LOAD_TIME_OUT);
+		WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+		
+		return element.isDisplayed();
+		
+	}
 	
 	
 		
@@ -1392,6 +1599,38 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 		SimpleDateFormat form = new SimpleDateFormat("yyMMdd");
 		return form.format(cal.getTime());
 	}
+	/**
+	 * 두 날짜를 받아, 최신순을 비교하는 함수
+	 * @param begin 시작날짜
+	 * @param end 마지막날짜
+	 * @param replace 텍스트에서 제거할 문자
+	 * @return 최신순이면 1, 날짜가 같으면 0 = true 이고 -1 이면 false
+	 * @throws 
+	 */
+	 public boolean TheLastDateListCheck(String begin, String end, String replace) throws Exception
+	  {
+		 boolean Check;
+		 
+		 SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+	    
+		 String replaceBegin = begin.replace(replace, "");
+		 String replaceEnd = end.replace(replace, "");
+	    
+		 Date beginDate = formatter.parse(replaceBegin);
+		 Date endDate = formatter.parse(replaceEnd);
+	    
+		 if (beginDate.compareTo(endDate) == 1) {
+			 Check = true;
+		 } else if (beginDate.compareTo(endDate) == 0) {
+			 Check = true;
+		 } else {
+			 Check = false;
+		 }
+	    
+		 return Check;
+	  }
+	
+	
 	
 	/**
 	 * locator가 노출될 때까지 기다렸다 text를 읽어들이는 메소드
@@ -1401,10 +1640,55 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 	 */
 	public String getText(By locator) throws Exception {
 		
-		WebElement element = waitForIsElementPresent(locator);
+		WebElement element = findElementWait(locator);
 		return element.getText();
 		
 	}
+	
+	/**
+	 * locator가 노출될 때까지 기다렸다 text를 읽어들이는 메소드
+	 * @param locator 링크
+	 * @param replace1 제거할 문자
+	 * @return 읽어들인 text (string)
+	 * @throws Exception - Selenium Exception
+	 */
+	public String getText(By locator, String replace1) throws Exception {
+		
+		WebElement element = findElementWait(locator);
+		String cut = element.getText();
+		cut = cut.replace(replace1, "");
+		
+		return cut;
+	}
+	
+	/**
+	 * locator가 노출될 때까지 기다렸다 text를 읽어들이는 메소드
+	 * @param locator 링크
+	 * @param replace1 제거할 문자
+	 * @return 읽어들인 text (string)
+	 * @throws Exception - Selenium Exception
+	 */
+	public String getText(By locator, String replace1, String replace2) throws Exception {
+		
+		WebElement element = findElementWait(locator);
+		String cut = element.getText();
+		cut = cut.replace(replace1, "");
+		cut = cut.replace(replace2, "");
+		
+		return cut;
+	}
+	
+	public String getText(By locator, String replace1, String replace2, String replace3) throws Exception {
+		
+		WebElement element = findElementWait(locator);
+		String cut = element.getText();
+		cut = cut.replace(replace1, "");
+		cut = cut.replace(replace2, "");
+		cut = cut.replace(replace3, "");
+		
+		return cut;
+	}
+	
 	/**
 	 * locator가 노출될 때까지 기다렸다 Attribute를 읽어들이는 메소드
 	 * @param locator 링크
@@ -1413,10 +1697,65 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 	 */
 	public String getAttribute(By locator, String Attribute) throws Exception {
 		
-		WebElement element = waitForIsElementPresent(locator);
+		Thread.sleep(100);
+		waitForPageToLoad();
+		WebElement element = findElementWait(locator);
 		return element.getAttribute(Attribute);
-		
 	}
+	
+	/**
+	 * locator가 노출될 때까지 기다렸다 Attribute를 읽어들이는 메소드
+	 * @param locator 링크
+	 * @param replace 제거할 문자열
+	 * @return 읽어들인 Attribute의 Vaule
+	 * @throws Exception - Selenium Exception
+	 */
+	public String getAttribute(By locator, String Attribute, String replace1) throws Exception {
+		
+		WebElement element = findElementWait(locator);
+		String cut = element.getAttribute(Attribute);
+		cut = cut.replaceAll(replace1, "");
+		
+		return cut;
+	}
+	
+	/**
+	 * locator가 노출될 때까지 기다렸다 Attribute를 읽어들이는 메소드
+	 * @param locator 링크
+	 * @param replace 제거할 문자열
+	 * @return 읽어들인 Attribute의 Vaule
+	 * @throws Exception - Selenium Exception
+	 */
+	public String getAttribute(By locator, String Attribute, String replace1, String replace2) throws Exception {
+		
+		WebElement element = findElementWait(locator);
+		String cut = element.getAttribute(Attribute);
+		cut = cut.replaceAll(replace1, "");
+		cut = cut.replaceAll(replace2, "");
+		
+		return cut;
+	}
+	
+	/**
+	 * locator가 노출될 때까지 기다렸다 Attribute를 읽어들이는 메소드
+	 * @param locator 링크
+	 * @param replace 제거할 문자열
+	 * @return 읽어들인 Attribute의 Vaule
+	 * @throws Exception - Selenium Exception
+	 */
+	public String getAttribute(By locator, String Attribute, String replace1, String replace2, String replace3) throws Exception {
+		
+		WebElement element = findElementWait(locator);
+		String cut = element.getAttribute(Attribute);
+		cut = cut.replaceAll(replace1, "");
+		cut = cut.replaceAll(replace2, "");
+		cut = cut.replaceAll(replace3, "");
+		
+		
+		return cut;
+	}
+	
+	
 	
 	
 	/*
@@ -1592,6 +1931,7 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 	 public String getAlert(By locator) throws Exception {   
 	   executeJavascript(this, "window.alert = function(msg) {window.lastAlertMessage = msg;}");
 	   findElementWait(locator).click();  
+	   Thread.sleep(1500);
 	   return (String) executeJavascript(this, "return window.lastAlertMessage");     
 	  }
 	  
@@ -1616,7 +1956,7 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 		element.click();
 		
 		Alert alert = wait.until(ExpectedConditions.alertIsPresent());
-		printLog ("Alert : " + alert.getText());
+		//printLog ("Alert : " + alert.getText());
 		
 		return alert;
 	}
@@ -1889,6 +2229,13 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 			//WebElement superElement = findElement(locator);
 		  	WebElement superElement = wait.until(ExpectedConditions.elementToBeClickable(locator));    
 			return superElement;
+	  }
+	  
+	  public WebElement findElementWaitS(By locator1, By locator2) throws Exception {
+		   
+		  	
+		  WebElement superElement = findElementWait(locator1).findElement(locator2);
+		  return superElement;
 	  }
 	  
 	  /**
@@ -2220,6 +2567,12 @@ public class Utilities extends RemoteWebDriver implements TakesScreenshot, Rotat
 			}
 			
 			return finalList;
+		}
+
+		@Override
+		public TouchScreen getTouch() {
+			// TODO Auto-generated method stub
+			return null;
 		}
 		
 }
