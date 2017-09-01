@@ -89,7 +89,6 @@ import com.google.common.collect.ImmutableMap;
 
 public class Utilities extends RemoteWebDriver implements HasTouchScreen, TakesScreenshot, Rotatable { 
 	
-	
 	RemoteTouchScreen touch;
 	public TouchActions action;
 	
