@@ -353,6 +353,15 @@ public class Utilities extends RemoteWebDriver implements HasTouchScreen, TakesS
 		return getCurrentUrl();
 	}
 	
+	
+	
+	public void getConnect(String url) {
+		
+		get(url);
+		waitForPageToLoad();
+	}
+	
+	
 	/** 
 	 * url 링크 접속 후 상태 확인
 	 * @param url
@@ -920,6 +929,20 @@ public class Utilities extends RemoteWebDriver implements HasTouchScreen, TakesS
 		
 		WebElement element = waitForIsElementPresent(locator);
 		element.clear();
+		element.sendKeys(inputText);
+	}
+	
+	/**
+	  * 내용을 입력하는 메소드
+	  * @param locator	내용을 입력받을 element 정보
+	  * @param inputText locator에 입력할 내용
+	  * @return void
+	  */
+	public void typeWait (By locator, String inputText) throws Exception {
+		
+		WebElement element = waitForIsElementPresent(locator);
+		element.clear();
+		Thread.sleep(1000);
 		element.sendKeys(inputText);
 	}
 
@@ -1801,7 +1824,7 @@ public class Utilities extends RemoteWebDriver implements HasTouchScreen, TakesS
 	 */
 	public void waitForPageToLoad() {
 		try {
-			//Thread.sleep(500);
+			Thread.sleep(300);
 			waitForPageLoaded();
 			waitForAjaxLoaded(this);
 		} catch (Exception e) {
@@ -2459,6 +2482,12 @@ public class Utilities extends RemoteWebDriver implements HasTouchScreen, TakesS
 		 * method name return 메소드
 		 */
 		public Method[] printMethodName(Object obj) {
+			
+			
+			StackTraceElement[] stacks = new Throwable().getStackTrace();
+			StackTraceElement currentStack = stacks[ 0 ];
+			System.out.println( "my method : " + currentStack.getMethodName() );  
+			
 			return (obj.getClass().getMethods());
 		}
 		

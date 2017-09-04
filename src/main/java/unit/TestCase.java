@@ -52,7 +52,7 @@ public class TestCase {
 		//util.waitForPageToLoad();
 		//util.AddCookie("notSupportBrowserAlert", "true"); //chrome 51 부터 지원 안함.
 		
-		System.out.println("\n▒▒▒▒ Start Suite : " + util.printClassName(this)+ "▒▒▒▒\n");
+		System.out.println("\n▒▒ Start Suite : " + util.printClassName(this)+ "▒▒ Browser Name : "+browserValue+"\n");
 	
 	}
 	
@@ -62,11 +62,14 @@ public class TestCase {
 		
 		if (result.getStatus() == ITestResult.FAILURE) { 
 			 String screenShotPath = util.ErrorScreenshots(util, "screenShotName");
-			 test.fail("테스트 실패");
+			 test.fail("테스트 실패.");
 	         test.log(Status.FAIL, result.getThrowable());
 	         test.log(Status.FAIL, "Snapshot below: " + test.addScreenCaptureFromPath(screenShotPath));
+	         
+	         System.out.println("테스트 실패.");
 		} else if (result.getStatus() == ITestResult.SUCCESS) {
-			test.pass(" 테스트 성공.");
+			test.pass("테스트 성공.");
+			 //System.out.println("테스트 성공.");
 		}
 		
 		//util.CaptureScreen(result);
@@ -89,7 +92,7 @@ public class TestCase {
 		catch (WebDriverException we) {
 			util.printLog(" ** tearDownClass catch WebDriverException");
 		}
-		System.out.println("\n▒▒▒▒Quit Suite : " + util.printClassName(this)+ "▒▒▒▒\n");
+		System.out.println("\n▒▒Quit Suite : " + util.printClassName(this)+ "▒▒\n");
 		//util.close();
 	}
 }

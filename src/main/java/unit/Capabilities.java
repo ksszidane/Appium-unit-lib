@@ -82,8 +82,7 @@ public class Capabilities {
 			capability = DesiredCapabilities.internetExplorer();
 			capability.setBrowserName("internet explorer");
 			capability.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
-			capability.setCapability(InternetExplorerDriver.NATIVE_EVENTS, false);
-			capability.setCapability("requireWindowFocus", true);
+			//capability.setCapability(InternetExplorerDriver.NATIVE_EVENTS, false);
 			capability.setPlatform(Platform.ANY);			
 			capability.setVersion("11");
 			capability.setCapability(CapabilityType.TAKES_SCREENSHOT, true);
