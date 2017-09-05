@@ -103,7 +103,7 @@ public class Utilities extends RemoteWebDriver implements HasTouchScreen, TakesS
 	public String beforeFilePath2 = null;
 	
 	
-
+	
 	public String type = null;
 	
 	public String deviceName = null;
@@ -125,8 +125,6 @@ public class Utilities extends RemoteWebDriver implements HasTouchScreen, TakesS
 	//protected final String WAIT_TIME_OUT = "15000";
 	private final int PAGE_LOAD_TIME_OUT = 10;
 	private final int MAX_TRY_COUNT = 10;
-	
-	
 	
 	private final String MAXIMIZE_BROWSER_WINDOW = 
 		"if (window.screen) {window.moveTo(0, 0);window.resizeTo(window.screen.availWidth,window.screen.availHeight);};";

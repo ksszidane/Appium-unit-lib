@@ -31,11 +31,12 @@ public class TestCase {
 	
 	public String browserClassName;
 	public String browserName;
+	public String projectName;
 
 	
-	@Parameters({"browser", "hubAddress", "browserValue"})
+	@Parameters({"browser", "hubAddress", "browserValue", "project"})
 	@BeforeClass
-	public void setupClass (String browser, String hubAddress, String browserValue) throws Exception {
+	public void setupClass (String browser, String hubAddress, String browserValue, String project) throws Exception {
 		
 		extent = ExtentManager.GetExtent();
 		
@@ -44,11 +45,12 @@ public class TestCase {
 		
 		browserClassName = browser;
 		browserName = "브라우저정보 : "+browserValue;
+		projectName = project;
 		
 		util.setFileDetector(new LocalFileDetector());
 		//util.closeAllOpenedBrowser();
 		//util.windowMaximize();
-		util.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS); 
+		util.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS); 
 		//util.waitForPageToLoad();
 		//util.AddCookie("notSupportBrowserAlert", "true"); //chrome 51 부터 지원 안함.
 		
