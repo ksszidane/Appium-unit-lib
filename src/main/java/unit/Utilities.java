@@ -2180,12 +2180,11 @@ public class Utilities extends RemoteWebDriver implements HasTouchScreen, TakesS
 		 */ 
 	  public boolean isElementPresentCheck(By locator) throws Exception {
 			
-			WebElement result = null;
-			WebDriverWait wait = (WebDriverWait) new WebDriverWait(this, TIME_OUT_SEC);
+		  	WebElement result = null;
 			
 			try {
 				
-				WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+				WebElement element = locator.findElement((SearchContext) this);
 				if (element.isDisplayed()) {
 					result = element;
 				}
@@ -2194,7 +2193,6 @@ public class Utilities extends RemoteWebDriver implements HasTouchScreen, TakesS
 				
 			}
 			catch (NoSuchElementException e) { 
-				fail(locator + " : 해당 엘리먼트가 " + TIME_OUT_SEC + "초내에 노출되지 않음");
 				return false;
 			}
 		}

@@ -63,7 +63,8 @@ public class TestCase {
 	 public void afterScreenShot(ITestResult result) throws Exception {
 		
 		if (result.getStatus() == ITestResult.FAILURE) { 
-			 String screenShotPath = util.ErrorScreenshots(util, "screenShotName");
+			 String Time = util.getTime();
+			 String screenShotPath = util.ErrorScreenshots(util, "screenShotName"+Time);
 			 test.fail("테스트 실패.");
 	         test.log(Status.FAIL, result.getThrowable());
 	         test.log(Status.FAIL, "Snapshot below: " + test.addScreenCaptureFromPath(screenShotPath));
