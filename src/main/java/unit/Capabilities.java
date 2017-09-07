@@ -87,8 +87,8 @@ public class Capabilities {
 			//capability.setCapability(InternetExplorerDriver.NATIVE_EVENTS, false);
 			
 			capability.setJavascriptEnabled(true);
-			//capability.setCapability(InternetExplorerDriver.IE_ENSURE_CLEAN_SESSION, true);
-			//capability.setCapability(InternetExplorerDriver.ENABLE_ELEMENT_CACHE_CLEANUP, true);
+			capability.setCapability(InternetExplorerDriver.IE_ENSURE_CLEAN_SESSION, true);
+			capability.setCapability(InternetExplorerDriver.ENABLE_ELEMENT_CACHE_CLEANUP, true);
 			capability.setPlatform(Platform.ANY);			
 			capability.setVersion("11");
 			capability.setCapability(CapabilityType.TAKES_SCREENSHOT, true);
