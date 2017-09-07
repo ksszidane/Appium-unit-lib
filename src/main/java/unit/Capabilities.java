@@ -82,13 +82,13 @@ public class Capabilities {
 			capability = DesiredCapabilities.internetExplorer();
 			capability.setBrowserName("internet explorer");
 			capability.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
-			//capability.setCapability("ie.ensureCleanSession", true); // Remote:
+			capability.setCapability("ie.ensureCleanSession", true); // Remote:
 			
 			//capability.setCapability(InternetExplorerDriver.NATIVE_EVENTS, false);
 			
 			capability.setJavascriptEnabled(true);
-			capability.setCapability(InternetExplorerDriver.IE_ENSURE_CLEAN_SESSION, true);
-			capability.setCapability(InternetExplorerDriver.ENABLE_ELEMENT_CACHE_CLEANUP, true);
+			//capability.setCapability(InternetExplorerDriver.IE_ENSURE_CLEAN_SESSION, true);
+			//capability.setCapability(InternetExplorerDriver.ENABLE_ELEMENT_CACHE_CLEANUP, true);
 			capability.setPlatform(Platform.ANY);			
 			capability.setVersion("11");
 			capability.setCapability(CapabilityType.TAKES_SCREENSHOT, true);
