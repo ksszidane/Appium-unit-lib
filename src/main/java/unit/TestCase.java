@@ -57,7 +57,13 @@ public class TestCase {
 		System.out.println("\n▒▒ Start Suite : " + util.printClassName(this)+ "▒▒ Browser Name : "+browserValue+"\n");
 	
 	}
-	
+	//@BeforeMethod (alwaysRun=true)
+	@Parameters({"browser", "hubAddress", "browserValue", "project"})
+	@BeforeMethod
+	public void BeforeMethod(ITestResult result, String browser, String hubAddress, String browserValue, String project) throws Exception {
+		test = extent.createTest( result.getMethod().getMethodName()+" "+browserClassName, browserName).assignCategory(projectName+"_"+browserClassName);
+			
+	}
 	//@AfterMethod (alwaysRun=true && result=failure)
 	@AfterMethod
 	 public void AfterMethod(ITestResult result) throws Exception {
@@ -82,12 +88,6 @@ public class TestCase {
 	    
 	} 
 	
-	//@BeforeMethod (alwaysRun=true)
-	@BeforeMethod
-	 public void BeforeMethod(ITestResult result) throws Exception {
-		test = extent.createTest( result.getMethod().getMethodName()+" "+browserClassName, browserName).assignCategory(projectName+"_"+browserClassName);
-		
-	}
 	
 	@AfterClass
 	public void tearDownClass(){
