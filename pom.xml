@@ -3,7 +3,7 @@
   
   <groupId>com.github.ksszidane</groupId>
   <artifactId>webdriver-unit-lib</artifactId>
-  <version>1.0.29</version>
+  <version>1.0.30</version>
   <packaging>jar</packaging>
   
   <name>webdriver-unit-lib</name>
@@ -195,7 +195,7 @@
 			</executions> 
 		</plugin>
 		
-		<!-- GPG sign --> 
+		
 		<plugin> 
 			<groupId>org.apache.maven.plugins</groupId> 
 			<artifactId>maven-gpg-plugin</artifactId> 

@@ -351,7 +351,12 @@ public class Utilities extends RemoteWebDriver implements HasTouchScreen, TakesS
 		return getCurrentUrl();
 	}
 	
-	
+	/**
+	 * URL값을 입력하여 브라우저에 연결하고, 로딩될때까지 대기하는 메소드
+	 * @param URL값 
+	 * @return 읽어들인 xpath count (int)
+	 * @throws Exception - Selenium Exception
+	 */
 	
 	public void getConnect(String url) {
 		
@@ -1949,6 +1954,7 @@ public class Utilities extends RemoteWebDriver implements HasTouchScreen, TakesS
 	 * 얼럿창의 메세지를 읽어오는 메소드
 	 */
 	 public String getAlert(By locator) throws Exception {   
+	   Thread.sleep(1500);
 	   executeJavascript(this, "window.alert = function(msg) {window.lastAlertMessage = msg;}");
 	   findElementWait(locator).click();  
 	   Thread.sleep(1500);

@@ -60,7 +60,10 @@ public class TestCase {
 	
 	//@AfterMethod (alwaysRun=true && result=failure)
 	@AfterMethod
-	 public void afterScreenShot(ITestResult result) throws Exception {
+	 public void AfterMethod(ITestResult result) throws Exception {
+		
+		
+		
 		
 		if (result.getStatus() == ITestResult.FAILURE) { 
 			 String Time = util.getTime();
@@ -80,9 +83,10 @@ public class TestCase {
 	} 
 	
 	//@BeforeMethod (alwaysRun=true)
-	//@BeforeMethod
-	 public void beforeScreenShot() throws Exception {
-		//util.StartCaptureScreen();
+	@BeforeMethod
+	 public void BeforeMethod(ITestResult result) throws Exception {
+		test = extent.createTest( result.getMethod().getMethodName()+" "+browserClassName, browserName).assignCategory(projectName+"_"+browserClassName);
+		
 	}
 	
 	@AfterClass

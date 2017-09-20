@@ -85,6 +85,7 @@ public class Capabilities {
 			capability.setCapability("ie.ensureCleanSession", true); // Remote:
 			
 			//capability.setCapability(InternetExplorerDriver.NATIVE_EVENTS, false);
+			//capability.setCapability(InternetExplorerDriver.FORCE_CREATE_PROCESS, false);
 			
 			capability.setJavascriptEnabled(true);
 			capability.setCapability(InternetExplorerDriver.IE_ENSURE_CLEAN_SESSION, true);
