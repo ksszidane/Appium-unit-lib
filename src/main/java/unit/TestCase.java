@@ -1,5 +1,6 @@
 package unit;
 
+import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.WebDriverException;
@@ -55,13 +56,17 @@ public class TestCase {
 		//util.AddCookie("notSupportBrowserAlert", "true"); //chrome 51 부터 지원 안함.
 		
 		System.out.println("\n▒▒ Start Suite : " + util.printClassName(this)+ "▒▒ Browser Name : "+browserValue+"\n");
-	
+		
+		
+		
+		
 	}
 	//@BeforeMethod (alwaysRun=true)
-	@Parameters({"browser", "hubAddress", "browserValue", "project"})
 	@BeforeMethod
-	public void BeforeMethod(ITestResult result, String browser, String hubAddress, String browserValue, String project) throws Exception {
-		test = extent.createTest( result.getMethod().getMethodName()+" "+browserClassName, browserName).assignCategory(projectName+"_"+browserClassName);
+	public void BeforeMethod(Method method) throws Exception {
+		System.out.println("method name:" + method.getName());
+			test = extent.createTest(method.getName()+" "+browserClassName, browserName).assignCategory(projectName+"_"+browserClassName);
+		
 			
 	}
 	//@AfterMethod (alwaysRun=true && result=failure)
