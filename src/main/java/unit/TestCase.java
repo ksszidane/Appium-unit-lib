@@ -27,7 +27,7 @@ public class TestCase {
 	public ExtentReports extent;
 	public ExtentTest test;
 	
-	public Utilities util;
+	public static Utilities util;
 	public DesiredCapabilities capability;
 	
 	public String browserClassName;
