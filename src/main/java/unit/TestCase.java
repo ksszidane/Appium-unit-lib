@@ -54,6 +54,7 @@ public class TestCase {
 		util.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS); 
 		//util.waitForPageToLoad();
 		//util.AddCookie("notSupportBrowserAlert", "true"); //chrome 51 부터 지원 안함.
+	
 		
 		System.out.println("\n▒▒ Start Suite : " + util.printClassName(this)+ "▒▒ Browser Name : "+browserValue+"\n");
 		
@@ -105,6 +106,6 @@ public class TestCase {
 			util.printLog(" ** tearDownClass catch WebDriverException");
 		}
 		System.out.println("\n▒▒Quit Suite : " + util.printClassName(this)+ "▒▒\n");
-		util.close();
+		//util.close();
 	}
 }
