@@ -118,6 +118,18 @@ public class Capabilities {
 			capability.setCapability(CapabilityType.TAKES_SCREENSHOT, true);
 			}
 		
+		if(browser.equalsIgnoreCase("Docker-Chrome")) {
+			ChromeOptions options = new ChromeOptions();
+			
+			options.addArguments("--disable-gpu", "--disable-impl-side-painting", "--disable-gpu-sandbox", "--disable-accelerated-2d-canvas", "--disable-accelerated-jpeg-decoding", "--no-sandbox", "--test-type=ui");
+			
+			capability = DesiredCapabilities.chrome();
+			capability.setBrowserName("chrome");
+			capability.setPlatform(Platform.ANY);
+			capability.setCapability(ChromeOptions.CAPABILITY, options);
+			capability.setCapability(CapabilityType.TAKES_SCREENSHOT, true);
+			}
+		
 		// ****************** Chrome User Agent Capabilities
 		if (browser.equalsIgnoreCase("Chrome Android UA")) {
 
