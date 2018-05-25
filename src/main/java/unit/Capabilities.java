@@ -121,12 +121,14 @@ public class Capabilities {
 		if(browser.equalsIgnoreCase("Docker-Chrome")) {
 			ChromeOptions options = new ChromeOptions();
 			
-			options.addArguments("--disable-gpu", "--disable-impl-side-painting", "--disable-gpu-sandbox", "--disable-accelerated-2d-canvas", "--disable-accelerated-jpeg-decoding", "--no-sandbox", "--test-type=ui");
+			options.addArguments("--lang=ko_KR.UTF-8");
+			
 			
 			capability = DesiredCapabilities.chrome();
+			capability.setCapability(ChromeOptions.CAPABILITY, options);
 			capability.setBrowserName("chrome");
 			capability.setPlatform(Platform.ANY);
-			capability.setCapability(ChromeOptions.CAPABILITY, options);
+			
 			capability.setCapability(CapabilityType.TAKES_SCREENSHOT, true);
 			}
 		

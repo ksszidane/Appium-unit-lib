@@ -2237,8 +2237,8 @@ public class Utilities extends RemoteWebDriver implements HasTouchScreen, TakesS
 	 */
 	  public void getGo(String URL) throws InterruptedException {
 		   get(URL);
-		   //waitForPageLoaded(this);
-		   //waitForPageToLoad();
+		   waitForPageLoaded(this);
+		   waitForPageToLoad();
 	  }
 	  
 	
