@@ -1,162 +1,66 @@
 package unit;
 
 import java.io.IOException;
+
 import java.net.MalformedURLException;
 
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import io.appium.java_client.MobileElement;
+import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.MobileElement;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.remote.MobileCapabilityType;
+
 public class Capabilities {
 	
-	public static DesiredCapabilities gridSetUp (String browser) throws IOException {		
+	public static DesiredCapabilities gridSetUp (String os) throws IOException {		
 		DesiredCapabilities capability = null;	
 
-		//****************** firefox Capabilities
-		 if(browser.equalsIgnoreCase("firefox")) {			
-			 FirefoxProfile profile = new FirefoxProfile();
-			 profile.setEnableNativeEvents(false);
-			 capability = DesiredCapabilities.firefox();			 
-			 capability.setCapability(FirefoxDriver.PROFILE, profile);
-			 capability.setBrowserName("firefox");
-			 capability.setPlatform(Platform.ANY);
+		//****************** Android OS Capabilities
+		 if(os.equalsIgnoreCase("Android")) {			
 			 capability.setCapability(CapabilityType.TAKES_SCREENSHOT, true);
+			 
+			 capability.setCapability("deviceName","Android");
+			 capability.setCapability(MobileCapabilityType.AUTOMATION_NAME, "UIAutomator2");
+		        //capability.setCapability("automationName", "uiautomator2"); 
+		        //capability.setCapability("automationName", "Selendroid"); /app이 기반 테스트 프레임워크가 셀렌드로이드 기반일때만 설정(API Level 9이상 17이하일때)
+			 capability.setCapability("platformName","Android");
+		        //capability.setCapability("udid","adb devices를 통해 얻은 device ID"); //여러 디바이스가 설치된 경우, 테스트하고자 하는 디바이스를 선택 
+		        
+		        //capability.setCapability("launchActivity ", "old.SplashActivity");
+		        //capability.setCapability("app", app.getAbsolutePath());
+		        //capability.setCapability("appWaitActivity", "*");
+		        
+		        //capability.setCapability("appium-version", "1.15.1"); //UI Automator  사용하기 위함
+		        //capability.setCapability("automationName", "{uiautomator2}"); //Android 8.0 이상 필수
+		        //capability.setCapability("platformName", "{Android}"); 
+		        //capability.setCapability("platformVersion", "9");
+		        //capability.setCapability("deviceName", "{디바이스 이름}");
+			 capability.setCapability("appPackage", "com.skt.aladdin");
+			 capability.setCapability("appActivity", "com.skt.nugu.ui.LoginActivity");
+		        
+		        
+		        //capability.setCapability("instrumentApp",true);
+		        //capability.setCapability("autoWebview", true);
+		        //capability.setCapability("noReset", true);
+		        //capability.setCapability (MobileCapabilityType.FULL_RESET, false);
+		        //capability.setCapability("unicodeKeyboard", true); //appium 전용 keyboard 이용하기 위함
+		        
+		        ChromeOptions chromeOptions = new ChromeOptions();
+		        chromeOptions.setExperimentalOption("w3c", false);
+		        //capability.merge(chromeOptions);
+		        capability.setCapability("chromedriverArgs", chromeOptions); 
+		        
+		        capability.setCapability("chromedriverExecutable", "C:\\chromedriver_win32\\chromedriver.exe");
+		        //capability.setCapability("showChromedriverLog", true);
+		        
+		        capability.setCapability("autoAcceptAlerts", true);
 			 }
 		
-		 //****************** IE6 Capabilities
-		 if(browser.equalsIgnoreCase("IE6")) {
-			 capability = DesiredCapabilities.internetExplorer();
-			 capability.setBrowserName("internet explorer");
-			 capability.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
-			 capability.setPlatform(Platform.ANY);
-			 capability.setCapability(CapabilityType.TAKES_SCREENSHOT, true);
-			 capability.setVersion("6");
-			 }
-
-		 //****************** IE7 Capabilities
-		 if(browser.equalsIgnoreCase("IE7")) {
-			 capability = DesiredCapabilities.internetExplorer();
-			 capability.setBrowserName("internet explorer");
-			 capability.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
-			 capability.setPlatform(Platform.ANY);			 
-			 capability.setVersion("7");			
-			 capability.setCapability(CapabilityType.TAKES_SCREENSHOT, true);
-			 }
-		
-		 //****************** IE8 Capabilities
-		if(browser.equalsIgnoreCase("IE8")) {
-			capability = DesiredCapabilities.internetExplorer();
-			capability.setBrowserName("internet explorer");
-			capability.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true); 
-			capability.setPlatform(Platform.ANY);			
-			capability.setVersion("8");
-			capability.setCapability(CapabilityType.TAKES_SCREENSHOT, true);
-			}
-		
-		//****************** IE9 Capabilities
-		if(browser.equalsIgnoreCase("IE9")) {
-			capability = DesiredCapabilities.internetExplorer();
-			capability.setBrowserName("internet explorer");
-			capability.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
-			capability.setPlatform(Platform.ANY);			
-			capability.setVersion("9");
-			capability.setCapability(CapabilityType.TAKES_SCREENSHOT, true);
-			}
-		
-		//****************** IE10 Capabilities
-		if(browser.equalsIgnoreCase("IE10")) {
-			capability = DesiredCapabilities.internetExplorer();
-			capability.setBrowserName("internet explorer");
-			capability.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
-			capability.setPlatform(Platform.ANY);			
-			capability.setVersion("10");
-			capability.setCapability(CapabilityType.TAKES_SCREENSHOT, true);
-			}
-		
-		//****************** IE11 Capabilities
-		if(browser.equalsIgnoreCase("IE11")) {
-			capability = DesiredCapabilities.internetExplorer();
-			capability.setBrowserName("internet explorer");
-			capability.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
-			capability.setCapability("ie.ensureCleanSession", true); // Remote:
-			
-			//capability.setCapability(InternetExplorerDriver.NATIVE_EVENTS, false);
-			//capability.setCapability(InternetExplorerDriver.FORCE_CREATE_PROCESS, false);
-			
-			capability.setJavascriptEnabled(true);
-			capability.setCapability(InternetExplorerDriver.IE_ENSURE_CLEAN_SESSION, true);
-			capability.setCapability(InternetExplorerDriver.ENABLE_ELEMENT_CACHE_CLEANUP, true);
-			capability.setPlatform(Platform.ANY);			
-			capability.setVersion("11");
-			capability.setCapability(CapabilityType.TAKES_SCREENSHOT, true);
-			}
-				
-		//****************** Chrome Capabilities
-		if(browser.equalsIgnoreCase("Chrome")) {
-			capability = DesiredCapabilities.chrome();
-			capability.setJavascriptEnabled(true);
-			capability.setBrowserName("chrome");
-			capability.setPlatform(Platform.ANY);
-			capability.setCapability(CapabilityType.TAKES_SCREENSHOT, true);
-			}
-		
-		if(browser.equalsIgnoreCase("Safari")) {
-			capability = DesiredCapabilities.chrome();
-			capability.setBrowserName("safari");
-			capability.setPlatform(Platform.ANY);
-			capability.setCapability(CapabilityType.TAKES_SCREENSHOT, true);
-			}
-		
-		if(browser.equalsIgnoreCase("Edge")) {
-			capability = DesiredCapabilities.chrome();
-			capability.setBrowserName("edge");
-			capability.setPlatform(Platform.ANY);
-			capability.setCapability(CapabilityType.TAKES_SCREENSHOT, true);
-			}
-		
-		if(browser.equalsIgnoreCase("Docker-Chrome")) {
-			ChromeOptions options = new ChromeOptions();
-			
-			options.addArguments("--lang=ko_KR.UTF-8");
-			
-			
-			capability = DesiredCapabilities.chrome();
-			capability.setCapability(ChromeOptions.CAPABILITY, options);
-			capability.setBrowserName("chrome");
-			capability.setPlatform(Platform.ANY);
-			
-			capability.setCapability(CapabilityType.TAKES_SCREENSHOT, true);
-			}
-		
-		// ****************** Chrome User Agent Capabilities
-		if (browser.equalsIgnoreCase("Chrome Android UA")) {
-
-			ChromeOptions options = new ChromeOptions();
-			options.addArguments("--user-agent=Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19");
-
-			capability = DesiredCapabilities.chrome();
-			capability.setBrowserName("chrome");
-			capability.setPlatform(Platform.ANY);
-			capability.setVersion("android");
-			capability.setCapability(ChromeOptions.CAPABILITY, options);
-			capability.setCapability(CapabilityType.TAKES_SCREENSHOT, true);
-		}
-				
-		if (browser.equalsIgnoreCase("Chrome iPhone UA")) {
-			ChromeOptions options = new ChromeOptions();
-			options.addArguments("--user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 6_1_4 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) CriOS/27.0.1453.10 Mobile/10B350 Safari/8536.25");
-
-			capability = DesiredCapabilities.chrome();
-			capability.setBrowserName("chrome");
-			capability.setPlatform(Platform.ANY);
-			capability.setVersion("iPhone");
-			capability.setCapability(ChromeOptions.CAPABILITY, options);
-			capability.setCapability(CapabilityType.TAKES_SCREENSHOT, true);
-		}
 		
 		return capability;		
 	}	

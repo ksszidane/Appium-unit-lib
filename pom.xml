@@ -7,7 +7,7 @@
   <packaging>jar</packaging>
   
   <name>webdriver-unit-lib</name>
-  <description>Web UI Automation Webdriver Library</description>
+  <description>App UI Automation AppiumDriver Library</description>
   <url>https://github.com/ksszidane/webdriver_util_lib</url>
   
   <licenses> 
@@ -72,7 +72,7 @@
 		<groupId>org.seleniumhq.selenium</groupId>
 		<artifactId>selenium-java</artifactId>
 		<version>2.52.0</version>
-	</dependency>  
+	</dependency>
 	<dependency>
     	<groupId>com.aventstack</groupId>
     	<artifactId>extentreports</artifactId>
@@ -112,7 +112,25 @@
     	<groupId>org.apache.maven.plugins</groupId>
     	<artifactId>maven-resources-plugin</artifactId>
     	<version>2.6</version>
-</dependency>
+    </dependency>
+    
+    <dependency>
+    	<groupId>io.appium</groupId>
+    	<artifactId>java-client</artifactId>
+    	<version>4.1.2</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>com.squareup.okhttp3</groupId>
+		<artifactId>okhttp</artifactId>
+		<version>4.2.2</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>com.googlecode.json-simple</groupId>
+		<artifactId>json-simple</artifactId>
+		<version>1.1</version>
+  	</dependency>
 	
 	
   </dependencies>
