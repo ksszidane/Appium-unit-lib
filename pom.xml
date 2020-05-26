@@ -2,13 +2,13 @@
   <modelVersion>4.0.0</modelVersion>
   
   <groupId>com.github.ksszidane</groupId>
-  <artifactId>webdriver-unit-lib</artifactId>
-  <version>1.0.36</version>
+  <artifactId>Applium-unit-lib</artifactId>
+  <version>0.1.00</version>
   <packaging>jar</packaging>
   
-  <name>webdriver-unit-lib</name>
+  <name>Applium-unit-lib</name>
   <description>App UI Automation AppiumDriver Library</description>
-  <url>https://github.com/ksszidane/webdriver_util_lib</url>
+  <url>https://github.com/ksszidane/Applium-unit-lib</url>
   
   <licenses> 
   	<license> 
@@ -27,13 +27,13 @@
   </developers>
   
   <scm> 
-	  <url>https://github.com/ksszidane/webdriver_util_lib</url> 
+	  <url>https://github.com/ksszidane/Applium-unit-lib</url> 
   </scm> 
   
 
   <distributionManagement> 
   	<repository> 
-  		<id>webdriver_util_lib</id> 
+  		<id>Applium-unit-lib</id> 
   		<url>https://api.bintray.com/maven/ksszidane/utils/webdriver_util_lib/;publish=1</url> 
   	</repository> 
   </distributionManagement>
