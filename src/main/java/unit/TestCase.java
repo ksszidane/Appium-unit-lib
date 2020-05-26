@@ -30,29 +30,29 @@ public class TestCase {
 	public static Utilities util;
 	public DesiredCapabilities capability;
 	
-	public String browserClassName;
-	public String browserName;
+	public String os_ClassName;
+	public String os_Version;
 	public String projectName;
 
 	
-	@Parameters({"browser", "hubAddress", "browserValue", "project"})
+	@Parameters({"os", "hubAddress", "osVersion", "project"})
 	@BeforeClass
-	public void setupClass (String browser, String hubAddress, String browserValue, String project) throws Exception {
+	public void setupClass (String os, String hubAddress, String osVersion, String project) throws Exception {
 		
 		extent = ExtentManager.GetExtent();
 		
-		capability = Capabilities.gridSetUp(browser);		
+		capability = Capabilities.gridSetUp(os);		
 		util = new Utilities(hubAddress, capability);
 		
-		browserClassName = browser;
-		browserName = "브라우저정보 : "+browserValue;
+		os_ClassName = os;
+		os_Version = "OS_Version : "+osVersion;
 		projectName = project;
 		
 		util.setFileDetector(new LocalFileDetector());
 		util.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS); 
 	
 		
-		System.out.println("\n▒▒ Start Suite : " + util.printClassName(this)+ "▒▒ Browser Name : "+browserValue+"\n");
+		System.out.println("\n▒▒ Start Suite : " + util.printClassName(this)+ "▒▒ OS Version : "+os_Version+"\n");
 		
 		
 		
@@ -62,7 +62,7 @@ public class TestCase {
 	@BeforeMethod
 	public void BeforeMethod(Method method) throws Exception {
 		System.out.println("method name:" + method.getName());
-			test = extent.createTest(method.getName()+" "+browserClassName, browserName).assignCategory(projectName+"_"+browserClassName);
+			test = extent.createTest(method.getName()+" "+os_ClassName, os_Version).assignCategory(projectName+"_"+os_ClassName);
 		
 			
 	}
