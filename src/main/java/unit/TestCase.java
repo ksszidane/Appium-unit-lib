@@ -35,7 +35,7 @@ public class TestCase {
 	public String projectName;
 
 	
-	@Parameters({"os", "hubAddress", "os_Version", "project"})
+	@Parameters({"os.", "hubAddress", "os_Version", "project"})
 	@BeforeClass
 	public void setupClass (String os, String hubAddress, String osVersion, String project) throws Exception {
 		

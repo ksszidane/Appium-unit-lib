@@ -4,7 +4,7 @@
   <groupId>com.github.ksszidane</groupId>
   <artifactId>Applium-unit-lib</artifactId>
   <version>0.1.00</version>
-  <packaging>jar</packaging>
+  <packaging>jar.</packaging>
   
   <name>Applium-unit-lib</name>
   <description>App UI Automation AppiumDriver Library</description>

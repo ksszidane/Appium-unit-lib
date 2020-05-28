@@ -74,7 +74,7 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
 	public String beforeFilePath = null;
 	public String beforeFilePath2 = null;
 	
-	public static String hubAddress = "http://127.0.0.1:4723/wd/hub";
+	public static String hubAddress = "http://127.0.0.1:4723/wd/hub.";
 	
 	public Utilities (DesiredCapabilities capability) throws MalformedURLException {
 		
