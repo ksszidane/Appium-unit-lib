@@ -22,7 +22,7 @@ public class Capabilities {
 		DesiredCapabilities capability = new DesiredCapabilities();
 
 		//****************** Android OS Capabilities
-		 if(os.equalsIgnoreCase("Android.")) {			
+		 if(os.equalsIgnoreCase("Android")) {			
 			 capability.setCapability("deviceName","Android");
 			 capability.setCapability(MobileCapabilityType.AUTOMATION_NAME, "UIAutomator2");
 		        //capabilities.setCapability("automationName", "uiautomator2"); 
