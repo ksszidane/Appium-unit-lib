@@ -35,24 +35,24 @@ public class TestCase {
 	public String projectName;
 
 	
-	@Parameters({"os", "hubAddress", "os_Version", "project"})
+	@Parameters({"OS", "hubAddress", "Server", "Project"})
 	@BeforeClass
-	public void setupClass (String os, String hubAddress, String osVersion, String project) throws Exception {
+	public void setupClass (String OS, String hubAddress, String Server, String Project) throws Exception {
 		
 		extent = ExtentManager.GetExtent();
 		
-		capability = Capabilities.gridSetUp(os);		
+		capability = Capabilities.gridSetUp(OS);		
 		util = new Utilities(hubAddress, capability);
 		
-		os_ClassName = os;
-		os_Version = "OS_Version : "+osVersion;
-		projectName = project;
+		os_ClassName = OS;
+		os_Version = "Server : "+ Server;
+		projectName = Project;
 		
 		util.setFileDetector(new LocalFileDetector());
 		util.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS); 
 	
 		
-		System.out.println("\n▒▒ Start Suite : " + util.printClassName(this)+ "▒▒ OS Version : "+os_Version+"\n");
+		System.out.println("\n▒▒ Start Suite : " + util.printClassName(this)+ "▒▒ Server : "+os_Version+"\n");
 		
 		
 		
@@ -92,7 +92,9 @@ public class TestCase {
 	
 	
 	@AfterClass
-	public void tearDownClass(){
+	public void tearDownClass() throws Exception {
+		
+		util.sendPost("그만");
 		
 		try {
 			extent.flush();

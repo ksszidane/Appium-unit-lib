@@ -7,9 +7,16 @@ import io.appium.java_client.MobileElement;
 
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
@@ -23,6 +30,9 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
@@ -53,7 +63,9 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
 	
 	
 	RemoteTouchScreen touch;
-	public TouchActions action;
+	public TouchActions actions;
+	public TouchAction action;
+	
 	
     public WebDriverWait Wait;
 	
@@ -73,6 +85,8 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
 	
 	public String beforeFilePath = null;
 	public String beforeFilePath2 = null;
+	
+	private final OkHttpClient httpClient = new OkHttpClient();
 	
 	public static String hubAddress = "http://127.0.0.1:4723/wd/hub";
 	
@@ -849,6 +863,154 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
         FileUtils.copyFile(source, destination);        
                      
         return dest;
+    }
+    
+    public void switchContext (String context) {
+        
+    	Set<String> contextNames = getContextHandles(); 
+        for (String contextName : contextNames) {
+            System.out.println("context 목록  : " + contextName);
+            if(contextName.contains(context)) {
+            	System.out.println("적용 될 context 이름은 : " +contextName);
+            	context(contextName);
+            	break;
+            }
+        }
+        System.out.println("스위칭된 context : " + getContext());
+    	
+    }
+    
+    public void  sendGet() throws Exception {
+
+        Request request = new Request.Builder()
+                .url("https://www.google.com/search?q=mkyong")
+                .addHeader("custom-key", "mkyong")  // add request headers
+                .addHeader("User-Agent", "OkHttp Bot")
+                .build();
+
+        try (Response response = httpClient.newCall(request).execute()) {
+
+            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+            // Get response body
+            System.out.println(response.body().string());
+        }
+
+    }
+    
+    public void sendPost(String command) throws Exception {
+
+    	String CommandText = command;
+    	String deviceid = "ALDF2SW5IJ9C2059992E";
+    	
+    	JSONObject Main_jsonObject = new JSONObject();
+    	
+    	JSONArray directivesArray = new JSONArray();
+    	
+    	JSONObject payload_data = new JSONObject();
+    	payload_data.put("text", CommandText);
+    	
+    	
+    	JSONObject header_data = new JSONObject();
+    	header_data.put("messageId", "09b809b0e50160f1250e4e4868a78b21");
+    	header_data.put("dialogRequestId", "09b809b0e50160f1250e4e483e5bb9a4");
+    	header_data.put("namespace", "Text");
+    	header_data.put("referrerDialogRequestId", "");
+    	header_data.put("name", "TextSource");
+    	header_data.put("version", "1.0");
+    	
+ 
+    	JSONObject data_jsonObject = new JSONObject();
+    	data_jsonObject.put("payload", payload_data);
+    	data_jsonObject.put("header", header_data);
+    
+    	directivesArray.add(data_jsonObject);
+    	
+    	
+    	JSONObject directives_jsonObject = new JSONObject();
+    	//directives_jsonObject.put("directives", directivesArray.toString());
+    	
+    	Main_jsonObject.put("directives", directivesArray);
+    	Main_jsonObject.put("deviceId", deviceid);  
+
+    	
+    	System.out.println(Main_jsonObject);
+    	
+    	MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    	
+    	// form parameters
+    	RequestBody body = RequestBody.create(JSON, Main_jsonObject.toString());
+    	
+    	
+
+        Request request = new Request.Builder()
+                .url("http://10.40.92.200:8080/v1/setting/deviceGateway/directive")
+                .addHeader("User-Id", "ALDF3NYA6C0D0C654DD2")
+                .addHeader("Target-Device-Id", "ALDF2SW5IJ9C2059992E")
+                .addHeader("Content-Type", "application/json")
+                .post(body)
+                .build();
+
+        try (Response response = httpClient.newCall(request).execute()) {
+
+            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+            // Get response body
+            System.out.println(response.body().string());
+        }
+    }
+    
+    public String[] JsonParsing() throws Exception {
+    	
+    	Calendar calendar = Calendar.getInstance();
+        java.util.Date date = calendar.getTime();
+        String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+
+        System.out.println(today);
+    	
+    	String urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size=5&env=prd&start_date="+today+"000000&unique_id=ALDF3NYA6C0D0C654DD2ALDF2SW5IJ9C2059992E";
+    	System.out.println(urlStr);
+    	
+    	URL url = new URL(urlStr);
+    	
+    	BufferedReader bf; 
+    	String line = ""; 
+    	String result=""; 
+
+    	bf = new BufferedReader(new InputStreamReader(url.openStream())); 
+    	
+    	while((line=bf.readLine())!=null) { 
+    		result=result.concat(line); 
+    		//System.out.println(result); 
+    	}
+    	
+    	JSONParser parser = new JSONParser(); 
+    	JSONObject obj = (JSONObject) parser.parse(result);
+    	
+    	JSONArray parse_data_list = (JSONArray) obj.get("data");
+    	System.out.println(parse_data_list.size()); 
+    	
+    	
+    	JSONObject data;
+    	String[] tts_strip =new String[5];
+    	
+    	for(int i = 0 ; i < parse_data_list.size(); i++) { 
+    		data = (JSONObject) parse_data_list.get(i);
+    			
+    		JSONObject parse_source = (JSONObject) data.get("_source");
+    		JSONObject parse_item = (JSONObject) parse_source.get("item");
+    		
+    		tts_strip[i] = (String) parse_item.get("tts_strip");
+
+    	}
+    	
+    	//System.out.println(Arrays.deepToString(tts_strip));
+    	
+    	for(String str:tts_strip) {
+    		System.out.println(str); 
+    	}
+		return tts_strip;
+
     }
 	
 	
