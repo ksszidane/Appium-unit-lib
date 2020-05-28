@@ -30,29 +30,31 @@ public class TestCase {
 	public static Utilities util;
 	public DesiredCapabilities capability;
 	
-	public String os_ClassName;
-	public String os_Version;
-	public String projectName;
+	public String OS_ClassName;
+	public String Server;
+	public String ProjectName;
+	public String userID;
+	public String deviceID;
 
 	
-	@Parameters({"OS", "hubAddress", "Server", "Project"})
+	@Parameters({"OS", "hubAddress", "Server", "Project", "userID", "deviceID"})
 	@BeforeClass
-	public void setupClass (String OS, String hubAddress, String Server, String Project) throws Exception {
+	public void setupClass (String OS, String hubAddress, String Server, String Project, String userID, String deviceID) throws Exception {
 		
 		extent = ExtentManager.GetExtent();
 		
 		capability = Capabilities.gridSetUp(OS);		
 		util = new Utilities(hubAddress, capability);
 		
-		os_ClassName = OS;
-		os_Version = "Server : "+ Server;
-		projectName = Project;
+		OS_ClassName = OS;
+		Server = "Server : "+ Server;
+		ProjectName = Project;
 		
 		util.setFileDetector(new LocalFileDetector());
 		util.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS); 
 	
 		
-		System.out.println("\n▒▒ Start Suite : " + util.printClassName(this)+ "▒▒ Server : "+os_Version+"\n");
+		System.out.println("\n▒▒ Start Suite : " + util.printClassName(this)+ "▒▒ Server : "+Server+"\n");
 		
 		
 		
@@ -62,7 +64,7 @@ public class TestCase {
 	@BeforeMethod
 	public void BeforeMethod(Method method) throws Exception {
 		System.out.println("method name:" + method.getName());
-			test = extent.createTest(method.getName()+" "+os_ClassName, os_Version).assignCategory(projectName+"_"+os_ClassName);
+			test = extent.createTest(method.getName()+" "+OS_ClassName, Server).assignCategory(ProjectName+"_"+OS_ClassName);
 		
 			
 	}
@@ -90,11 +92,11 @@ public class TestCase {
 	    
 	} 
 	
-	
+	@Parameters({"userID", "deviceID"})
 	@AfterClass
-	public void tearDownClass() throws Exception {
+	public void tearDownClass(String userID, String deviceID) throws Exception {
 		
-		util.sendPost("그만");
+		util.sendPost("그만", userID, deviceID);
 		
 		try {
 			extent.flush();

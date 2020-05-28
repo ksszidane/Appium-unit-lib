@@ -88,7 +88,7 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
 	
 	private final OkHttpClient httpClient = new OkHttpClient();
 	
-	public static String hubAddress = "http://127.0.0.1:4723/wd/hub";
+	public static String hubAddress;
 	
 	public Utilities (DesiredCapabilities capability) throws MalformedURLException {
 		
@@ -898,10 +898,9 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
 
     }
     
-    public void sendPost(String command) throws Exception {
+    public void sendPost(String command, String userID, String deviceID) throws Exception {
 
     	String CommandText = command;
-    	String deviceid = "ALDF2SW5IJ9C2059992E";
     	
     	JSONObject Main_jsonObject = new JSONObject();
     	
@@ -931,7 +930,7 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
     	//directives_jsonObject.put("directives", directivesArray.toString());
     	
     	Main_jsonObject.put("directives", directivesArray);
-    	Main_jsonObject.put("deviceId", deviceid);  
+    	Main_jsonObject.put("deviceId", deviceID);  
 
     	
     	System.out.println(Main_jsonObject);
@@ -945,8 +944,8 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
 
         Request request = new Request.Builder()
                 .url("http://10.40.92.200:8080/v1/setting/deviceGateway/directive")
-                .addHeader("User-Id", "ALDF3NYA6C0D0C654DD2")
-                .addHeader("Target-Device-Id", "ALDF2SW5IJ9C2059992E")
+                .addHeader("User-Id", userID)
+                .addHeader("Target-Device-Id", deviceID)
                 .addHeader("Content-Type", "application/json")
                 .post(body)
                 .build();
@@ -960,7 +959,7 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
         }
     }
     
-    public String[] JsonParsing() throws Exception {
+    public String[] JsonParsing(String userID, String deviceID ) throws Exception {
     	
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
@@ -968,7 +967,7 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
 
         System.out.println(today);
     	
-    	String urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size=5&env=prd&start_date="+today+"000000&unique_id=ALDF3NYA6C0D0C654DD2ALDF2SW5IJ9C2059992E";
+    	String urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size=5&env=prd&start_date="+today+"000000&unique_id="+userID+deviceID;
     	System.out.println(urlStr);
     	
     	URL url = new URL(urlStr);
