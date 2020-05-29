@@ -35,11 +35,13 @@ public class TestCase {
 	public String ProjectName;
 	public String userID;
 	public String deviceID;
+	public String Place;
+	public String oAuth_Token;
 
 	
-	@Parameters({"OS", "hubAddress", "Server", "Project", "userID", "deviceID"})
+	@Parameters({"OS", "hubAddress", "Server", "Project", "userID", "deviceID", "Place", "oAuth_Token"})
 	@BeforeClass
-	public void setupClass (String OS, String hubAddress, String Server, String Project, String userID, String deviceID) throws Exception {
+	public void setupClass (String OS, String hubAddress, String Server, String Project, String userID, String deviceID, String oAuth_Token) throws Exception {
 		
 		extent = ExtentManager.GetExtent();
 		
@@ -92,11 +94,11 @@ public class TestCase {
 	    
 	} 
 	
-	@Parameters({"userID", "deviceID"})
+	@Parameters({"userID", "deviceID", "Server", "Place", "oAuth_Token"})
 	@AfterClass
-	public void tearDownClass(String userID, String deviceID) throws Exception {
+	public void tearDownClass(String userID, String deviceID, String Server, String Place, String oAuth_Token) throws Exception {
 		
-		util.sendPost("그만", userID, deviceID);
+		util.sendPost("그만", userID, deviceID, Server, Place, oAuth_Token);
 		
 		try {
 			extent.flush();

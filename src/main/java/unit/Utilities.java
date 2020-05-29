@@ -898,7 +898,7 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
 
     }
     
-    public void sendPost(String command, String userID, String deviceID) throws Exception {
+    public void sendPost(String command, String userID, String deviceID, String Server, String Place, String oAuth_Token) throws Exception {
 
     	String CommandText = command;
     	
@@ -941,22 +941,74 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
     	RequestBody body = RequestBody.create(JSON, Main_jsonObject.toString());
     	
     	
+    	if (Server=="PRD" && Place=="in") {
+    		Request request = new Request.Builder()
+                    .url("http://10.40.92.200:8080/v1/setting/deviceGateway/directive") //PRD directive URL
+                    .addHeader("User-Id", userID)
+                    .addHeader("Target-Device-Id", deviceID)
+                    .addHeader("Content-Type", "application/json")
+                    .post(body)
+                    .build();
+    		
+    		try (Response response = httpClient.newCall(request).execute()) {
 
-        Request request = new Request.Builder()
-                .url("http://10.40.92.200:8080/v1/setting/deviceGateway/directive")
-                .addHeader("User-Id", userID)
-                .addHeader("Target-Device-Id", deviceID)
-                .addHeader("Content-Type", "application/json")
-                .post(body)
-                .build();
+                if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
-        try (Response response = httpClient.newCall(request).execute()) {
+                // Get response body
+                System.out.println(response.body().string());
+            }
+    	} else if (Server=="PRD" && Place=="out") {
+    		Request request = new Request.Builder()
+                    .url("https://api.sktnugu.com/v1/setting/deviceGateway/directive") //PRD directive URL
+                    .addHeader("User-Id", userID)
+                    .addHeader("Target-Device-Id", deviceID)
+                    .addHeader("Auth-Token", "E2879CB22EC04EF5BF97FB2D36D45008")
+                    .addHeader("Content-Type", "application/json")
+                    .post(body)
+                    .build();
+    		
+    		try (Response response = httpClient.newCall(request).execute()) {
 
-            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+                if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
-            // Get response body
-            System.out.println(response.body().string());
-        }
+                // Get response body
+                System.out.println(response.body().string());
+    		}
+    	} else if (Server=="STG" && Place=="in") {
+    		Request request = new Request.Builder()
+                    .url("http://10.40.90.128:8080/v1/setting/deviceGateway/directive") //STG directive URL
+                    .addHeader("User-Id", userID)
+                    .addHeader("Target-Device-Id", deviceID)
+                    .addHeader("Content-Type", "application/json")
+                    .post(body)
+                    .build();
+    		
+    		try (Response response = httpClient.newCall(request).execute()) {
+
+                if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+                // Get response body
+                System.out.println(response.body().string());
+    		}
+    	} else if (Server=="STG" && Place=="out") {
+    		Request request = new Request.Builder()
+    				.url("https://stg-api.sktnugu.com/v1/setting/deviceGateway/directive") //STG directive URL
+                    .addHeader("User-Id", userID)
+                    .addHeader("Target-Device-Id", deviceID)
+                    .addHeader("Auth-Token", "E2879CB22EC04EF5BF97FB2D36D45008")
+                    .addHeader("Content-Type", "application/json")
+                    .post(body)
+                    .build();
+    		
+    		try (Response response = httpClient.newCall(request).execute()) {
+
+                if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+                // Get response body
+                System.out.println(response.body().string());
+    		}
+    	}
+
     }
     
     public String[] JsonParsing(String userID, String deviceID ) throws Exception {
