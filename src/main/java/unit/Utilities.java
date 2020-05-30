@@ -966,7 +966,7 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
                     .url("https://api.sktnugu.com/v1/setting/deviceGateway/directive") //PRD directive URL
                     .addHeader("User-Id", userID)
                     .addHeader("Target-Device-Id", deviceID)
-                    .addHeader("Auth-Token", "E2879CB22EC04EF5BF97FB2D36D45008")
+                    .addHeader("Auth-Token", oAuth_Token)
                     .addHeader("Content-Type", "application/json")
                     .post(body)
                     .build();
@@ -1001,7 +1001,7 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
     				.url("https://stg-api.sktnugu.com/v1/setting/deviceGateway/directive") //STG directive URL
                     .addHeader("User-Id", userID)
                     .addHeader("Target-Device-Id", deviceID)
-                    .addHeader("Auth-Token", "E2879CB22EC04EF5BF97FB2D36D45008")
+                    .addHeader("Auth-Token", oAuth_Token)
                     .addHeader("Content-Type", "application/json")
                     .post(body)
                     .build();
@@ -1039,7 +1039,9 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
         
         System.out.println(today);
     	
-    	String urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size=7&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        //vpn으로는 http://10.40.89.245:8190
+        //사내망에서는 http://172.27.97.221:7090
+    	String urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size=7&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
     	System.out.println(urlStr);
     	
     	URL url = new URL(urlStr);
