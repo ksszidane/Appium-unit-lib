@@ -3,7 +3,6 @@ package unit;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 
-//import static org.junit.Assert.*;
 
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
@@ -21,6 +20,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -53,11 +53,11 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
 import org.testng.Reporter;
+import org.testng.annotations.Parameters;
+
 import static org.testng.Assert.fail;
 
 import com.relevantcodes.extentreports.LogStatus;
-
-import static org.testng.Assert.fail;
 
 public class Utilities extends AndroidDriver<WebElement> implements TakesScreenshot { 
 	
@@ -65,7 +65,6 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
 	RemoteTouchScreen touch;
 	public TouchActions actions;
 	public TouchAction action;
-	
 	
     public WebDriverWait Wait;
 	
@@ -86,10 +85,12 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
 	public String beforeFilePath = null;
 	public String beforeFilePath2 = null;
 	
+
+	
 	private final OkHttpClient httpClient = new OkHttpClient();
 	
 	public static String hubAddress;
-	
+
 	public Utilities (DesiredCapabilities capability) throws MalformedURLException {
 		
 		this(hubAddress, capability);
@@ -805,7 +806,6 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
 		//fail("scroll : element not found");
 	}
 	
-	
 	/**
 	 * Vertical scroll
 	 * @param direction : "up" or "down" / count : 수행 횟수
@@ -899,7 +899,9 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
     }
     
     public void sendPost(String command, String userID, String deviceID, String Server, String Place, String oAuth_Token) throws Exception {
-
+    	
+    	System.out.println("sendPost 뭐라고 나오는지 찍어보자 : " + userID +" "+ deviceID +" "+ Server +" "+ Place +" "+ oAuth_Token);
+    	
     	String CommandText = command;
     	
     	JSONObject Main_jsonObject = new JSONObject();
@@ -940,8 +942,9 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
     	// form parameters
     	RequestBody body = RequestBody.create(JSON, Main_jsonObject.toString());
     	
-    	
-    	if (Server=="PRD" && Place=="in") {
+
+    	if (Server.equals("PRD") && Place.equals("in")) {
+    		System.out.println("PRD + in");
     		Request request = new Request.Builder()
                     .url("http://10.40.92.200:8080/v1/setting/deviceGateway/directive") //PRD directive URL
                     .addHeader("User-Id", userID)
@@ -957,7 +960,8 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
                 // Get response body
                 System.out.println(response.body().string());
             }
-    	} else if (Server=="PRD" && Place=="out") {
+    	} else if (Server.equals("PRD") && Place.equals("out")) {
+    		System.out.println("PRD + out");
     		Request request = new Request.Builder()
                     .url("https://api.sktnugu.com/v1/setting/deviceGateway/directive") //PRD directive URL
                     .addHeader("User-Id", userID)
@@ -974,7 +978,8 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
                 // Get response body
                 System.out.println(response.body().string());
     		}
-    	} else if (Server=="STG" && Place=="in") {
+    	} else if (Server.equals("STG") && Place.equals("in")) {
+    		System.out.println("STG + in");
     		Request request = new Request.Builder()
                     .url("http://10.40.90.128:8080/v1/setting/deviceGateway/directive") //STG directive URL
                     .addHeader("User-Id", userID)
@@ -990,7 +995,8 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
                 // Get response body
                 System.out.println(response.body().string());
     		}
-    	} else if (Server=="STG" && Place=="out") {
+    	} else if (Server.equals("STG") && Place.equals("out")) {
+    		System.out.println("STG + out");
     		Request request = new Request.Builder()
     				.url("https://stg-api.sktnugu.com/v1/setting/deviceGateway/directive") //STG directive URL
                     .addHeader("User-Id", userID)
@@ -1007,19 +1013,33 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
                 // Get response body
                 System.out.println(response.body().string());
     		}
+    	} else {
+    		System.out.println("서버 조건 불만족");
     	}
 
     }
     
-    public String[] JsonParsing(String userID, String deviceID ) throws Exception {
+    public String TTS_JsonParsing(String userID, String deviceID, String Server ) throws Exception {
+    	
+    	Thread.sleep(7000);
     	
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
-
+        
+        String logArray[];    
+        
+        String server = null;
+        
+        if(Server.equals("PRD")) {
+        	server = "prd";
+        } else if (Server.equals("STG")) {
+        	server = "stg";
+        }
+        
         System.out.println(today);
     	
-    	String urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size=5&env=prd&start_date="+today+"000000&unique_id="+userID+deviceID;
+    	String urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size=7&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
     	System.out.println(urlStr);
     	
     	URL url = new URL(urlStr);
@@ -1043,7 +1063,7 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
     	
     	
     	JSONObject data;
-    	String[] tts_strip =new String[5];
+    	String[] tts_strip =new String[7];
     	
     	for(int i = 0 ; i < parse_data_list.size(); i++) { 
     		data = (JSONObject) parse_data_list.get(i);
@@ -1060,10 +1080,14 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
     	for(String str:tts_strip) {
     		System.out.println(str); 
     	}
-		return tts_strip;
+    
+    	logArray = tts_strip;
+    	
+    	String tts = Arrays.deepToString(logArray);
+    	System.out.println(tts);
+		return tts;
 
     }
-	
-	
+
 		
 }

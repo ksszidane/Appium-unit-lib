@@ -31,17 +31,16 @@ public class TestCase {
 	public DesiredCapabilities capability;
 	
 	public String OS_ClassName;
-	public String Server;
+	public String OS;
+	public String hubAddress;
 	public String ProjectName;
-	public String userID;
-	public String deviceID;
-	public String Place;
-	public String oAuth_Token;
+	public String Server;
 
+	
 	
 	@Parameters({"OS", "hubAddress", "Server", "Project", "userID", "deviceID", "Place", "oAuth_Token"})
 	@BeforeClass
-	public void setupClass (String OS, String hubAddress, String Server, String Project, String userID, String deviceID, String oAuth_Token) throws Exception {
+	public void setupClass (String OS, String hubAddress, String Server, String Project, String userID, String deviceID, String Place, String oAuth_Token) throws Exception {
 		
 		extent = ExtentManager.GetExtent();
 		
@@ -67,7 +66,7 @@ public class TestCase {
 	public void BeforeMethod(Method method) throws Exception {
 		System.out.println("method name:" + method.getName());
 			test = extent.createTest(method.getName()+" "+OS_ClassName, Server).assignCategory(ProjectName+"_"+OS_ClassName);
-		
+
 			
 	}
 	//@AfterMethod (alwaysRun=true && result=failure)
