@@ -20,9 +20,10 @@ import com.aventstack.extentreports.Status;
 
 import unit.Capabilities;
 import unit.Utilities;
+import unit.ADB;
 
 
-public class TestCase {
+public class TestCase extends ADB {
 	
 	public ExtentReports extent;
 	public ExtentTest test;
@@ -35,6 +36,7 @@ public class TestCase {
 	public String hubAddress;
 	public String ProjectName;
 	public String Server;
+	public String Project;
 
 	
 	
@@ -42,10 +44,14 @@ public class TestCase {
 	@BeforeClass
 	public void setupClass (String OS, String hubAddress, String Server, String Project, String userID, String deviceID, String Place, String oAuth_Token) throws Exception {
 		
+		ADB_WakeUpDevice();
+		
 		extent = ExtentManager.GetExtent();
 		
 		capability = Capabilities.gridSetUp(OS);		
 		util = new Utilities(hubAddress, capability);
+		
+		util.unlockDevice();
 		
 		OS_ClassName = OS;
 		Server = "Server : "+ Server;
@@ -55,7 +61,7 @@ public class TestCase {
 		util.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS); 
 	
 		
-		System.out.println("\n▒▒ Start Suite : " + util.printClassName(this)+ "▒▒ Server : "+Server+"\n");
+		System.out.println("\n▒▒ Start Suite : " + util.printClassName(this)+ " ▒▒ ("+ OS + "+"+ Server +")\n");
 		
 		
 		
@@ -107,6 +113,8 @@ public class TestCase {
 			util.printLog(" ** tearDownClass catch WebDriverException");
 		}
 		System.out.println("\n▒▒Quit Suite : " + util.printClassName(this)+ "▒▒\n");
+		
+		ADB_ScreenLock();
 		
 	}
 }

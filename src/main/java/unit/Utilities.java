@@ -1019,9 +1019,9 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
 
     }
     
-    public String TTS_JsonParsing(String userID, String deviceID, String Server ) throws Exception {
+    public String TTS_JsonParsing(String userID, String deviceID, String Server, String Place ) throws Exception {
     	
-    	Thread.sleep(7000);
+    	Thread.sleep(9990);
     	
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
@@ -1030,6 +1030,7 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
         String logArray[];    
         
         String server = null;
+        String urlStr = null;
         
         if(Server.equals("PRD")) {
         	server = "prd";
@@ -1039,10 +1040,17 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
         
         System.out.println(today);
     	
-        //vpn으로는 http://10.40.89.245:8190
-        //사내망에서는 http://172.27.97.221:7090
-    	String urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size=7&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
-    	System.out.println(urlStr);
+        if(Place.equals("in")) {
+        	//사내망에서는 http://172.27.97.221:7090
+        	urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size=7&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	System.out.println(urlStr);
+        	
+        } else if (Place.equals("out")) {
+        	//vpn으로는 http://10.40.89.245:8190
+        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size=7&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	System.out.println(urlStr);
+        }
+        
     	
     	URL url = new URL(urlStr);
     	
