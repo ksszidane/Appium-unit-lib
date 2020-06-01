@@ -6,6 +6,7 @@ import io.appium.java_client.MobileElement;
 
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.touch.LongPressOptions;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -535,7 +536,7 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
 			}
 			
 			TouchAction touchAction = new TouchAction(this);
-			touchAction.longPress(element);
+			touchAction.longPress((LongPressOptions) element);
 			this.getKeyboard().sendKeys(Keys.DELETE);
 		}
 	}
@@ -647,7 +648,7 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
 	public void longPress(WebElement locator) throws Exception {
 		
 		TouchAction action = new TouchAction(this);
-		action.longPress(locator);
+		action.longPress((LongPressOptions) locator);
 		action.release();
 		action.perform();
 	}
@@ -658,7 +659,7 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
 		element = waitForIsElementPresent (locator);
 		
 		TouchAction action = new TouchAction(this);
-		action.longPress(element);
+		action.longPress((LongPressOptions) element);
 		action.release();
 		action.perform();
 	}
@@ -672,26 +673,9 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
 	 */
 	public void swipe(double direction, int count) throws Exception {
 		
-		TouchAction touchAction = new TouchAction (this);
+		TouchActions touchAction = new TouchActions (this);
 		
-		if (direction > 1.0 || direction < 0.1)
-			fail ("swipe direction : 0.1 ~ 1.0");
-		
-        int startX = (int) (winX * direction);
-        int startY = winY / 2;
-        int endX = (int) (winX * (1 - direction));
-        int endY = startY;
-        
-        for (int i = 0 ; i < count ; i ++) {
-        	
-        	// printLog ("swipe : [" +  startX + ", " + startY  + ", " + endX  + ", " + endY + "]");
-        	touchAction.press(startX, startY).waitAction(300).moveTo(endX, endY).release().perform();
-        
-        	Wait.until(ExpectedConditions.refreshed(
-    				ExpectedConditions.visibilityOfElementLocated(By.xpath("//android.widget.FrameLayout"))));
-        	
-        	waitProgressCompleted();
-        }
+
 	}
 	
 	/**
@@ -724,22 +708,6 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
 			fail ("scoll direction : up or down");
 	}
 	
-	// to do : 슬라이드 메뉴 중 숨겨진 메뉴를 위한 메소드 : 실 사용을 위한 추가적인 보완 필요
-	public void swipe (By locator) throws Exception {
-		
-		TouchAction touchAction = new TouchAction (this);
-
-		WebElement target = null;
-		target = waitForIsElementPresent(locator);
-		
-		int x = target.getLocation().getX();
-		int y = target.getLocation().getY();
-		int h = target.getSize().getHeight();
-		int w = target.getSize().getWidth();
-		
-		//touchAction.longPress(ele1).moveTo(x1,580).release().perform();
-    	touchAction.press(w-x, y).waitAction(300).moveTo(w/3, y).release().perform();
-	}
 	
 	/**
 	 * vertical scroll
@@ -747,43 +715,28 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
 	 * @return count : scroll 수행 횟수
 	 * @throws Exception - Selenium Exception
 	 */
-	public void scroll(double direction, int count) throws Exception {
-		
-		TouchAction touchAction = new TouchAction (this);
-		
-		if (direction > 1.0 || direction < 0.1)
-			fail ("scoll direction : 0.1 ~ 1.0");
-		
-        int startY = (int) (winY * direction);
-        int startX = winX / 2;
-        int endY = (int) (winY * (1 - direction));
-        int endX = startX;
-        
-        for (int i = 0 ; i < count ; i ++) {
-        
-        	// printLog ("scroll : [" +  startX + ", " + startY  + ", " + endX  + ", " + endY + "]");
-        	touchAction.press(startX, startY).waitAction(300).moveTo(endX, endY).release().perform();
-        
-        	Wait.until(ExpectedConditions.refreshed(
-    				ExpectedConditions.visibilityOfElementLocated(By.xpath("//android.widget.FrameLayout"))));
-        	
-        	waitProgressCompleted();
-        }
-	}
-	
+
 	/**
 	 * Vertical scroll
 	 * @param direction : "up" or "down" / 1회 수행
 	 * @throws Exception - Exception
 	 */
-	public void scrollUp () throws Exception {scroll(0.2, 1);}
+	public void scrollUp () throws Exception {
+		//scroll(0.2, 1);
+		}
+	
 	public void scrollUp (int count) throws Exception {
 		for (int i = 0 ; i < count ; i ++) this.scrollUp();
 	}
-	public void scrollDown () throws Exception {scroll(0.7, 1);}
+	
+	public void scrollDown () throws Exception {
+		//scroll(0.7, 1);
+		}
+	
 	public void scrollDown (int count) throws Exception {
 		for (int i = 0 ; i < count ; i ++) this.scrollDown();
 	}
+	
 	public void scrollTo (By locator, int count) throws Exception {
 		
 		for (int i = 0 ; i < count ; i ++) {
@@ -801,7 +754,7 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
 			if (this.isTextPresent(text)) {
 				return;
 			}
-			this.scroll(0.6, 1);
+			//this.scroll(0.6, 1);
 		}
 		//fail("scroll : element not found");
 	}
@@ -813,8 +766,8 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
 	 */
 	public void scroll (String direction, int count) throws Exception {
 		
-		if (direction.equalsIgnoreCase("down")) this.scroll(0.8, count);
-		else if (direction.equalsIgnoreCase("up")) this.scroll(0.2, count);
+		//if (direction.equalsIgnoreCase("down")) this.scroll(0.8, count);
+		//else if (direction.equalsIgnoreCase("up")) this.scroll(0.2, count);
 	}
 	
 	/**

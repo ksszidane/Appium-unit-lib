@@ -38,8 +38,6 @@ public class TestCase extends ADB {
 	public String Server;
 	public String Project;
 
-	
-	
 	@Parameters({"OS", "hubAddress", "Server", "Project", "userID", "deviceID", "Place", "oAuth_Token"})
 	@BeforeClass
 	public void setupClass (String OS, String hubAddress, String Server, String Project, String userID, String deviceID, String Place, String oAuth_Token) throws Exception {
@@ -51,8 +49,6 @@ public class TestCase extends ADB {
 		capability = Capabilities.gridSetUp(OS);		
 		util = new Utilities(hubAddress, capability);
 		
-		util.unlockDevice();
-		
 		OS_ClassName = OS;
 		Server = "Server : "+ Server;
 		ProjectName = Project;
@@ -61,20 +57,18 @@ public class TestCase extends ADB {
 		util.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS); 
 	
 		
-		System.out.println("\n▒▒ Start Suite : " + util.printClassName(this)+ " ▒▒ ("+ OS + "+"+ Server +")\n");
-		
-		
-		
-		
+		System.out.println("\n▒▒ Start Suite : " + util.printClassName(this)+ " ▒▒ ("+ OS + " | "+ Server +")\n");
+			
 	}
+	
 	//@BeforeMethod (alwaysRun=true)
 	@BeforeMethod
 	public void BeforeMethod(Method method) throws Exception {
 		System.out.println("method name:" + method.getName());
 			test = extent.createTest(method.getName()+" "+OS_ClassName, Server).assignCategory(ProjectName+"_"+OS_ClassName);
-
-			
+		
 	}
+	
 	//@AfterMethod (alwaysRun=true && result=failure)
 	@AfterMethod
 	 public void AfterMethod(ITestResult result) throws Exception {
@@ -112,7 +106,7 @@ public class TestCase extends ADB {
 		catch (WebDriverException we) {
 			util.printLog(" ** tearDownClass catch WebDriverException");
 		}
-		System.out.println("\n▒▒Quit Suite : " + util.printClassName(this)+ "▒▒\n");
+		System.out.println("\n▒▒ Quit Suite : " + util.printClassName(this)+ " ▒▒\n");
 		
 		ADB_ScreenLock();
 		

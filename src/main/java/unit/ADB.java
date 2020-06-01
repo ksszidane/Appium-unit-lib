@@ -36,8 +36,7 @@ public class ADB {
 	
 	public void ADB_ScreenLock() throws Exception {
 		
-		runCommand("adb shell input keyevent KEYCODE_WAKEUP");
-		runCommand("adb shell input keyevent 82");
+		runCommand("adb shell input keyevent 26");
 		
 	}
 
