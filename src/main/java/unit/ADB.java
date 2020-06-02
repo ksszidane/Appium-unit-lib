@@ -27,16 +27,16 @@ public class ADB {
 		return allLine;
 	}
 	
-	public void ADB_WakeUpDevice() throws Exception {
+	public void ADB_WakeUpDevice(String Device) throws Exception {
 		
-		runCommand("adb shell input keyevent KEYCODE_WAKEUP");
-		runCommand("adb shell input keyevent 82");
+		runCommand("adb -s "+Device+" shell input keyevent KEYCODE_WAKEUP");
+		runCommand("adb -s "+Device+" shell input keyevent 82");
 		
 	}
 	
-	public void ADB_ScreenLock() throws Exception {
+	public void ADB_ScreenLock(String Device) throws Exception {
 		
-		runCommand("adb shell input keyevent 26");
+		runCommand("adb -s "+Device+" shell input keyevent 26");
 		
 	}
 

@@ -35,23 +35,26 @@ public class TestCase extends ADB {
 	public String OS;
 	public String hubAddress;
 	public String ProjectName;
-	public String Server;
+	public String ServerName;
 	public String Project;
 
-	@Parameters({"OS", "hubAddress", "Server", "Project", "userID", "deviceID", "Place", "oAuth_Token"})
+	@Parameters({"OS", "hubAddress", "Server", "Project", "userID", "deviceID", "Place", "oAuth_Token", "Device"})
 	@BeforeClass
-	public void setupClass (String OS, String hubAddress, String Server, String Project, String userID, String deviceID, String Place, String oAuth_Token) throws Exception {
-		
-		ADB_WakeUpDevice();
-		
-		extent = ExtentManager.GetExtent();
-		
-		capability = Capabilities.gridSetUp(OS);		
-		util = new Utilities(hubAddress, capability);
+	public void setupClass (String OS, String hubAddress, String Server, String Project, String userID, String deviceID, String Place, String oAuth_Token, String Device) throws Exception {
 		
 		OS_ClassName = OS;
 		Server = "Server : "+ Server;
 		ProjectName = Project;
+		ServerName = Server;
+		
+		ADB_WakeUpDevice(Device);
+		
+		extent = ExtentManager.GetExtent();
+		
+		capability = Capabilities.gridSetUp(OS, Device);		
+		util = new Utilities(hubAddress, capability);
+		
+		util.unlockDevice();
 		
 		util.setFileDetector(new LocalFileDetector());
 		util.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS); 
@@ -64,16 +67,14 @@ public class TestCase extends ADB {
 	//@BeforeMethod (alwaysRun=true)
 	@BeforeMethod
 	public void BeforeMethod(Method method) throws Exception {
-		System.out.println("method name:" + method.getName());
-			test = extent.createTest(method.getName()+" "+OS_ClassName, Server).assignCategory(ProjectName+"_"+OS_ClassName);
+		System.out.println("\n - method name :" + method.getName() + " 시작 \n");
+		test = extent.createTest(method.getName()+" | "+OS_ClassName, ServerName).assignCategory(ProjectName+" | "+OS_ClassName+" | "+ServerName);
 		
 	}
 	
 	//@AfterMethod (alwaysRun=true && result=failure)
 	@AfterMethod
 	 public void AfterMethod(ITestResult result) throws Exception {
-		
-		
 		
 		
 		if (result.getStatus() == ITestResult.FAILURE) { 
@@ -88,16 +89,18 @@ public class TestCase extends ADB {
 			test.pass("테스트 성공.");
 			 //System.out.println("테스트 성공.");
 		}
-		
+		System.out.println("\n");
 		//util.CaptureScreen(result);
 	    
 	} 
 	
-	@Parameters({"userID", "deviceID", "Server", "Place", "oAuth_Token"})
+	@Parameters({"userID", "deviceID", "Server", "Place", "oAuth_Token", "Device"})
 	@AfterClass
-	public void tearDownClass(String userID, String deviceID, String Server, String Place, String oAuth_Token) throws Exception {
+	public void tearDownClass(String userID, String deviceID, String Server, String Place, String oAuth_Token, String Device) throws Exception {
 		
 		util.sendPost("그만", userID, deviceID, Server, Place, oAuth_Token);
+		System.out.println("\n");
+		
 		
 		try {
 			extent.flush();
@@ -108,7 +111,7 @@ public class TestCase extends ADB {
 		}
 		System.out.println("\n▒▒ Quit Suite : " + util.printClassName(this)+ " ▒▒\n");
 		
-		ADB_ScreenLock();
+		ADB_ScreenLock(Device);
 		
 	}
 }

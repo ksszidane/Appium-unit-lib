@@ -6,6 +6,9 @@ import io.appium.java_client.MobileElement;
 
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.AndroidTouchAction;
+import io.appium.java_client.android.nativekey.AndroidKey;
+import io.appium.java_client.android.nativekey.KeyEvent;
 import io.appium.java_client.touch.LongPressOptions;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -47,8 +50,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.HasTouchScreen;
+import org.openqa.selenium.interactions.TouchScreen;
 import org.openqa.selenium.interactions.touch.TouchActions;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.ExecuteMethod;
 import org.openqa.selenium.remote.RemoteTouchScreen;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -60,12 +65,13 @@ import static org.testng.Assert.fail;
 
 import com.relevantcodes.extentreports.LogStatus;
 
-public class Utilities extends AndroidDriver<WebElement> implements TakesScreenshot { 
+public class Utilities extends AndroidDriver<WebElement> implements HasTouchScreen, TakesScreenshot { 
 	
 	
-	RemoteTouchScreen touch;
+	public RemoteTouchScreen Screentouch;
 	public TouchActions actions;
 	public TouchAction action;
+
 	
     public WebDriverWait Wait;
 	
@@ -104,6 +110,23 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
 		Wait = (WebDriverWait) new WebDriverWait(this, PAGE_LOAD_TIME_OUT);
 	}
 	
+	
+	
+	
+	
+	public WebElement WaitfindElement(By locator) throws Exception {
+		   
+	  	WebDriverWait wait = (WebDriverWait) new WebDriverWait(this, TIME_OUT_SEC);
+		//wait.until(ExpectedConditions.elementToBeClickable(locator));    
+		//WebElement superElement = findElement(locator);
+	  	WebElement superElement = wait.until(ExpectedConditions.elementToBeClickable(locator));    
+		return superElement;
+  }
+	
+	
+	
+	
+
 	public String takeScreenShot(String callerName, String deviceName) {
 		
 		String destDir;
@@ -362,6 +385,23 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
 		}
 	} 
 	
+	
+	/**
+	 * 아래 커맨트가 원본임 
+	public WebElement waitForIsElementPresent(By locator) throws Exception {
+
+		WebElement element = Wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+
+		if (element != null) {
+			return element;	
+		}
+		else {
+			//printLog ("해당 element가 없습니다. : " + locator.toString());
+			return null;
+		}
+	} 
+	*/
+	
 	/**
 	 * Element가 selected or checked 될때까지 대기하는 메소드
 	 * @param locator 존재 확인 할 Element를 지정
@@ -515,10 +555,12 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
 		WebElement element = null;
 		waitForIsElementPresent (locator);
 		
-		element = Wait.until(ExpectedConditions.elementToBeClickable(locator));
+		element = WaitfindElement(locator);
 		element.click();
 		
-		waitProgressCompleted();
+		
+		
+		//waitProgressCompleted();
 	}
 	
 	// to do : 앞 머리에 공백인 경우 전체 선택 안됨 -> 무한루프
@@ -605,9 +647,10 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
 	public String getText(By locator) throws Exception {
 		
 		WebElement element = null;
-		element = waitForIsElementPresent (locator);
+		element = WaitfindElement (locator);
 		
 		String text = element.getText();
+
 		return text;
 	}
 	
@@ -639,148 +682,6 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
 		return count;
 	}
 	
-	/**
-	 * Long press element action
-	 * @param target element
-	 * @return void
-	 * @throws Exception - Exception
-	 */
-	public void longPress(WebElement locator) throws Exception {
-		
-		TouchAction action = new TouchAction(this);
-		action.longPress((LongPressOptions) locator);
-		action.release();
-		action.perform();
-	}
-	
-	public void longPress(By locator) throws Exception {
-		
-		WebElement element = null;
-		element = waitForIsElementPresent (locator);
-		
-		TouchAction action = new TouchAction(this);
-		action.longPress((LongPressOptions) element);
-		action.release();
-		action.perform();
-	}
-	
-	
-	/**
-	 * Horizontal swipe
-	 * @param direction : swipe 범위 (ex 2 : 가로 20% -> 80% 범위로 swipe)
-	 * @return count : swipe 수행 횟수
-	 * @throws Exception - Selenium Exception
-	 */
-	public void swipe(double direction, int count) throws Exception {
-		
-		TouchActions touchAction = new TouchActions (this);
-		
-
-	}
-	
-	/**
-	 * Horizontal swipe
-	 * @param direction : "right" or "left" / 1회 수행
-	 * @throws Exception - Exception
-	 */
-	public void swipe (String direction) throws Exception {
-		
-		if (direction.equalsIgnoreCase("right")) 
-			this.swipe(0.8, 1);
-		else if (direction.equalsIgnoreCase("left")) 
-			this.swipe(0.2, 1);
-		else
-			fail ("swipe direction : right or left");
-	}
-	
-	/**
-	 * Horizontal swipe
-	 * @param direction : "right" or "left" / count : 수행 횟수
-	 * @throws Exception - Exception
-	 */
-	public void swipe (String direction, int count) throws Exception {
-		
-		if (direction.equalsIgnoreCase("right"))
-			this.swipe(0.8, count);
-		else if (direction.equalsIgnoreCase("left")) 
-			this.swipe(0.2, count);
-		else
-			fail ("scoll direction : up or down");
-	}
-	
-	
-	/**
-	 * vertical scroll
-	 * @param direction : scroll 범위 (ex 0.2 : 세로 20% -> 80% 범위로 하단 sroll)
-	 * @return count : scroll 수행 횟수
-	 * @throws Exception - Selenium Exception
-	 */
-
-	/**
-	 * Vertical scroll
-	 * @param direction : "up" or "down" / 1회 수행
-	 * @throws Exception - Exception
-	 */
-	public void scrollUp () throws Exception {
-		//scroll(0.2, 1);
-		}
-	
-	public void scrollUp (int count) throws Exception {
-		for (int i = 0 ; i < count ; i ++) this.scrollUp();
-	}
-	
-	public void scrollDown () throws Exception {
-		//scroll(0.7, 1);
-		}
-	
-	public void scrollDown (int count) throws Exception {
-		for (int i = 0 ; i < count ; i ++) this.scrollDown();
-	}
-	
-	public void scrollTo (By locator, int count) throws Exception {
-		
-		for (int i = 0 ; i < count ; i ++) {
-			if (this.isElementPresent(locator)) {
-				return;
-			}
-			this.scrollDown();
-		}
-		//fail("scroll : element not found");
-	}
-	
-	public void scrollToText (String text, int count) throws Exception {
-		
-		for (int i = 0 ; i < count ; i ++) {
-			if (this.isTextPresent(text)) {
-				return;
-			}
-			//this.scroll(0.6, 1);
-		}
-		//fail("scroll : element not found");
-	}
-	
-	/**
-	 * Vertical scroll
-	 * @param direction : "up" or "down" / count : 수행 횟수
-	 * @throws Exception - Exception
-	 */
-	public void scroll (String direction, int count) throws Exception {
-		
-		//if (direction.equalsIgnoreCase("down")) this.scroll(0.8, count);
-		//else if (direction.equalsIgnoreCase("up")) this.scroll(0.2, count);
-	}
-	
-	/**
-	  * 물리적인 keyboard 입력을 처리하는 메소드
-	  * @param value	Press할 키보드 값
-	  * @return void
-	  */
-	public void pressKeys(Keys value) throws Exception {
-		
-		Actions actions = new Actions(this);
-		actions.sendKeys(value).perform();
-	}
-	
 	public void tap(By locator) throws Exception {
 		WebDriverWait wait = new WebDriverWait(this, PAGE_LOAD_TIME_OUT);
 		wait.until(ExpectedConditions.elementToBeClickable(locator));    
@@ -793,6 +694,10 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
 			superElement.click();
 		}
 	}
+	
+	
+	
+	
 	
 	public String printClassName(Object obj) {
         return (obj.getClass().getName());
@@ -818,8 +723,10 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
         return dest;
     }
     
-    public void switchContext (String context) {
-        
+    public void switchContext (String context) throws Exception {
+    	
+    	Thread.sleep(2000);
+    	
     	Set<String> contextNames = getContextHandles(); 
         for (String contextName : contextNames) {
             System.out.println("context 목록  : " + contextName);
@@ -829,7 +736,7 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
             	break;
             }
         }
-        System.out.println("스위칭된 context : " + getContext());
+        System.out.println("스위칭된 context : " + getContext() + "\n");
     	
     }
     
@@ -1051,6 +958,19 @@ public class Utilities extends AndroidDriver<WebElement> implements TakesScreens
 		return tts;
 
     }
+    
+  
+    
+	public void Android_BackKey() throws Exception {
+		
+		pressKey(new KeyEvent(AndroidKey.BACK));
+	}
+
+	@Override
+	public TouchScreen getTouch() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 		
 }
