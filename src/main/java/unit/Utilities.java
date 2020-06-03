@@ -10,6 +10,7 @@ import io.appium.java_client.android.AndroidTouchAction;
 import io.appium.java_client.android.nativekey.AndroidKey;
 import io.appium.java_client.android.nativekey.KeyEvent;
 import io.appium.java_client.touch.LongPressOptions;
+import io.appium.java_client.touch.offset.PointOption;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -231,9 +232,28 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	
 	
 	/** 
-	 * 단말기별 화면 해상도 저장
-	 * scroll & swipe 동작 시 활용
+	 * @param int startx - the starting x position
+	 * @param int starty - the starting y position
+	 * @param int endx - the ending x position
+	 * @param int endy - the ending y position
+	 * @throws InterruptedException 
 	 */
+	@SuppressWarnings("rawtypes")
+	public void scroll(int startx, int starty, int endx, int endy) throws InterruptedException {
+		
+		Thread.sleep(2000);
+	    TouchAction touchAction = new TouchAction(this);
+
+	    touchAction.longPress(PointOption.point(startx, starty))
+	               .moveTo(PointOption.point(endx, endy))
+	               .release()
+	               .perform();
+	    
+	    Thread.sleep(2000);
+
+	}
+	
+
 	public void getWindowSize() {
 		
 		Dimension winSize = manage().window().getSize();
@@ -553,7 +573,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	public void click(By locator) throws Exception {
 	
 		WebElement element = null;
-		waitForIsElementPresent (locator);
+		//waitForIsElementPresent (locator);
 		
 		element = WaitfindElement(locator);
 		element.click();
@@ -725,7 +745,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     
     public void switchContext (String context) throws Exception {
     	
-    	Thread.sleep(2000);
+    	Thread.sleep(2500);
     	
     	Set<String> contextNames = getContextHandles(); 
         for (String contextName : contextNames) {
@@ -737,7 +757,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
             }
         }
         System.out.println("스위칭된 context : " + getContext() + "\n");
-    	
+ 	
     }
     
     public void  sendGet() throws Exception {
