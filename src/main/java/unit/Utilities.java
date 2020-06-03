@@ -745,7 +745,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     
     public void switchContext (String context) throws Exception {
     	
-    	Thread.sleep(2500);
+    	Thread.sleep(3300);
     	
     	Set<String> contextNames = getContextHandles(); 
         for (String contextName : contextNames) {

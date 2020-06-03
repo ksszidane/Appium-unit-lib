@@ -23,13 +23,14 @@ import unit.Utilities;
 import unit.ADB;
 
 
-public class TestCase extends ADB {
+public class TestCase {
 	
 	public ExtentReports extent;
 	public ExtentTest test;
 	
 	public static Utilities util;
 	public DesiredCapabilities capability;
+	public ADB adb;
 	
 	public String OS_ClassName;
 	public String OS;
@@ -37,6 +38,7 @@ public class TestCase extends ADB {
 	public String ProjectName;
 	public String ServerName;
 	public String Project;
+	public String udid;
 
 	@Parameters({"OS", "hubAddress", "Server", "Project", "userID", "deviceID", "Place", "oAuth_Token", "Device"})
 	@BeforeClass
@@ -46,8 +48,10 @@ public class TestCase extends ADB {
 		Server = "Server : "+ Server;
 		ProjectName = Project;
 		ServerName = Server;
+		udid = Device;
 		
-		ADB_WakeUpDevice(Device);
+		adb = new ADB();
+		adb.ADB_WakeUpDevice(udid);
 		
 		extent = ExtentManager.GetExtent();
 		
@@ -111,7 +115,7 @@ public class TestCase extends ADB {
 		}
 		System.out.println("\n▒▒ Quit Suite : " + util.printClassName(this)+ " ▒▒\n");
 		
-		ADB_ScreenLock(Device);
+		adb.ADB_ScreenLock(udid);
 		
 	}
 }
