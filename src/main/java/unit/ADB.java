@@ -3,6 +3,7 @@ package unit;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 
 public class ADB {
 	
@@ -25,6 +26,40 @@ public class ADB {
 				break;	
 		}
 		return allLine;
+	}
+	
+	public void ADB_SetCommand(String Device) throws Exception {
+		ADB_stopADB();
+		ADB_startADB();
+		ADB_devices();
+		ADB_WakeUpDevice(Device);
+		ADB_GPS_On(Device);
+		
+	}
+	
+	public void ADB_stopADB() throws Exception {
+		
+		runCommand("adb kill-server");
+		System.out.println("adb kill-server");
+		
+	}
+	
+	public void ADB_startADB() throws Exception {
+		
+		runCommand("adb start-server");
+		System.out.println("adb start-server");
+		
+	}
+	public void ADB_devices() throws Exception {
+		
+		String outputCMD = runCommand("adb devices -l");
+		System.out.println("adb devices -l");
+		String[] lines = outputCMD.split("\n");
+		
+		for(String str:lines) {
+    		System.out.println(str); 
+    	}
+	
 	}
 	
 	public void ADB_WakeUpDevice(String Device) throws Exception {
@@ -63,6 +98,38 @@ public class ADB {
 		
 		runCommand("adb -s "+Device+" shell svc data enable");
 		System.out.println("adb -s "+Device+" shell svc data enable");
+	}
+	
+	public void ADB_GPS_On(String Device) throws Exception {
+		
+		runCommand("adb -s "+Device+" shell settings put secure location_providers_allowed +gps");
+		runCommand("adb -s "+Device+" shell settings put secure location_providers_allowed +network");
+		System.out.println("adb -s "+Device+" shell settings put secure location_providers_allowed +gps");
+		System.out.println("adb -s "+Device+" shell settings put secure location_providers_allowed +network");
+		Thread.sleep(1000);
+	}
+	
+	public void ADB_GPS_Off(String Device) throws Exception {
+		
+		runCommand("adb -s "+Device+" shell settings put secure location_providers_allowed -gps");
+		runCommand("adb -s "+Device+" shell settings put secure location_providers_allowed -network");
+		System.out.println("adb -s "+Device+" shell settings put secure location_providers_allowed -gps");
+		System.out.println("adb -s "+Device+" shell settings put secure location_providers_allowed -network");
+		Thread.sleep(1000);
+	}
+	
+	public void NUGUAPP_permission_LOCATION_On(String Device) throws Exception {
+		
+		runCommand("adb -s "+Device+" shell pm grant com.skt.aladdin android.permission.ACCESS_FINE_LOCATION");
+		System.out.println("adb -s "+Device+" shell pm grant com.skt.aladdin android.permission.ACCESS_FINE_LOCATION");
+		Thread.sleep(1000);
+	}
+	
+	public void NUGUAPP_permission_LOCATION_Off(String Device) throws Exception {
+		
+		runCommand("adb -s "+Device+" shell pm revoke com.skt.aladdin android.permission.ACCESS_FINE_LOCATION");
+		System.out.println("adb -s "+Device+" shell pm revoke com.skt.aladdin android.permission.ACCESS_FINE_LOCATION");
+		Thread.sleep(1000);
 	}
 
 }

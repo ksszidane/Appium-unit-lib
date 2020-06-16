@@ -18,6 +18,7 @@ import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 
+import NUGU_data.data;
 import unit.Capabilities;
 import unit.Utilities;
 import unit.ADB;
@@ -31,6 +32,8 @@ public class TestCase {
 	public static Utilities util;
 	public DesiredCapabilities capability;
 	public ADB adb;
+	
+	public static final data data = new data();
 	
 	public String OS_ClassName;
 	public String OS;
@@ -51,13 +54,14 @@ public class TestCase {
 		udid = Device;
 		
 		adb = new ADB();
-		adb.ADB_WakeUpDevice(udid);
+		
+		adb.ADB_SetCommand(udid);
 		
 		extent = ExtentManager.GetExtent();
 		
 		capability = Capabilities.gridSetUp(OS, Device);		
 		util = new Utilities(hubAddress, capability);
-		
+
 		util.unlockDevice();
 		
 		util.setFileDetector(new LocalFileDetector());
@@ -115,6 +119,10 @@ public class TestCase {
 		}
 		System.out.println("\n▒▒ Quit Suite : " + util.printClassName(this)+ " ▒▒\n");
 		
+		adb.ADB_cellular_On(udid);
+		adb.ADB_WiFi_On(udid);
+		adb.NUGUAPP_permission_LOCATION_On(udid);
+		adb.ADB_GPS_On(udid);
 		adb.ADB_ScreenLock(udid);
 		
 	}

@@ -57,9 +57,10 @@ public class Capabilities {
 		     //capability.setCapability("chromedriverExecutable", "C:\\chromedriver_win32\\chromedriver.exe");
 		     capability.setCapability("showChromedriverLog", true);
 		     
-		     //capability.setCapability("autoWebview", true); //Webview 컨텍스트로 직접 이동하십시오. 기본false
+		     //capability.setCapability("autoWebview", false); //Webview 컨텍스트로 직접 이동하십시오. 기본false
 		     //capability.setCapability("autoWebviewTimeout", "3000"); //Webview 컨텍스트가 활성화 될 때까지 기다리는 시간
 		     
+		     //capability.setCapability("ensureWebviewsHavePages", true);
 		     capability.setCapability("autoAcceptAlerts", true);
 		        
 		        

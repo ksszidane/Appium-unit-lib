@@ -10,7 +10,12 @@ import io.appium.java_client.android.AndroidTouchAction;
 import io.appium.java_client.android.nativekey.AndroidKey;
 import io.appium.java_client.android.nativekey.KeyEvent;
 import io.appium.java_client.touch.LongPressOptions;
+import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
+import junit.framework.Assert;
+import io.appium.java_client.android.nativekey.AndroidKey;
+import io.appium.java_client.android.nativekey.KeyEvent;
+
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -25,6 +30,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -46,6 +52,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Rotatable;
 import org.openqa.selenium.SearchContext;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -56,14 +63,22 @@ import org.openqa.selenium.interactions.touch.TouchActions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.ExecuteMethod;
 import org.openqa.selenium.remote.RemoteTouchScreen;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
+import org.openqa.selenium.support.pagefactory.ElementLocatorFactory;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
 import org.testng.Reporter;
 import org.testng.annotations.Parameters;
 
+
 import static org.testng.Assert.fail;
 
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.Status;
 import com.relevantcodes.extentreports.LogStatus;
 
 public class Utilities extends AndroidDriver<WebElement> implements HasTouchScreen, TakesScreenshot { 
@@ -123,10 +138,45 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	  	WebElement superElement = wait.until(ExpectedConditions.elementToBeClickable(locator));    
 		return superElement;
   }
+		public WebElement findElementLocated(By locator) throws Exception {
+		   
+	  	WebDriverWait wait = (WebDriverWait) new WebDriverWait(this, TIME_OUT_SEC);
+		//wait.until(ExpectedConditions.elementToBeClickable(locator));    
+		//WebElement superElement = findElement(locator);
+	  	WebElement superElement = wait.until(ExpectedConditions.presenceOfElementLocated(locator));    
+		return superElement;
+  }
 	
 	
+	/**
+	 * Element가 enabled(사용) 되었는지 확인하는 메소드
+	 * 
+	 * @param locator존재
+	 *            확인 할 Element를 지정
+	 * @return boolean
+	 */     
+	public boolean isEnabled(By locator) {
+		manage().timeouts().implicitlyWait(MIN_WAIT_TIME, TimeUnit.SECONDS);
+
+		try {
+			WebElement element = locator.findElement((SearchContext) this);
+			if (element.getAttribute("enabled").equals("true")) {
+				
+				return true;
+			}
+		} catch (NoSuchElementException e) {
+			
+			return false;
+		}
+		
+		return false;
+	}
 	
-	
+
+	private WebElement findElementByAccessibilityId(By locator) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	public String takeScreenShot(String callerName, String deviceName) {
 		
@@ -149,6 +199,45 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		}
 		
 		return imgLink;
+	}
+	
+	/**
+	 * 페이지의 load complete 대기
+	 * @throws Exception - Exception
+	 */
+	public void waitForPageToLoad() {
+		try {
+			Thread.sleep(300);
+			//waitForPageLoaded();
+			waitForAjaxLoaded(this);
+		} catch (Exception e) {
+			printLog (e.getMessage());
+		}
+	}
+	
+	public void waitForPageLoaded() { 
+		
+		ExpectedCondition<Boolean> expectation = new ExpectedCondition<Boolean>() { 
+        	public Boolean apply(WebDriver driver) { 
+        		boolean readyState =  ((JavascriptExecutor)driver).executeScript("return document.readyState").equals("complete");
+        		
+        		return readyState;
+        	} 
+        };
+         
+        Wait<WebDriver> wait = new WebDriverWait(this, PAGE_LOAD_TIME_OUT).ignoring(StaleElementReferenceException.class);
+        //Wait<WebDriver> wait = new WebDriverWait(this, PAGE_LOAD_TIME_OUT).ignoring(StaleElementReferenceException.class).ignoring(UnhandledAlertException.class);
+        wait.until(expectation);
+	} 
+		
+	/**
+	 * 페이지 내의 ajax load complete 대기
+	 * @throws Exception - Exception
+	 */
+	public void waitForAjaxLoaded (WebDriver driver){
+	
+		ElementLocatorFactory element = new AjaxElementLocatorFactory(driver, PAGE_LOAD_TIME_OUT);
+		PageFactory.initElements(element, this);
 	}
 	
 	/**
@@ -239,12 +328,15 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	 * @throws InterruptedException 
 	 */
 	@SuppressWarnings("rawtypes")
-	public void scroll(int startx, int starty, int endx, int endy) throws InterruptedException {
+	public void swipe(int startx, int starty, int endx, int endy) throws InterruptedException {
 		
 		Thread.sleep(2000);
 	    TouchAction touchAction = new TouchAction(this);
+	    
 
-	    touchAction.longPress(PointOption.point(startx, starty))
+	    touchAction.press(PointOption.point(startx, starty))
+	    		   //.waitAction(WaitOptions.waitOptions(Duration.ofSeconds(1)))
+	    		   .waitAction()
 	               .moveTo(PointOption.point(endx, endy))
 	               .release()
 	               .perform();
@@ -253,6 +345,106 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 
 	}
 	
+	@SuppressWarnings("rawtypes")
+	public void touchTab(int x, int y) throws InterruptedException {
+		
+		Thread.sleep(2000);
+	    TouchAction touchAction = new TouchAction(this);
+	    
+	    touchAction.tap(PointOption.point(x, y)).release().perform();
+	    Thread.sleep(2000);
+
+	}
+	
+	/**
+	@SuppressWarnings("rawtypes")
+	public void scrollDown() throws Exception  {
+		
+	    int pressX = manage().window().getSize().width / 2;
+	    int bottomY = manage().window().getSize().height * 4/5;
+	    int topY = manage().window().getSize().height / 8;
+	    Thread.sleep(2000);
+	    scroll(pressX, bottomY, pressX, topY);
+	    Thread.sleep(2000);
+
+	}
+	
+	public void scrollDown (int count) throws Exception {
+		for (int i = 0 ; i < count ; i ++) this.scrollDown();
+	}
+	*/
+	
+	/**
+	 * Vertical scroll
+	 * @param direction : "up" or "down" / 1회 수행
+	 * @throws Exception - Exception
+	 */
+	public void scrollUp () throws Exception {
+		scroll(0.2, 1);
+	}
+	
+	public void scrollUp (int count) throws Exception {
+		Thread.sleep(1200);
+		for (int i = 0 ; i < count ; i ++) this.scrollUp();
+	}
+	public void scrollDown () throws Exception {
+		scroll(0.8, 1);
+	}
+	public void scrollDown (int count) throws Exception {
+		Thread.sleep(1200);
+		for (int i = 0 ; i < count ; i ++) this.scrollDown();
+	}
+	/**
+	@SuppressWarnings("rawtypes")
+	private void scroll(int fromX, int fromY, int toX, int toY) {
+	    TouchAction touchAction = new TouchAction(this);
+	    touchAction.longPress(PointOption.point(fromX, fromY)).moveTo(PointOption.point(toX, toY)).release().perform();
+	}*/
+	
+	@SuppressWarnings("rawtypes")
+	public void scroll(double direction, int count) throws Exception {
+		
+		TouchAction touchAction = new TouchAction (this);
+		
+		if (direction > 1.0 || direction < 0.1)
+			fail ("scoll direction : 0.1 ~ 1.0");
+		/**
+        int startY = (int) (winY * direction);
+        int startX = winX / 2;
+        int endY = (int) (winY * (1 - direction));
+        int endX = startX;
+        */
+		
+        int pressX = manage().window().getSize().width / 2;
+	    double d_bottomY = manage().window().getSize().height * direction;
+	    double d_topY = manage().window().getSize().height / (7 * direction);
+        
+	    int i_bottomY = (int)d_bottomY;
+	    int i_topY = (int)d_topY;
+	    
+        for (int i = 0 ; i < count ; i ++) {
+    
+        	// printLog ("scroll : [" +  startX + ", " + startY  + ", " + endX  + ", " + endY + "]");
+        	//touchAction.longPress(PointOption.point(startX, startY)).waitAction(WaitOptions.waitOptions(Duration.ofSeconds(1))).moveTo(PointOption.point(endX, endY)).release().perform();
+        	touchAction.longPress(PointOption.point(pressX, i_bottomY))
+        				.moveTo(PointOption.point(pressX, i_topY))
+        				.release()
+        				.perform();
+        	//Wait.until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOfElementLocated(By.xpath("//android.widget.FrameLayout"))));
+       
+        }
+	}
+	
+	/**
+	 * Vertical scroll
+	 * @param direction : "up" or "down" / count : 수행 횟수
+	 * @throws Exception - Exception
+	 */
+	public void scroll (String direction, int count) throws Exception {
+		
+		if (direction.equalsIgnoreCase("down")) this.scroll(0.8, count);
+		else if (direction.equalsIgnoreCase("up")) this.scroll(0.2, count);
+	}
 
 	public void getWindowSize() {
 		
@@ -327,9 +519,12 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		
 		boolean result = false;
 		manage().timeouts().implicitlyWait(MIN_WAIT_TIME, TimeUnit.SECONDS);
+		WebDriverWait wait = (WebDriverWait) new WebDriverWait(this, TIME_OUT_SEC);
 		
 		try {		
 			WebElement element = locator.findElement((SearchContext) this);
+			//WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(locator));  
+			
 			if (element.isDisplayed()) {
 				manage().timeouts().implicitlyWait(MAX_WAIT_TIME, TimeUnit.SECONDS);
 				result = true;
@@ -340,6 +535,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		}
 		manage().timeouts().implicitlyWait(MAX_WAIT_TIME, TimeUnit.SECONDS);
 		return result;
+		
 	}
 	
 	/**
@@ -572,6 +768,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	 */
 	public void click(By locator) throws Exception {
 	
+		waitForPageToLoad();
+		
 		WebElement element = null;
 		//waitForIsElementPresent (locator);
 		
@@ -584,6 +782,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	}
 	
 	// to do : 앞 머리에 공백인 경우 전체 선택 안됨 -> 무한루프
+	@SuppressWarnings("rawtypes")
 	public void clear(By locator) throws Exception {
 
 		Boolean status = false;
@@ -666,6 +865,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	 */
 	public String getText(By locator) throws Exception {
 		
+		waitForPageToLoad();
+		
 		WebElement element = null;
 		element = WaitfindElement (locator);
 		
@@ -674,6 +875,19 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		return text;
 	}
 	
+	public String getTextWait(By locator) throws Exception {
+		
+		Thread.sleep(1500);
+		
+		WebElement element = null;
+		element = findElementLocated(locator);
+		
+		String text = element.getText();
+
+		return text;
+	}
+	
+
 	/**
 	 * element 속성 가져오기
 	 * @param target element / 속성 (ex. id값 : resourceId & content-desc : name)
@@ -732,6 +946,17 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		return form.format(cal.getTime());	
 	}
     
+    public String ErrorScreenshots(WebElement webElement,String screenShotName) throws IOException
+    {
+        TakesScreenshot ts = (TakesScreenshot)webElement;
+        File source = ts.getScreenshotAs(OutputType.FILE);
+        String dest = ".\\ErrorScreenshots\\"+screenShotName+".png";
+        File destination = new File(dest);
+        FileUtils.copyFile(source, destination);        
+                     
+        return dest;
+    }
+    
     public String ErrorScreenshots(WebDriver driver,String screenShotName) throws IOException
     {
         TakesScreenshot ts = (TakesScreenshot)driver;
@@ -745,7 +970,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     
     public void switchContext (String context) throws Exception {
     	
-    	Thread.sleep(3300);
+    	Thread.sleep(4000);
     	
     	Set<String> contextNames = getContextHandles(); 
         for (String contextName : contextNames) {
@@ -759,6 +984,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         System.out.println("스위칭된 context : " + getContext() + "\n");
  	
     }
+   
     
     public void  sendGet() throws Exception {
 
@@ -778,7 +1004,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 
     }
     
-    public void sendPost(String command, String userID, String deviceID, String Server, String Place, String oAuth_Token) throws Exception {
+    @SuppressWarnings("unchecked")
+	public void sendPost(String command, String userID, String deviceID, String Server, String Place, String oAuth_Token) throws Exception {
     	
     	System.out.println("sendPost 뭐라고 나오는지 찍어보자 : " + userID +" "+ deviceID +" "+ Server +" "+ Place +" "+ oAuth_Token);
     	
@@ -808,7 +1035,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	directivesArray.add(data_jsonObject);
     	
     	
-    	JSONObject directives_jsonObject = new JSONObject();
+    	@SuppressWarnings("unused")
+		JSONObject directives_jsonObject = new JSONObject();
     	//directives_jsonObject.put("directives", directivesArray.toString());
     	
     	Main_jsonObject.put("directives", directivesArray);
@@ -820,7 +1048,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     	
     	// form parameters
-    	RequestBody body = RequestBody.create(JSON, Main_jsonObject.toString());
+    	@SuppressWarnings("deprecation")
+		RequestBody body = RequestBody.create(JSON, Main_jsonObject.toString());
     	
 
     	if (Server.equals("PRD") && Place.equals("in")) {
@@ -953,7 +1182,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	
     	
     	JSONObject data;
-    	String[] tts_strip =new String[7];
+    	String[] tts_strip = new String[7];
     	
     	for(int i = 0 ; i < parse_data_list.size(); i++) { 
     		data = (JSONObject) parse_data_list.get(i);
@@ -985,6 +1214,36 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		
 		pressKey(new KeyEvent(AndroidKey.BACK));
 	}
+	public void AndroidKey_Num1() throws Exception {
+		
+		pressKey(new KeyEvent(AndroidKey.NUMPAD_1));
+	}
+	public void AndroidKey_Num2() throws Exception {
+		
+		pressKey(new KeyEvent(AndroidKey.NUMPAD_2));
+	}
+	public void AndroidKey_Num3() throws Exception {
+		
+		pressKey(new KeyEvent(AndroidKey.NUMPAD_3));
+	}
+	public void AndroidKey_Num4() throws Exception {
+		
+		pressKey(new KeyEvent(AndroidKey.NUMPAD_4));
+	}
+	public void AndroidKey_Num5() throws Exception {
+		
+		pressKey(new KeyEvent(AndroidKey.NUMPAD_5));
+	}
+	public void AndroidKey_Num6() throws Exception {
+		
+		pressKey(new KeyEvent(AndroidKey.NUMPAD_6));
+	}
+	public void AndroidKey_Num7() throws Exception {
+		
+		pressKey(new KeyEvent(AndroidKey.NUMPAD_7));
+	}
+	
+	
 
 	@Override
 	public TouchScreen getTouch() {
@@ -992,5 +1251,43 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		return null;
 	}
 
+	public void ProgressBar_Loading() throws Exception {
 		
+		Thread.sleep(600);
+		boolean 연결로딩 = this.isElementPresent(By.className("android.widget.ProgressBar"));
+		if(연결로딩 == true) {
+			Thread.sleep(2000);
+		} else { 
+			Thread.sleep(500);
+		}
+	}
+	
+	
+	public boolean dataCheck_Contains(String text, Set<String> data_list) throws Exception {
+  
+		System.out.println("text data : " + text);
+        for (String dataName : data_list) {
+            if(text.contains(dataName)) {
+            	System.out.println(dataName + " 에 매칭된: " + text);
+            	return true;
+            } 
+        }
+		return false;
+    }
+	
+	public boolean dataCheck_Equals(String text, Set<String> data_list) throws Exception {
+		  
+		System.out.println("text data : " + text);
+        for (String dataName : data_list) {
+            System.out.println(text + " : " + dataName);
+        	
+        	if(text.equals(dataName)) {
+            	System.out.println(dataName + " 에 매칭된: " + text);
+            	return true;
+            } 
+        }
+		return false;
+    }
+	
+	
 }

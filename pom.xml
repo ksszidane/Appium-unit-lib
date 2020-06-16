@@ -32,11 +32,17 @@
   
 
   <distributionManagement> 
-  	<repository> 
-  		<id>Applium-unit-lib</id> 
-  		<url>https://api.bintray.com/maven/ksszidane/utils/webdriver_util_lib/;publish=1</url> 
-  	</repository> 
+  	
+  	
+  	
   </distributionManagement>
+
+<repositories>
+ 	<repository> 
+ 		<id>Applium-unit-lib</id> 
+ 		<url>https://api.bintray.com/maven/ksszidane/utils/webdriver_util_lib/;publish=1</url> 
+ 	</repository> 
+</repositories>
 
     <properties>
     	<java.version>1.8</java.version>
