@@ -43,6 +43,8 @@ public class data {
 	public List<String> 오픈Play_list = Arrays.asList(오픈Play);  
 	public Set<String> 오픈Play_set = new HashSet<String>(Arrays.asList(오픈Play));
 	
+	public static String PoC리스트 [] = {"NUGU", "NUGU mini", "NUGU candle", "NUGU nemo", "B tv x NUGU", 
+			"B tv (UHD)", "B tv (Smart)", "T map"};
 	
 	
 }

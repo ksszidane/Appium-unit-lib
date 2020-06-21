@@ -875,6 +875,26 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		return text;
 	}
 	
+	public int findListViewContent(String elementId, By by) {
+	    //driver.findElements(by.xpath(elementId));
+	    //driver.findElements(By.xpath(elementId)).
+	    List weekObjectList = findElements(By.xpath(elementId));
+	    System.out.println(weekObjectList.size());
+	    return weekObjectList.size();
+	}
+	
+	public int getSize(By locator) throws Exception {
+
+		List<WebElement> element = null;
+		element = findElements(locator);
+		
+		int count = element.size();
+
+		return count;
+	}
+	
+	
+	
 	public String getTextWait(By locator) throws Exception {
 		
 		Thread.sleep(1500);
@@ -1126,6 +1146,44 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     		System.out.println("서버 조건 불만족");
     	}
 
+    }
+    
+    public String DateTime() throws Exception {
+
+    	Calendar calendar = Calendar.getInstance();
+        java.util.Date date = calendar.getTime();
+        String today = (new SimpleDateFormat("yyyy.MM.dd HH").format(date));
+        
+        return today;
+    }
+    
+    public String Time_min() throws Exception {
+
+    	Calendar calendar = Calendar.getInstance();
+        java.util.Date date = calendar.getTime();
+        String today = (new SimpleDateFormat("mm").format(date));
+        
+        return today;
+    }
+    
+    public String Time_HOUR_after() throws Exception {
+    	
+    	String today = null; 	 
+    	Date date = new Date();
+   
+    	// 포맷변경 ( 년월일 시분초)
+    	SimpleDateFormat sdformat = new SimpleDateFormat("yyyy.MM.dd HH"); 
+    	 
+    	// Java 시간 더하기
+    	Calendar cal = Calendar.getInstance();
+
+    	cal.setTime(date);
+    	// 1시간 전
+    	cal.add(Calendar.HOUR, -1);
+    	today = sdformat.format(cal.getTime());  
+        
+        return today;
+    	
     }
     
     public String TTS_JsonParsing(String userID, String deviceID, String Server, String Place ) throws Exception {
