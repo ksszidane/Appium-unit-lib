@@ -81,13 +81,15 @@ import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 import com.relevantcodes.extentreports.LogStatus;
 
+import unit.TestCase;
+
 public class Utilities extends AndroidDriver<WebElement> implements HasTouchScreen, TakesScreenshot { 
 	
 	
 	public RemoteTouchScreen Screentouch;
 	public TouchActions actions;
 	public TouchAction action;
-
+	
 	
     public WebDriverWait Wait;
 	
@@ -538,6 +540,24 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		
 	}
 	
+	public void connectingDevice() throws Exception {
+		
+		Thread.sleep(1500);
+		
+		boolean view = this.isElementPresent(By.xpath("//*[@text='연결을 기다리는 디바이스가 있어요.']"));
+		if(view == true) {
+			System.out.println("연결을 기다리는 디바이스 상단 알림창 [있음]");
+			this.swipe(560, 180, 560, 78);
+			Thread.sleep(1000);
+		
+		} if(view == false) {
+			System.out.println("연결을 기다리는 디바이스 상단 알림창 [없음]");
+			Thread.sleep(1000);
+		}
+		
+		
+	}
+	
 	/**
 	 * Element가 selected or checked 되었는지 확인하는 메소드
 	 * @param locator 존재 확인 할 Element를 지정
@@ -775,8 +795,6 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		
 		element = WaitfindElement(locator);
 		element.click();
-		
-		
 		
 		//waitProgressCompleted();
 	}
@@ -1346,6 +1364,5 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         }
 		return false;
     }
-	
-	
+
 }
