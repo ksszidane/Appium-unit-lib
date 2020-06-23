@@ -96,6 +96,9 @@ public class TestCase {
 		} else if (result.getStatus() == ITestResult.SUCCESS) {
 			test.pass("테스트 성공.");
 			 //System.out.println("테스트 성공.");
+		} else if (result.getStatus() == ITestResult.SKIP) {
+			test.skip("테스트 스킵.");
+			 //System.out.println("테스트 성공.");
 		}
 		System.out.println("\n");
 		//util.CaptureScreen(result);

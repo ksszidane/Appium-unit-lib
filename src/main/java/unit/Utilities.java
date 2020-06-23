@@ -72,6 +72,7 @@ import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
 import org.testng.Reporter;
+import org.testng.SkipException;
 import org.testng.annotations.Parameters;
 
 
@@ -542,20 +543,32 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	
 	public void connectingDevice() throws Exception {
 		
-		Thread.sleep(1500);
+		Thread.sleep(1000);
 		
 		boolean view = this.isElementPresent(By.xpath("//*[@text='연결을 기다리는 디바이스가 있어요.']"));
 		if(view == true) {
-			System.out.println("연결을 기다리는 디바이스 상단 알림창 [있음]");
+			System.out.println("연결을 기다리는 디바이스 상단 알림창 [있음]\n");
 			this.swipe(560, 180, 560, 78);
 			Thread.sleep(1000);
 		
 		} if(view == false) {
-			System.out.println("연결을 기다리는 디바이스 상단 알림창 [없음]");
+			System.out.println("연결을 기다리는 디바이스 상단 알림창 [없음]\n");
 			Thread.sleep(1000);
 		}
+	}
+	
+	public void connectingDevice_SkipCheck() throws Exception {
 		
+		Thread.sleep(700);
 		
+		boolean view = this.isElementPresent(By.xpath("//*[@text='연결을 기다리는 디바이스가 있어요.']"));
+		if(view == true) {
+			System.out.println("연결을 기다리는 디바이스 상단 알림창 [있음]\n");
+		
+		} if(view == false) {
+			System.out.println("연결을 기다리는 디바이스 상단 알림창 [없음]\n");
+			throw new SkipException("연결을 기다리는 디바이스 상단 알림창 [없음]\n");
+		}
 	}
 	
 	/**
@@ -1020,6 +1033,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
             }
         }
         System.out.println("스위칭된 context : " + getContext() + "\n");
+        
+        Thread.sleep(500);
  	
     }
    
