@@ -41,17 +41,52 @@ public class TestCase {
 	public String ProjectName;
 	public String ServerName;
 	public String Project;
+	public String Place;
 	public String udid;
+	
+	public String NU100_4228C8_did;
+	public String NU100_4228C8_token;
+	public String NU200_3F2B99_did;
+	public String NU200_3F2B99_token;
+	public String NU200_DAD3A2_did;
+	public String NU200_DAD3A2_token;
+	public String smart3_did;
+	public String smart3_token;
+	public String ksszidane;
+	public String ksszidane10;
+	
 
-	@Parameters({"OS", "hubAddress", "Server", "Project", "userID", "deviceID", "Place", "oAuth_Token", "Device"})
+	@Parameters({"OS", "hubAddress", "Server", "Project", "TestPlace", "MobileDevice", "userID_ksszidane", "userID_ksszidane10",
+		"deviceID_NU100_4228C8", "oAuth_Token_NU100_4228C8", 
+		"deviceID_NU200_3F2B99", "oAuth_Token_NU200_3F2B99",
+		"deviceID_NU200_DAD3A2", "oAuth_Token_NU200_DAD3A2",
+		"deviceID_smart3","oAuth_Token_smart3"})
 	@BeforeClass
-	public void setupClass (String OS, String hubAddress, String Server, String Project, String userID, String deviceID, String Place, String oAuth_Token, String Device) throws Exception {
+	public void setupClass (String OS, String hubAddress, String Server, String Project, String TestPlace, String MobileDevice,
+			String userID_ksszidane, String userID_ksszidane10, 
+			String deviceID_NU100_4228C8, String oAuth_Token_NU100_4228C8,
+			String deviceID_NU200_3F2B99, String oAuth_Token_NU200_3F2B99,
+			String deviceID_NU200_DAD3A2, String oAuth_Token_NU200_DAD3A2, 
+			String deviceID_smart3, String oAuth_Token_smart3) throws Exception {
 		
 		OS_ClassName = OS;
-		Server = "Server : "+ Server;
+		//Server = "Server : "+ Server;
 		ProjectName = Project;
 		ServerName = Server;
-		udid = Device;
+		udid = MobileDevice;
+		Place = TestPlace;
+		
+		NU100_4228C8_did = deviceID_NU100_4228C8;
+		NU100_4228C8_token = oAuth_Token_NU100_4228C8;
+		NU200_3F2B99_did = deviceID_NU200_3F2B99;
+		NU200_3F2B99_token = oAuth_Token_NU200_3F2B99;
+		NU200_DAD3A2_did = deviceID_NU200_DAD3A2;
+		NU200_DAD3A2_token = oAuth_Token_NU200_DAD3A2;
+		smart3_did = deviceID_smart3;
+		smart3_token = oAuth_Token_smart3;
+		
+		ksszidane = userID_ksszidane;
+		ksszidane10 = userID_ksszidane10;
 		
 		adb = new ADB();
 		
@@ -59,7 +94,7 @@ public class TestCase {
 		
 		extent = ExtentManager.GetExtent();
 		
-		capability = Capabilities.gridSetUp(OS, Device);		
+		capability = Capabilities.gridSetUp(OS, MobileDevice);		
 		util = new Utilities(hubAddress, capability);
 
 		util.unlockDevice();
@@ -105,11 +140,23 @@ public class TestCase {
 	    
 	} 
 	
-	@Parameters({"userID", "deviceID", "Server", "Place", "oAuth_Token", "Device"})
+	@Parameters({"Server", "TestPlace", "MobileDevice", "userID_ksszidane", "userID_ksszidane10",
+		"deviceID_NU100_4228C8", "oAuth_Token_NU100_4228C8", 
+		"deviceID_NU200_3F2B99", "oAuth_Token_NU200_3F2B99",
+		"deviceID_NU200_DAD3A2", "oAuth_Token_NU200_DAD3A2",
+		"deviceID_smart3","oAuth_Token_smart3"})
 	@AfterClass
-	public void tearDownClass(String userID, String deviceID, String Server, String Place, String oAuth_Token, String Device) throws Exception {
+	public void tearDownClass(String Server, String TestPlace, String MobileDevice,
+			String userID_ksszidane, String userID_ksszidane10, 
+			String deviceID_NU100_4228C8, String oAuth_Token_NU100_4228C8,
+			String deviceID_NU200_3F2B99, String oAuth_Token_NU200_3F2B99,
+			String deviceID_NU200_DAD3A2, String oAuth_Token_NU200_DAD3A2, 
+			String deviceID_smart3, String oAuth_Token_smart3) throws Exception {
 		
-		util.sendPost("그만", userID, deviceID, Server, Place, oAuth_Token);
+		util.sendPost("그만", userID_ksszidane, deviceID_NU100_4228C8, Server, Place, oAuth_Token_NU100_4228C8);
+		util.sendPost("그만", userID_ksszidane10, deviceID_NU200_3F2B99, Server, Place, oAuth_Token_NU200_3F2B99);
+		util.sendPost("그만", userID_ksszidane10, deviceID_NU200_DAD3A2, Server, Place, oAuth_Token_NU200_DAD3A2);
+		util.sendPost("그만", userID_ksszidane10, deviceID_smart3, Server, Place, oAuth_Token_smart3);
 		System.out.println("\n");
 		
 		

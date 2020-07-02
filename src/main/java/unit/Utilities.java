@@ -333,7 +333,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	@SuppressWarnings("rawtypes")
 	public void swipe(int startx, int starty, int endx, int endy) throws InterruptedException {
 		
-		Thread.sleep(2000);
+		Thread.sleep(1500);
 	    TouchAction touchAction = new TouchAction(this);
 	    
 
@@ -344,8 +344,43 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	               .release()
 	               .perform();
 	    
-	    Thread.sleep(2000);
+	    Thread.sleep(1500);
 
+	}
+	
+	/** 
+	 * @param int startx - the starting x position
+	 * @param int starty - the starting y position
+	 * @param int endx - the ending x position
+	 * @param int endy - the ending y position
+	 * @throws InterruptedException 
+	 */
+	@SuppressWarnings("rawtypes")
+	public void fastSwipe(int startx, int starty, int endx, int endy) throws InterruptedException {
+		
+		Thread.sleep(100);
+	    TouchAction touchAction = new TouchAction(this);
+	    
+
+	    touchAction.press(PointOption.point(startx, starty))
+	    		   //.waitAction(WaitOptions.waitOptions(Duration.ofSeconds(1)))
+	    		   .waitAction()
+	               .moveTo(PointOption.point(endx, endy))
+	               .release()
+	               .perform();
+	    
+	    Thread.sleep(100);
+
+	}
+	
+	public void swipe (int startx, int starty, int endx, int endy, int count) throws Exception {
+		
+		for (int i = 0 ; i < count ; i ++) this.swipe(startx, starty, endx, endy);
+	}
+	
+	public void fastSwipe (int startx, int starty, int endx, int endy, int count) throws Exception {
+		
+		for (int i = 0 ; i < count ; i ++) this.swipe(startx, starty, endx, endy);
 	}
 	
 	@SuppressWarnings("rawtypes")
@@ -543,32 +578,62 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	
 	public void connectingDevice() throws Exception {
 		
-		Thread.sleep(1000);
+		Thread.sleep(300);
+		for (int i = 1 ; i < 6 ; i ++) {
+			//boolean view = this.isElementPresent(By.xpath("//*[@text='연결을 기다리는 디바이스가 있어요.']"));
+			if(this.isElementPresent(By.xpath("//*[@text='연결을 기다리는 디바이스가 있어요.']"))) {
+				System.out.println("연결을 기다리는 디바이스 상단 알림창 [있음] "+i+"/5");	
+				System.out.println("상단 푸쉬배너 스와이프하여 없애기 \n");
+				this.fastSwipe(560, 180, 560, 78);
+				Thread.sleep(400);
+				break;
+
+			} else {
+				System.out.println("연결을 기다리는 디바이스 상단 알림창 [없음] "+i+"/5 \n");
+				Thread.sleep(100);
+			}
+		}   
 		
-		boolean view = this.isElementPresent(By.xpath("//*[@text='연결을 기다리는 디바이스가 있어요.']"));
-		if(view == true) {
-			System.out.println("연결을 기다리는 디바이스 상단 알림창 [있음]\n");
-			this.swipe(560, 180, 560, 78);
-			Thread.sleep(1000);
 		
-		} if(view == false) {
-			System.out.println("연결을 기다리는 디바이스 상단 알림창 [없음]\n");
-			Thread.sleep(1000);
-		}
+		       
+		
 	}
 	
 	public void connectingDevice_SkipCheck() throws Exception {
-		
-		Thread.sleep(700);
-		
-		boolean view = this.isElementPresent(By.xpath("//*[@text='연결을 기다리는 디바이스가 있어요.']"));
-		if(view == true) {
-			System.out.println("연결을 기다리는 디바이스 상단 알림창 [있음]\n");
-		
-		} if(view == false) {
-			System.out.println("연결을 기다리는 디바이스 상단 알림창 [없음]\n");
-			throw new SkipException("연결을 기다리는 디바이스 상단 알림창 [없음]\n");
+
+		Thread.sleep(300);
+		for (int i = 1 ; i < 6 ; i ++) {
+			//boolean view = this.isElementPresent(By.xpath("//*[@text='연결을 기다리는 디바이스가 있어요.']"));
+			if(this.isElementPresent(By.xpath("//*[@text='연결을 기다리는 디바이스가 있어요.']"))) {
+				System.out.println("연결을 기다리는 디바이스 상단 알림창 [있음] "+i+"/5 \n");
+			
+			} else {
+				System.out.println("연결을 기다리는 디바이스 상단 알림창 [없음]\n");
+				System.out.println("테스트 스킵");
+				throw new SkipException("연결을 기다리는 디바이스 상단 알림창 [없음] "+i+"/5 \n");
+				
+			}
 		}
+		Thread.sleep(300);
+
+	}
+	
+
+	public boolean pushMessage(String Text) throws Exception {
+		
+		boolean result = false;
+		for (int i = 1 ; i < 8 ; i ++) {
+			//boolean view = this.isElementPresent(By.xpath("//*[@text='연결을 기다리는 디바이스가 있어요.']"));
+			if(this.isElementPresent(By.xpath("//*[@text='"+Text+"']"))) {
+				System.out.println(Text + "메시지 푸쉬  [있음] "+i+"/5");	
+				result = true;
+				break;
+			} else {
+				System.out.println(Text + "메시지 푸쉬  [없음] "+i+"/5");	
+			}
+		}
+			return result;	
+			
 	}
 	
 	/**
@@ -954,6 +1019,26 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		return attribute;
 	}
 	
+	public int getAttribute_index(By locator, String attr) throws Exception {
+		
+		
+		List<WebElement> myElements = this.findElements(locator);
+		int count = 0;
+		for(WebElement e : myElements) {
+
+		    count++;
+		    if(e.getText().equals(attr)) {
+		        System.out.println(count); //This will give the index value
+		    }
+		    else{
+		        //do something else
+		    }
+		}
+		return count;
+	}
+	
+	
+	
 	public int getElementCount(By locator) throws Exception {
 		
 		int count = 0;
@@ -1221,7 +1306,6 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     
     public String TTS_JsonParsing(String userID, String deviceID, String Server, String Place ) throws Exception {
     	
-    	Thread.sleep(9990);
     	
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
@@ -1231,6 +1315,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         
         String server = null;
         String urlStr = null;
+        int size = 7;
+        int repeat = 2;
         
         if(Server.equals("PRD")) {
         	server = "prd";
@@ -1238,16 +1324,17 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         	server = "stg";
         }
         
-        System.out.println(today);
+        System.out.println("오늘날짜 : " + today);
+        System.out.println("대상서버 : " + server);
     	
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
-        	urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size=7&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
         	//vpn으로는 http://10.40.89.245:8190
-        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size=7&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         }
         
@@ -1256,39 +1343,50 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	
     	BufferedReader bf; 
     	String line = ""; 
-    	String result=""; 
-
-    	bf = new BufferedReader(new InputStreamReader(url.openStream())); 
     	
-    	while((line=bf.readLine())!=null) { 
-    		result=result.concat(line); 
-    		//System.out.println(result); 
-    	}
+    	int x = 0;
+    	String[] tts_strip = new String[size*repeat];
+    	//String[] tts_strip = new String[size];
     	
-    	JSONParser parser = new JSONParser(); 
-    	JSONObject obj = (JSONObject) parser.parse(result);
-    	
-    	JSONArray parse_data_list = (JSONArray) obj.get("data");
-    	System.out.println(parse_data_list.size()); 
-    	
-    	
-    	JSONObject data;
-    	String[] tts_strip = new String[7];
-    	
-    	for(int i = 0 ; i < parse_data_list.size(); i++) { 
-    		data = (JSONObject) parse_data_list.get(i);
-    			
-    		JSONObject parse_source = (JSONObject) data.get("_source");
-    		JSONObject parse_item = (JSONObject) parse_source.get("item");
+    	for (int y=0; y < repeat; y++) {
+    		Thread.sleep(7000);
     		
-    		tts_strip[i] = (String) parse_item.get("tts_strip");
+    		String result=""; 
+    		
+    		bf = new BufferedReader(new InputStreamReader(url.openStream())); 
+        	
+        	while((line=bf.readLine())!=null) { 
+        		result=result.concat(line); 
+        		//System.out.println(result); 
+        	}
+        	
+        	
+        	JSONParser parser = new JSONParser(); 
+        	JSONObject obj = (JSONObject) parser.parse(result);
+        	
+        	JSONArray parse_data_list = (JSONArray) obj.get("data");
+        	//System.out.println("parse_data_list.size() : " + parse_data_list.size()); 
+        	
+        	JSONObject data;
+        	
+        	for(int i = 0 ; i < parse_data_list.size(); i++) { 
+        		data = (JSONObject) parse_data_list.get(i);
+        			
+        		JSONObject parse_source = (JSONObject) data.get("_source");
+        		JSONObject parse_item = (JSONObject) parse_source.get("item");
+        		
+        		tts_strip[i] = (String) parse_item.get("tts_strip");
+        		tts_strip[x] = (String) parse_item.get("tts_strip");
+        		x++;
 
+        	}
     	}
+    	
     	
     	//System.out.println(Arrays.deepToString(tts_strip));
     	
     	for(String str:tts_strip) {
-    		System.out.println(str); 
+    		//System.out.println(str); 
     	}
     
     	logArray = tts_strip;
