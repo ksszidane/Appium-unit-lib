@@ -578,18 +578,19 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	
 	public void connectingDevice() throws Exception {
 		
-		Thread.sleep(300);
-		for (int i = 1 ; i < 6 ; i ++) {
+		Thread.sleep(350);
+		for (int i = 1 ; i < 4 ; i ++) {
 			//boolean view = this.isElementPresent(By.xpath("//*[@text='연결을 기다리는 디바이스가 있어요.']"));
 			if(this.isElementPresent(By.xpath("//*[@text='연결을 기다리는 디바이스가 있어요.']"))) {
-				System.out.println("연결을 기다리는 디바이스 상단 알림창 [있음] "+i+"/5");	
+				System.out.println("연결을 기다리는 디바이스 상단 알림창 [있음] "+i+"/3");	
 				System.out.println("상단 푸쉬배너 스와이프하여 없애기 \n");
 				this.fastSwipe(560, 180, 560, 78);
+				i = i+3;
 				Thread.sleep(400);
 				break;
 
 			} else {
-				System.out.println("연결을 기다리는 디바이스 상단 알림창 [없음] "+i+"/5 \n");
+				System.out.println("연결을 기다리는 디바이스 상단 알림창 [없음] "+i+"/3 \n");
 				Thread.sleep(100);
 			}
 		}   
@@ -965,6 +966,16 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		
 		WebElement element = null;
 		element = WaitfindElement (locator);
+		
+		String text = element.getText();
+
+		return text;
+	}
+	
+	public String fast_getText(By locator) throws Exception {
+	
+		WebElement element = null;
+		element = findElement (locator);
 		
 		String text = element.getText();
 
@@ -1397,6 +1408,60 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 
     }
     
+    public void AppCard_Delete(String userID, String deviceID, String AuthToken) throws Exception {
+        
+    	String get_urlStr = "https://api.sktnugu.com/v1/setting/appCard/test";
+    	String result;
+    	String logArray[];    
+	
+    	Request getRequest = new Request.Builder()
+                .url(get_urlStr)
+                .addHeader("User-Id", userID)
+                .addHeader("Device-Id", deviceID)
+                .addHeader("Auth-Token", AuthToken)
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+    	try (Response getResponse = httpClient.newCall(getRequest).execute()) {
+
+            if (!getResponse.isSuccessful()) throw new IOException("Unexpected code " + getResponse);
+
+            // Get response body
+            result = getResponse.body().string();
+			System.out.println(result);
+        }
+    		
+    	JSONParser parser = new JSONParser(); 
+    	JSONArray arr = (JSONArray) parser.parse(result);
+    	JSONObject data;
+    	String[] appcardID = new String[arr.size()];
+    	
+    	for(int i = 0 ; i < arr.size(); i++) { 
+    		data = (JSONObject) arr.get(i);
+
+    		appcardID[i] = (String) data.get("id");
+    	}
+    	
+    	logArray = appcardID;
+    	String id = Arrays.deepToString(logArray);
+    	System.out.println(id);
+  
+    	for(int i = 0 ; i < arr.size(); i++) {
+    		String delete_urlStr = "https://api.sktnugu.com/v1/setting/appCard/"+appcardID[i];
+    		
+        	Request deleteRequest = new Request.Builder()
+        			.url(delete_urlStr)
+        			.addHeader("User-Id", userID)
+                    .addHeader("Device-Id", deviceID)
+                    .addHeader("Auth-Token", AuthToken)
+        			.delete()
+        			.build();
+        	
+        	Response deleteResponse = httpClient.newCall(deleteRequest).execute();
+    	}
+    	
+    	System.out.println("이전 솔루션메세지 (앱카드) 삭제 완료\n");
+    }
   
     
 	public void Android_BackKey() throws Exception {
