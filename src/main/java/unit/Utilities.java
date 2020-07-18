@@ -579,18 +579,18 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	public void connectingDevice() throws Exception {
 		
 		Thread.sleep(350);
-		for (int i = 1 ; i < 4 ; i ++) {
+		for (int i = 1 ; i < 5 ; i ++) {
 			//boolean view = this.isElementPresent(By.xpath("//*[@text='연결을 기다리는 디바이스가 있어요.']"));
 			if(this.isElementPresent(By.xpath("//*[@text='연결을 기다리는 디바이스가 있어요.']"))) {
-				System.out.println("연결을 기다리는 디바이스 상단 알림창 [있음] "+i+"/3");	
+				System.out.println("연결을 기다리는 디바이스 상단 알림창 [있음] "+i+"/4");	
 				System.out.println("상단 푸쉬배너 스와이프하여 없애기 \n");
 				this.fastSwipe(560, 180, 560, 78);
 				i = i+3;
-				Thread.sleep(400);
+				Thread.sleep(300);
 				break;
 
 			} else {
-				System.out.println("연결을 기다리는 디바이스 상단 알림창 [없음] "+i+"/3 \n");
+				System.out.println("연결을 기다리는 디바이스 상단 알림창 [없음] "+i+"/4 \n");
 				Thread.sleep(100);
 			}
 		}   
@@ -1448,6 +1448,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
   
     	for(int i = 0 ; i < arr.size(); i++) {
     		String delete_urlStr = "https://api.sktnugu.com/v1/setting/appCard/"+appcardID[i];
+    		
+    		System.out.println(delete_urlStr);
     		
         	Request deleteRequest = new Request.Builder()
         			.url(delete_urlStr)
