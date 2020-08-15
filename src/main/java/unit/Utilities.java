@@ -1124,7 +1124,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
             System.out.println("context 목록  : " + contextName);
             if(contextName.contains(context)) {
             	System.out.println("적용 될 context 이름은 : " +contextName);
-            	context(contextName);
+            	this.context(contextName);
             	break;
             }
         }

@@ -52,16 +52,16 @@ public class Capabilities {
 		     chromeOptions.setExperimentalOption("w3c", false);
 		     //capabilities.merge(chromeOptions);
 		     capability.setCapability("chromedriverArgs", chromeOptions); 
-		     //chromedriver verser :  78.0.3904.70 
+		     
 		      
 		     //capability.setCapability("chromedriverExecutable", "C:\\chromedriver_win32\\chromedriver.exe");
 		     capability.setCapability("showChromedriverLog", true);
 		     
-		     //capability.setCapability("autoWebview", false); //Webview 컨텍스트로 직접 이동하십시오. 기본false
-		     //capability.setCapability("autoWebviewTimeout", "3000"); //Webview 컨텍스트가 활성화 될 때까지 기다리는 시간
+		     //capability.setCapability("autoWebview", true); //Webview 컨텍스트로 직접 이동하십시오. 기본false
+		     //capability.setCapability("autoWebviewTimeout", "4000"); //Webview 컨텍스트가 활성화 될 때까지 기다리는 시간
 		     
 		     //capability.setCapability("ensureWebviewsHavePages", true);
-		     capability.setCapability("autoAcceptAlerts", true);
+		     //capability.setCapability("autoAcceptAlerts", true);
 		        
 		        
 		     //capability.setCapability("instrumentApp",true);
@@ -76,7 +76,7 @@ public class Capabilities {
 		     //capability.setCapability("chromedriverUseSystemExecutable", true); //true 인 경우 자동 Chromedriver 구성을 무시하고 Appium과 함께 다운로드 된 버전을 사용
 		     //capability.setCapability("showChromedriverLog", true);
 		        
-		     capability.setCapability("autoAcceptAlerts", true);
+		    
 			 }
 		
 		

@@ -122,6 +122,7 @@ public class ADB {
 		
 		runCommand("adb -s "+Device+" shell pm grant com.skt.aladdin android.permission.ACCESS_FINE_LOCATION");
 		System.out.println("adb -s "+Device+" shell pm grant com.skt.aladdin android.permission.ACCESS_FINE_LOCATION");
+		System.out.println("adb -s "+Device+" shell pm grant com.skt.aladdin android.permission.ACCESS_COARSE_LOCATION");
 		Thread.sleep(1000);
 	}
 	
@@ -129,7 +130,25 @@ public class ADB {
 		
 		runCommand("adb -s "+Device+" shell pm revoke com.skt.aladdin android.permission.ACCESS_FINE_LOCATION");
 		System.out.println("adb -s "+Device+" shell pm revoke com.skt.aladdin android.permission.ACCESS_FINE_LOCATION");
+		System.out.println("adb -s "+Device+" shell pm revoke com.skt.aladdin android.permission.ACCESS_COARSE_LOCATION");
 		Thread.sleep(1000);
+	}
+	
+	public void NUGUAPP_permission_LOCATION_Off_On(String Device) throws Exception {
+		
+		runCommand("adb -s "+Device+" shell pm revoke com.skt.aladdin android.permission.ACCESS_FINE_LOCATION");
+		//runCommand("adb -s "+Device+" shell pm revoke com.skt.aladdin android.permission.ACCESS_COARSE_LOCATION");
+		System.out.println("adb -s "+Device+" shell pm revoke com.skt.aladdin android.permission.ACCESS_FINE_LOCATION");
+		//System.out.println("adb -s "+Device+" shell pm revoke com.skt.aladdin android.permission.ACCESS_COARSE_LOCATION");
+		Thread.sleep(1000);
+		
+		runCommand("adb -s "+Device+" shell pm grant com.skt.aladdin android.permission.ACCESS_FINE_LOCATION");
+		//runCommand("adb -s "+Device+" shell pm grant com.skt.aladdin android.permission.ACCESS_COARSE_LOCATION");
+		System.out.println("adb -s "+Device+" shell pm grant com.skt.aladdin android.permission.ACCESS_FINE_LOCATION");
+		//System.out.println("adb -s "+Device+" shell pm grant com.skt.aladdin android.permission.ACCESS_COARSE_LOCATION");
+		Thread.sleep(1000);
+		
+		
 	}
 
 }
