@@ -175,6 +175,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		return false;
 	}
 	
+	
+	
 
 	private WebElement findElementByAccessibilityId(By locator) {
 		// TODO Auto-generated method stub

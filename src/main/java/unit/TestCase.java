@@ -155,7 +155,7 @@ public class TestCase {
 		
 		util.sendPost("그만", userID_ksszidane, deviceID_NU100_4228C8, Server, Place, oAuth_Token_NU100_4228C8);
 		util.sendPost("그만", userID_ksszidane10, deviceID_NU200_3F2B99, Server, Place, oAuth_Token_NU200_3F2B99);
-		util.sendPost("그만", userID_ksszidane10, deviceID_NU200_95C146, Server, Place, oAuth_Token_NU200_95C146);
+		util.sendPost("그만", userID_ksszidane, deviceID_NU200_95C146, Server, Place, oAuth_Token_NU200_95C146);
 		util.sendPost("그만", userID_ksszidane10, deviceID_smart3, Server, Place, oAuth_Token_smart3);
 		System.out.println("\n");
 		
