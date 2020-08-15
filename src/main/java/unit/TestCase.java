@@ -48,8 +48,8 @@ public class TestCase {
 	public String NU100_4228C8_token;
 	public String NU200_3F2B99_did;
 	public String NU200_3F2B99_token;
-	public String NU200_DAD3A2_did;
-	public String NU200_DAD3A2_token;
+	public String NU200_95C146_did;
+	public String NU200_95C146_token;
 	public String smart3_did;
 	public String smart3_token;
 	public String ksszidane;
@@ -59,14 +59,14 @@ public class TestCase {
 	@Parameters({"OS", "hubAddress", "Server", "Project", "TestPlace", "MobileDevice", "userID_ksszidane", "userID_ksszidane10",
 		"deviceID_NU100_4228C8", "oAuth_Token_NU100_4228C8", 
 		"deviceID_NU200_3F2B99", "oAuth_Token_NU200_3F2B99",
-		"deviceID_NU200_DAD3A2", "oAuth_Token_NU200_DAD3A2",
+		"deviceID_NU200_95C146", "oAuth_Token_NU200_95C146",
 		"deviceID_smart3","oAuth_Token_smart3"})
 	@BeforeClass
 	public void setupClass (String OS, String hubAddress, String Server, String Project, String TestPlace, String MobileDevice,
 			String userID_ksszidane, String userID_ksszidane10, 
 			String deviceID_NU100_4228C8, String oAuth_Token_NU100_4228C8,
 			String deviceID_NU200_3F2B99, String oAuth_Token_NU200_3F2B99,
-			String deviceID_NU200_DAD3A2, String oAuth_Token_NU200_DAD3A2, 
+			String deviceID_NU200_95C146, String oAuth_Token_NU200_95C146, 
 			String deviceID_smart3, String oAuth_Token_smart3) throws Exception {
 		
 		OS_ClassName = OS;
@@ -80,8 +80,8 @@ public class TestCase {
 		NU100_4228C8_token = oAuth_Token_NU100_4228C8;
 		NU200_3F2B99_did = deviceID_NU200_3F2B99;
 		NU200_3F2B99_token = oAuth_Token_NU200_3F2B99;
-		NU200_DAD3A2_did = deviceID_NU200_DAD3A2;
-		NU200_DAD3A2_token = oAuth_Token_NU200_DAD3A2;
+		NU200_95C146_did = deviceID_NU200_95C146;
+		NU200_95C146_token = oAuth_Token_NU200_95C146;
 		smart3_did = deviceID_smart3;
 		smart3_token = oAuth_Token_smart3;
 		
@@ -143,19 +143,19 @@ public class TestCase {
 	@Parameters({"Server", "TestPlace", "MobileDevice", "userID_ksszidane", "userID_ksszidane10",
 		"deviceID_NU100_4228C8", "oAuth_Token_NU100_4228C8", 
 		"deviceID_NU200_3F2B99", "oAuth_Token_NU200_3F2B99",
-		"deviceID_NU200_DAD3A2", "oAuth_Token_NU200_DAD3A2",
+		"deviceID_NU200_95C146", "oAuth_Token_NU200_95C146",
 		"deviceID_smart3","oAuth_Token_smart3"})
 	@AfterClass
 	public void tearDownClass(String Server, String TestPlace, String MobileDevice,
 			String userID_ksszidane, String userID_ksszidane10, 
 			String deviceID_NU100_4228C8, String oAuth_Token_NU100_4228C8,
 			String deviceID_NU200_3F2B99, String oAuth_Token_NU200_3F2B99,
-			String deviceID_NU200_DAD3A2, String oAuth_Token_NU200_DAD3A2, 
+			String deviceID_NU200_95C146, String oAuth_Token_NU200_95C146, 
 			String deviceID_smart3, String oAuth_Token_smart3) throws Exception {
 		
 		util.sendPost("그만", userID_ksszidane, deviceID_NU100_4228C8, Server, Place, oAuth_Token_NU100_4228C8);
 		util.sendPost("그만", userID_ksszidane10, deviceID_NU200_3F2B99, Server, Place, oAuth_Token_NU200_3F2B99);
-		util.sendPost("그만", userID_ksszidane10, deviceID_NU200_DAD3A2, Server, Place, oAuth_Token_NU200_DAD3A2);
+		util.sendPost("그만", userID_ksszidane10, deviceID_NU200_95C146, Server, Place, oAuth_Token_NU200_95C146);
 		util.sendPost("그만", userID_ksszidane10, deviceID_smart3, Server, Place, oAuth_Token_smart3);
 		System.out.println("\n");
 		

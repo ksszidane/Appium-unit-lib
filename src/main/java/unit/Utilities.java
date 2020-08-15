@@ -593,11 +593,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 				System.out.println("연결을 기다리는 디바이스 상단 알림창 [없음] "+i+"/4 \n");
 				Thread.sleep(100);
 			}
-		}   
-		
-		
-		       
-		
+		}   		
 	}
 	
 	public void connectingDevice_SkipCheck() throws Exception {
