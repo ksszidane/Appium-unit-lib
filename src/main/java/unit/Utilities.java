@@ -1331,7 +1331,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     		System.out.println("서버 조건 불만족");
     	}
     	
-    	Thread.sleep(8000);
+    	Thread.sleep(9000);
 
     }
     
@@ -1417,8 +1417,9 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String[] tts_strip = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
+    	Thread.sleep(4000);
     	for (int y=0; y < repeat; y++) {
-    		Thread.sleep(7000);
+    		Thread.sleep(3000);
     		
     		String result=""; 
     		
@@ -1477,7 +1478,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         
         String server = null;
         String urlStr = null;
-        int size = 4;
+        int size = 7;
         int repeat = 2;
         
         if(Server.equals("PRD")) {
@@ -1510,8 +1511,9 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String[] api_context = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
+    	Thread.sleep(4000);
     	for (int y=0; y < repeat; y++) {
-    		Thread.sleep(7000);
+    		Thread.sleep(3000);
     		
     		String result=""; 
     		
@@ -1603,8 +1605,9 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String[] api_context = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
+    	Thread.sleep(4000);
     	for (int y=0; y < repeat; y++) {
-    		Thread.sleep(7000);
+    		Thread.sleep(3000);
     		
     		String result=""; 
     		
@@ -1653,7 +1656,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 
     }
     
-    public String event_JsonParsing(String userID, String deviceID, String Server, String Place ) throws Exception {
+    public String event_JsonParsing(String userID, String deviceID, String Server, String Place, int size) throws Exception {
     	
     	
     	Calendar calendar = Calendar.getInstance();
@@ -1664,8 +1667,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         
         String server = null;
         String urlStr = null;
-        int size = 4;
-        int repeat = 2;
+       
+        int repeat = 3;
         
         if(Server.equals("PRD")) {
         	server = "prd";
@@ -1697,8 +1700,9 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String[] api_event = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
+    	Thread.sleep(4000);
     	for (int y=0; y < repeat; y++) {
-    		Thread.sleep(7000);
+    		Thread.sleep(3000);
     		
     		String result=""; 
     		
@@ -1791,8 +1795,9 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String[] audio_activity = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
+    	Thread.sleep(4000);
     	for (int y=0; y < repeat; y++) {
-    		Thread.sleep(7000);
+    		Thread.sleep(3000);
     		
     		String result=""; 
     		
