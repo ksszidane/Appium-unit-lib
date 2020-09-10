@@ -2071,7 +2071,11 @@ public String TTS_JsonParsing(String userID, String deviceID, String Server, Str
 	public void AndroidKey_e() throws Exception {
 	
 	pressKey(new KeyEvent(AndroidKey.E));
-}
+	}
+	public void AndroidKey_j() throws Exception {
+		
+		pressKey(new KeyEvent(AndroidKey.J));
+		}
 	
 	
 
