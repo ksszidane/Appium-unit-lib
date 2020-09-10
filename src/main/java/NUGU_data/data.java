@@ -46,5 +46,9 @@ public class data {
 	public static String PoC리스트 [] = {"NUGU", "NUGU mini", "NUGU candle", "NUGU nemo", "B tv x NUGU", 
 			"B tv (UHD)", "B tv (Smart)", "T map"};
 	
+	public static String 주문필터리스트 [] = {"전체", "도미노피자", "BBQ", "11번가", "CJ오쇼핑", "SK스토아"};
+	
+	public static String 판매중이용원리스트 [] = {"FLO 이용권", "멜론 이용권", "벅스 이용권", "오디오북 이용권", "everysing 이용권", "금영노래방 이용권", "NUGU opal 이용권"};
+	
 	
 }

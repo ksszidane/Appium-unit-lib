@@ -391,7 +391,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		Thread.sleep(2000);
 	    TouchAction touchAction = new TouchAction(this);
 	    
-	    touchAction.tap(PointOption.point(x, y)).release().perform();
+	    touchAction.press(PointOption.point(x, y)).release().perform();
 	    Thread.sleep(2000);
 
 	}
@@ -580,20 +580,27 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	
 	public void connectingDevice() throws Exception {
 		
-		Thread.sleep(350);
+		Thread.sleep(500);
 		for (int i = 1 ; i < 5 ; i ++) {
-			//boolean view = this.isElementPresent(By.xpath("//*[@text='연결을 기다리는 디바이스가 있어요.']"));
-			if(this.isElementPresent(By.xpath("//*[@text='연결을 기다리는 디바이스가 있어요.']"))) {
-				System.out.println("연결을 기다리는 디바이스 상단 알림창 [있음] "+i+"/4");	
-				System.out.println("상단 푸쉬배너 스와이프하여 없애기 \n");
-				this.fastSwipe(560, 180, 560, 78);
-				i = i+3;
-				Thread.sleep(300);
-				break;
+			try {	
+				if(this.isElementPresent(By.xpath("//android.widget.FrameLayout/android.widget.LinearLayout"
+						+ "/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout"
+						+ "/android.widget.FrameLayout/android.widget.LinearLayout"
+						+ "/android.widget.TextView[@text='연결을 기다리는 디바이스가 있어요.']"))) {
+					System.out.println("연결을 기다리는 디바이스 상단 알림창 [있음] "+i+"/4");	
+					System.out.println("상단 푸쉬배너 스와이프하여 없애기 \n");
+					this.fastSwipe(560, 180, 560, 78);
+					i = i+4;
+					Thread.sleep(300);
+					break;
 
-			} else {
-				System.out.println("연결을 기다리는 디바이스 상단 알림창 [없음] "+i+"/4 \n");
-				Thread.sleep(100);
+				} else {
+					System.out.println("연결을 기다리는 디바이스 상단 알림창 [없음] "+i+"/4 \n");
+					Thread.sleep(100);
+				}
+
+			} catch (StaleElementReferenceException e) {
+				System.out.println("연결을 기다리는 디바이스 상단 알림창 [없음]");
 			}
 		}   		
 	}
@@ -601,15 +608,18 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	public void connectingDevice_SkipCheck() throws Exception {
 
 		Thread.sleep(300);
-		for (int i = 1 ; i < 6 ; i ++) {
+		for (int i = 1 ; i < 5 ; i ++) {
 			//boolean view = this.isElementPresent(By.xpath("//*[@text='연결을 기다리는 디바이스가 있어요.']"));
-			if(this.isElementPresent(By.xpath("//*[@text='연결을 기다리는 디바이스가 있어요.']"))) {
-				System.out.println("연결을 기다리는 디바이스 상단 알림창 [있음] "+i+"/5 \n");
+			if(this.isElementPresent(By.xpath("//android.widget.FrameLayout/android.widget.LinearLayout"
+					+ "/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout"
+					+ "/android.widget.FrameLayout/android.widget.LinearLayout"
+					+ "/android.widget.TextView[@text='연결을 기다리는 디바이스가 있어요.']"))) {
+				System.out.println("연결을 기다리는 디바이스 상단 알림창 [있음] "+i+"/4 \n");
 			
 			} else {
 				System.out.println("연결을 기다리는 디바이스 상단 알림창 [없음]\n");
 				System.out.println("테스트 스킵");
-				throw new SkipException("연결을 기다리는 디바이스 상단 알림창 [없음] "+i+"/5 \n");
+				throw new SkipException("연결을 기다리는 디바이스 상단 알림창 [없음] "+i+"/4 \n");
 				
 			}
 		}
@@ -1417,9 +1427,103 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String[] tts_strip = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
-    	Thread.sleep(4000);
+    	Thread.sleep(3000);
     	for (int y=0; y < repeat; y++) {
-    		Thread.sleep(3000);
+    		Thread.sleep(7000);
+    		
+    		String result=""; 
+    		
+    		bf = new BufferedReader(new InputStreamReader(url.openStream())); 
+        	
+        	while((line=bf.readLine())!=null) { 
+        		result=result.concat(line); 
+        		//System.out.println(result); 
+        	}
+        	
+        	
+        	JSONParser parser = new JSONParser(); 
+        	JSONObject obj = (JSONObject) parser.parse(result);
+        	
+        	JSONArray parse_data_list = (JSONArray) obj.get("data");
+        	//System.out.println("parse_data_list.size() : " + parse_data_list.size()); 
+        	
+        	JSONObject data;
+        	
+        	for(int i = 0 ; i < parse_data_list.size(); i++) { 
+        		data = (JSONObject) parse_data_list.get(i);
+        			
+        		JSONObject parse_source = (JSONObject) data.get("_source");
+        		JSONObject parse_item = (JSONObject) parse_source.get("item");
+        		
+        		tts_strip[i] = (String) parse_item.get("tts_strip");
+        		tts_strip[x] = (String) parse_item.get("tts_strip");
+        		x++;
+
+        	}
+    	}
+    	
+    	
+    	//System.out.println(Arrays.deepToString(tts_strip));
+    	
+    	for(String str:tts_strip) {
+    		//System.out.println(str); 
+    	}
+    
+    	logArray = tts_strip;
+    	
+    	String tts = Arrays.deepToString(logArray);
+    	System.out.println(tts);
+		return tts;
+
+    }
+    
+public String TTS_JsonParsing(String userID, String deviceID, String Server, String Place, int size) throws Exception {
+    	
+    	
+    	Calendar calendar = Calendar.getInstance();
+        java.util.Date date = calendar.getTime();
+        String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+        
+        String logArray[];    
+        
+        String server = null;
+        String urlStr = null;
+        
+        int repeat = 2;
+        
+        if(Server.equals("PRD")) {
+        	server = "prd";
+        } else if (Server.equals("STG")) {
+        	server = "stg";
+        }
+        
+        System.out.println("오늘날짜 : " + today);
+        System.out.println("대상서버 : " + server);
+    	
+        if(Place.equals("in")) {
+        	//사내망에서는 http://172.27.97.221:7090
+        	urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	System.out.println(urlStr);
+        	
+        } else if (Place.equals("out")) {
+        	//vpn으로는 http://10.40.89.245:8190
+        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	System.out.println(urlStr);
+        }
+        
+    	
+    	URL url = new URL(urlStr);
+    	
+    	BufferedReader bf; 
+    	String line = ""; 
+    	
+    	int x = 0;
+    	String[] tts_strip = new String[size*repeat];
+    	//String[] tts_strip = new String[size];
+    	
+    	Thread.sleep(3000);
+    	for (int y=0; y < repeat; y++) {
+    		Thread.sleep(7000);
     		
     		String result=""; 
     		
@@ -1936,6 +2040,38 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		
 		pressKey(new KeyEvent(AndroidKey.NUMPAD_7));
 	}
+	public void AndroidKey_k() throws Exception {
+		
+		pressKey(new KeyEvent(AndroidKey.K));
+	}
+	public void AndroidKey_s() throws Exception {
+		
+		pressKey(new KeyEvent(AndroidKey.S));
+	}
+	public void AndroidKey_z() throws Exception {
+		
+		pressKey(new KeyEvent(AndroidKey.Z));
+	}
+	public void AndroidKey_i() throws Exception {
+		
+		pressKey(new KeyEvent(AndroidKey.I));
+	}
+	public void AndroidKey_d() throws Exception {
+		
+		pressKey(new KeyEvent(AndroidKey.D));
+	}
+	public void AndroidKey_a() throws Exception {
+		
+		pressKey(new KeyEvent(AndroidKey.A));
+	}
+	public void AndroidKey_n() throws Exception {
+		
+		pressKey(new KeyEvent(AndroidKey.N));
+	}
+	public void AndroidKey_e() throws Exception {
+	
+	pressKey(new KeyEvent(AndroidKey.E));
+}
 	
 	
 
@@ -1948,12 +2084,17 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	public void ProgressBar_Loading() throws Exception {
 		
 		Thread.sleep(600);
-		boolean 연결로딩 = this.isElementPresent(By.className("android.widget.ProgressBar"));
-		if(연결로딩 == true) {
-			Thread.sleep(2000);
-		} else { 
-			Thread.sleep(500);
+		try {
+			boolean 연결로딩 = this.isElementPresent(By.className("android.widget.ProgressBar"));
+			if(연결로딩 == true) {
+				Thread.sleep(2000);
+			} else { 
+				Thread.sleep(1000);
+			}
+		} catch (StaleElementReferenceException e) {
+			
 		}
+		
 	}
 	
 	
@@ -1982,5 +2123,24 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         }
 		return false;
     }
+	
+	public void notice_popup_check() throws Exception {
+		
+		Thread.sleep(350);
+		try {	
+			if(this.isElementPresent(By.id("dialogLayout"))) {
+				System.out.println("공지 안내 팝업 [있음] - 팝업 닫기 ");
+				this.click(By.id("negativeButton"));
+
+			} else {
+				System.out.println("공지 안내 팝업 [없음]");
+				Thread.sleep(100);
+			}
+
+		} catch (NoSuchElementException e) {
+			System.out.println("공지 안내 팝업 [없음]");
+		}		
+	}
+	
 
 }
