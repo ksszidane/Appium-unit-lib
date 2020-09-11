@@ -3,12 +3,13 @@
   
   <groupId>com.github.ksszidane</groupId>
   <artifactId>Applium-unit-lib</artifactId>
-  <version>0.1.00</version>
+  <version>0.0.02</version>
   <packaging>jar</packaging>
   
   <name>Applium-unit-lib</name>
   <description>App UI Automation AppiumDriver Library</description>
   <url>https://github.com/ksszidane/Applium-unit-lib</url>
+
   
   <licenses> 
   	<license> 
@@ -38,11 +39,33 @@
   </distributionManagement>
 
 <repositories>
+	<!--
  	<repository> 
  		<id>Applium-unit-lib</id> 
- 		<url>https://api.bintray.com/maven/ksszidane/utils/webdriver_util_lib/;publish=1</url> 
+ 		<url>https://api.bintray.com/maven/ksszidane/utils/Applium-unit-lib/;publish=1</url> 
  	</repository> 
+ 	 
+	<repository>
+		<id>Applium-unit-lib</id>
+		<url>https://raw.github.com/ksszidane/Applium-unit-lib/mvn-repo</url>
+		<snapshots>
+        	<enabled>true</enabled>
+       		<updatePolicy>always</updatePolicy>
+    	</snapshots>
+	</repository>
+ 	-->
+ 	
+ 	<repository>
+ 		<id>internal.repo</id>
+ 		<name>Temporary Staging Repository</name>
+ 		<url>file://${project.build.directory}/mvn-repo</url>
+	</repository>
+
+
 </repositories>
+
+
+
 
     <properties>
     	<java.version>1.8</java.version>
@@ -52,19 +75,24 @@
         <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
         <maven.compile.encoding>UTF-8</maven.compile.encoding>
         
+     
         <bintray.repo>ksszidane/utils</bintray.repo> 
-        <bintray.package>webdriver_util_lib</bintray.package>
-
+        <bintray.package>Applium-unit-lib</bintray.package>
+	
+		
         <!-- Logging --> 
         <logback.version>1.2.3</logback.version> 
         <slf4j.version>1.7.25</slf4j.version> 
+        
         <!-- Test --> 
         <junit.version>4.12</junit.version> 
         
-        
-        
         <powermock.version>1.6.4</powermock.version>
         <log4j.version>2.5</log4j.version>
+
+  		<github.global.server>github</github.global.server>
+  		<github.maven-plugin>0.12</github.maven-plugin>
+
   </properties>
   
   
@@ -121,6 +149,13 @@
     </dependency>
     
     <dependency>
+  		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-site-plugin</artifactId>
+		<version>3.9.1</version>
+		<type>maven-plugin</type>
+	</dependency>
+    
+    <dependency>
     	<groupId>io.appium</groupId>
     	<artifactId>java-client</artifactId>
     	<version>7.3.0</version>
@@ -143,6 +178,15 @@
 		<artifactId>org.eclipse.egit.github.core</artifactId>
 		<version>2.0.4</version>
 	</dependency>
+	
+	<dependency>
+		<groupId>org.eclipse.mylyn.github</groupId>
+		<artifactId>org.eclipse.egit.github.core</artifactId>
+		<version>2.0.3</version>
+	</dependency>
+	
+	
+
 	
   </dependencies>
   
@@ -184,7 +228,26 @@
             	<outputEncoding>UTF-8</outputEncoding>
             </configuration>
 		</plugin>
-
+		
+		<plugin> 
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-site-plugin</artifactId> 
+			<version>3.9.1</version> 
+			<configuration>
+            	<encoding>UTF-8</encoding>
+            	<outputEncoding>UTF-8</outputEncoding>
+            </configuration>
+		</plugin>
+		
+		<plugin>
+        	<artifactId>maven-deploy-plugin</artifactId>
+        	<version>2.8.1</version>
+        	<configuration>
+               <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
+        	</configuration>
+    	</plugin>
+		
+		<!--
 		<plugin>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-source-plugin</artifactId>
@@ -203,7 +266,8 @@
 			</execution> 
 		</executions>
 		</plugin>
-		
+		-->
+		<!--
 		<plugin> 
 			<groupId>org.apache.maven.plugins</groupId> 
 			<artifactId>maven-javadoc-plugin</artifactId> 
@@ -223,8 +287,8 @@
 				</execution> 
 			</executions> 
 		</plugin>
-		
-		
+		-->
+		<!--
 		<plugin> 
 			<groupId>org.apache.maven.plugins</groupId> 
 			<artifactId>maven-gpg-plugin</artifactId> 
@@ -243,6 +307,7 @@
 				</execution> 
 			</executions> 
 		</plugin>
+		-->
 		
 		<plugin>
       		<groupId>com.github.github</groupId>
@@ -250,10 +315,13 @@
       		<version>0.12</version>
       		<configuration>
         		<message>Creating site for ${project.version}</message>
+        		<noJekyll>true</noJekyll>
         		<outputDirectory>${project.build.directory}/mvn-repo</outputDirectory>
 				<branch>refs/origin/mvn-repo</branch>
-				<includes><include>**/*</include></includes>
-				<repositoryName>Applium-unit-maven-repo</repositoryName>
+				<includes>
+					<include>**/*</include>
+				</includes>
+				<repositoryName>Applium-unit-lib</repositoryName>
 				<repositoryOwner>ksszidane</repositoryOwner>
 				<merge>true</merge>
       		</configuration>
