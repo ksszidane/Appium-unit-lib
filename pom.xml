@@ -3,7 +3,7 @@
   
   <groupId>com.github.ksszidane</groupId>
   <artifactId>Applium-unit-lib</artifactId>
-  <version>0.0.02</version>
+  <version>0.0.03</version>
   <packaging>jar</packaging>
   
   <name>Applium-unit-lib</name>
@@ -38,7 +38,7 @@
   	
   </distributionManagement>
 
-<repositories>
+	<repositories>
 	<!--
  	<repository> 
  		<id>Applium-unit-lib</id> 
@@ -62,7 +62,7 @@
 	</repository>
 
 
-</repositories>
+	</repositories>
 
 
 
