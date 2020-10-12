@@ -48,13 +48,20 @@ public class data {
 	
 	public static String 주문필터리스트 [] = {"전체", "도미노피자", "BBQ", "11번가", "CJ오쇼핑", "SK스토아"};
 	
-	public static String 판매중이용원리스트 [] = {"FLO 이용권", "멜론 이용권", "벅스 이용권", "오디오북 이용권", "everysing 이용권", "금영노래방 이용권", "NUGU opal 이용권"};
+	public static String 판매중이용원리스트 [] = {"NUGU opal 이용권", "FLO 이용권", "멜론 이용권", "벅스 이용권", "오디오북 이용권", "everysing 이용권", "금영노래방 이용권"};
 	
-	public static String 구매내역도메인 [] = {"전체", "FLO", "멜론", "벅스", "오디오북", "everysing", "금영노래방", "NUGU opal"};
+	public static String 구매내역도메인 [] = {"전체", "NUGU opal", "FLO", "멜론", "벅스", "오디오북", "everysing", "금영노래방"};
 	
-	public static String 자주묻는질문키워드 [] = {"업데이트", "멜론", "Wi-Fi", "블루투스", "FLO", "NUGU call", "통화 요금", "컨트롤러", "연결", "알버트 AI"};
+	public static String 자주묻는질문키워드 [] = {"아리아", "멜론", "이름", "알람", "opal", "업데이트", "멜론", "Wi-Fi", "블루투스", "FLO", "NUGU call", "통화 요금", "컨트롤러", "연결", "알버트 AI"};
+	public List<String> 자주묻는질문키워드_list = Arrays.asList(자주묻는질문키워드);  
+	public Set<String> 자주묻는질문키워드_set = new HashSet<String>(Arrays.asList(자주묻는질문키워드));
 	
-	public static String 연결된디바이스목록 [] = {"NUGU (NUGU_4228C8)", "NUGU mini (NU200_95C146)", "NUGU nemo (NU300_00122A)", "NUGU (NUGU_443FD1)", "T map (Android)", "JLR T map (Android)", "NUGU candle (NU110_0127D6)", "B tv (AI 2_23A4)", "T map (iOS)", "우리집 (AI700_70AC)"};
+	
+	public static String 연결된디바이스목록 [] = {"NUGU", "NUGU mini", "NUGU nemo", "T map", "JLR T map", "NUGU candle", "B tv", "우리집"};
+	public List<String> 연결된디바이스목록_list = Arrays.asList(연결된디바이스목록);  
+	public Set<String> 연결된디바이스목록_set = new HashSet<String>(Arrays.asList(연결된디바이스목록));
+	
+	public static String 뮤직CP목록 [] = {"FLO", "멜론", "벅스"};
 	
 	
 }

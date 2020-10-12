@@ -633,15 +633,22 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		boolean result = false;
 		for (int i = 1 ; i < 8 ; i ++) {
 			//boolean view = this.isElementPresent(By.xpath("//*[@text='연결을 기다리는 디바이스가 있어요.']"));
-			if(this.isElementPresent(By.xpath("//*[@text='"+Text+"']"))) {
-				System.out.println(Text + "메시지 푸쉬  [있음] "+i+"/5");	
-				result = true;
-				break;
-			} else {
-				System.out.println(Text + "메시지 푸쉬  [없음] "+i+"/5");	
+			try {	
+				if(this.isElementPresent(By.xpath("//*[@text='"+Text+"']"))) {
+					System.out.println(Text + "메시지 푸쉬  [있음] "+i+"/5");	
+					result = true;
+					break;
+					
+				} else {
+					System.out.println(Text + "메시지 푸쉬  [없음] "+i+"/5");	
+				}
+			} catch (StaleElementReferenceException e) {
+					System.out.println("연결을 기다리는 디바이스 상단 알림창 [없음]");
 			}
 		}
 			return result;	
+			
+		
 			
 	}
 	
@@ -1427,9 +1434,9 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String[] tts_strip = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
-    	Thread.sleep(3000);
+    	Thread.sleep(8000);
     	for (int y=0; y < repeat; y++) {
-    		Thread.sleep(7000);
+    		Thread.sleep(2000);
     		
     		String result=""; 
     		
@@ -1521,9 +1528,9 @@ public String TTS_JsonParsing(String userID, String deviceID, String Server, Str
     	String[] tts_strip = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
-    	Thread.sleep(3000);
+    	Thread.sleep(8000);
     	for (int y=0; y < repeat; y++) {
-    		Thread.sleep(7000);
+    		Thread.sleep(2000);
     		
     		String result=""; 
     		
@@ -1615,9 +1622,9 @@ public String TTS_JsonParsing(String userID, String deviceID, String Server, Str
     	String[] api_context = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
-    	Thread.sleep(4000);
+    	Thread.sleep(8000);
     	for (int y=0; y < repeat; y++) {
-    		Thread.sleep(3000);
+    		Thread.sleep(2000);
     		
     		String result=""; 
     		
@@ -1709,9 +1716,9 @@ public String TTS_JsonParsing(String userID, String deviceID, String Server, Str
     	String[] api_context = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
-    	Thread.sleep(4000);
+    	Thread.sleep(8000);
     	for (int y=0; y < repeat; y++) {
-    		Thread.sleep(3000);
+    		Thread.sleep(2000);
     		
     		String result=""; 
     		
@@ -1804,9 +1811,9 @@ public String TTS_JsonParsing(String userID, String deviceID, String Server, Str
     	String[] api_event = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
-    	Thread.sleep(4000);
+    	Thread.sleep(8000);
     	for (int y=0; y < repeat; y++) {
-    		Thread.sleep(3000);
+    		Thread.sleep(2000);
     		
     		String result=""; 
     		
@@ -1899,9 +1906,9 @@ public String TTS_JsonParsing(String userID, String deviceID, String Server, Str
     	String[] audio_activity = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
-    	Thread.sleep(4000);
+    	Thread.sleep(8000);
     	for (int y=0; y < repeat; y++) {
-    		Thread.sleep(3000);
+    		Thread.sleep(2000);
     		
     		String result=""; 
     		
