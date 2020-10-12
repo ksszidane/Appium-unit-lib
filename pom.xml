@@ -317,7 +317,7 @@
         		<message>Creating site for ${project.version}</message>
         		<noJekyll>true</noJekyll>
         		<outputDirectory>${project.build.directory}/mvn-repo</outputDirectory>
-				<branch>refs/origin/mvn-repo</branch>
+				<branch>refs/heads/mvn-repo</branch>
 				<includes>
 					<include>**/*</include>
 				</includes>
