@@ -24,7 +24,7 @@ import unit.Utilities;
 import unit.ADB;
 
 
-public class Chips_TestCase {
+public class NUGU_TestCase {
 	
 	public ExtentReports extent;
 	public ExtentTest test;
@@ -45,21 +45,35 @@ public class Chips_TestCase {
 	public String udid;
 	public String App;
 	
-	public String Chips_did;
-	public String Chips_token;
-
+	public String NU100_4228C8_did;
+	public String NU100_4228C8_token;
+	public String NU200_3F2B99_did;
+	public String NU200_3F2B99_token;
+	public String NU200_95C146_did;
+	public String NU200_95C146_token;
+	public String smart3_did;
+	public String smart3_token;
+	public String AI2_did;
+	public String AI2_token;
 	public String ksszidane;
 	public String ksszidane10;
 	
 
-	@Parameters({"OS", "AppName", "hubAddress", "Server", "Project", "TestPlace", "MobileDevice", 
-		"userID_ksszidane", "userID_ksszidane10",
-		"deviceID_Chips", "oAuth_Token_Chips"})
+	@Parameters({"OS", "AppName", "hubAddress", "Server", "Project", "TestPlace", "MobileDevice", "userID_ksszidane", "userID_ksszidane10",
+		"deviceID_NU100_4228C8", "oAuth_Token_NU100_4228C8", 
+		"deviceID_NU200_3F2B99", "oAuth_Token_NU200_3F2B99",
+		"deviceID_NU200_95C146", "oAuth_Token_NU200_95C146",
+		"deviceID_smart3","oAuth_Token_smart3",
+		"deviceID_AI2", "oAuth_Token_AI2"})
 	@BeforeClass
 	public void setupClass (String OS, String AppName, String hubAddress, String Server, 
 			String Project, String TestPlace, String MobileDevice,
 			String userID_ksszidane, String userID_ksszidane10, 
-			String deviceID_Chips, String oAuth_Token_Chips) throws Exception {
+			String deviceID_NU100_4228C8, String oAuth_Token_NU100_4228C8,
+			String deviceID_NU200_3F2B99, String oAuth_Token_NU200_3F2B99,
+			String deviceID_NU200_95C146, String oAuth_Token_NU200_95C146, 
+			String deviceID_smart3, String oAuth_Token_smart3, 
+			String deviceID_AI2, String oAuth_Token_AI2) throws Exception {
 		
 		OS_ClassName = OS;
 		//Server = "Server : "+ Server;
@@ -69,8 +83,16 @@ public class Chips_TestCase {
 		Place = TestPlace;
 		App = AppName;
 		
-		Chips_did = deviceID_Chips;
-		Chips_token = oAuth_Token_Chips;
+		NU100_4228C8_did = deviceID_NU100_4228C8;
+		NU100_4228C8_token = oAuth_Token_NU100_4228C8;
+		NU200_3F2B99_did = deviceID_NU200_3F2B99;
+		NU200_3F2B99_token = oAuth_Token_NU200_3F2B99;
+		NU200_95C146_did = deviceID_NU200_95C146;
+		NU200_95C146_token = oAuth_Token_NU200_95C146;
+		smart3_did = deviceID_smart3;
+		smart3_token = oAuth_Token_smart3;
+		AI2_did = deviceID_AI2;
+		AI2_token = oAuth_Token_AI2;
 		
 		ksszidane = userID_ksszidane;
 		ksszidane10 = userID_ksszidane10;
@@ -128,13 +150,25 @@ public class Chips_TestCase {
 	} 
 	
 	@Parameters({"Server", "TestPlace", "MobileDevice", "userID_ksszidane", "userID_ksszidane10",
-		"deviceID_Chips", "oAuth_Token_Chips"})
+		"deviceID_NU100_4228C8", "oAuth_Token_NU100_4228C8", 
+		"deviceID_NU200_3F2B99", "oAuth_Token_NU200_3F2B99",
+		"deviceID_NU200_95C146", "oAuth_Token_NU200_95C146",
+		"deviceID_smart3","oAuth_Token_smart3",
+		"deviceID_AI2", "oAuth_Token_AI2"})
 	@AfterClass
 	public void tearDownClass(String Server, String AppName, String TestPlace, String MobileDevice,
 			String userID_ksszidane, String userID_ksszidane10, 
-			String deviceID_Chips, String oAuth_Chips) throws Exception {
+			String deviceID_NU100_4228C8, String oAuth_Token_NU100_4228C8,
+			String deviceID_NU200_3F2B99, String oAuth_Token_NU200_3F2B99,
+			String deviceID_NU200_95C146, String oAuth_Token_NU200_95C146, 
+			String deviceID_smart3, String oAuth_Token_smart3, 
+			String deviceID_AI2, String oAuth_Token_AI2) throws Exception {
 		
-		util.sendPost("그만", userID_ksszidane, deviceID_Chips, Server, Place, oAuth_Chips);
+		util.sendPost("그만", userID_ksszidane, deviceID_NU100_4228C8, Server, Place, oAuth_Token_NU100_4228C8);
+		util.sendPost("그만", userID_ksszidane10, deviceID_NU200_3F2B99, Server, Place, oAuth_Token_NU200_3F2B99);
+		util.sendPost("그만", userID_ksszidane, deviceID_NU200_95C146, Server, Place, oAuth_Token_NU200_95C146);
+		util.sendPost("그만", userID_ksszidane10, deviceID_smart3, Server, Place, oAuth_Token_smart3);
+		util.sendPost("그만", userID_ksszidane, deviceID_AI2, Server, Place, oAuth_Token_AI2);
 		System.out.println("\n");
 		
 		
