@@ -24,7 +24,7 @@ import unit.Utilities;
 import unit.ADB;
 
 
-public class TestCase {
+public class NUGU_TestCase {
 	
 	public ExtentReports extent;
 	public ExtentTest test;

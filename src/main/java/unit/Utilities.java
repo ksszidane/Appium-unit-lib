@@ -82,7 +82,7 @@ import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 import com.relevantcodes.extentreports.LogStatus;
 
-import unit.TestCase;
+import unit.NUGU_TestCase;
 
 public class Utilities extends AndroidDriver<WebElement> implements HasTouchScreen, TakesScreenshot { 
 	
