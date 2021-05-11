@@ -17,12 +17,12 @@ import io.appium.java_client.remote.MobileCapabilityType;
 
 public class Capabilities {
 	
-	public static DesiredCapabilities gridSetUp (String os, String Device) throws IOException {		
+	public static DesiredCapabilities gridSetUp (String os, String Device, String AppName) throws IOException {		
 		//DesiredCapabilities capability = null;	
 		DesiredCapabilities capability = new DesiredCapabilities();
 
 		//****************** Android OS Capabilities
-		 if(os.equalsIgnoreCase("Android")) {			
+		 if(AppName.equalsIgnoreCase("NUGU")) {			
 			 capability.setCapability("deviceName","Android");
 			 capability.setCapability("automationName", "UIAutomator2");
 		     //capabilities.setCapability("automationName", "uiautomator2"); 
@@ -75,6 +75,30 @@ public class Capabilities {
 		     capability.setCapability("chromedriverExecutable", "C:\\chromedriver_win32\\chromedriver.exe"); 
 		     //capability.setCapability("chromedriverUseSystemExecutable", true); //true 인 경우 자동 Chromedriver 구성을 무시하고 Appium과 함께 다운로드 된 버전을 사용
 		     //capability.setCapability("showChromedriverLog", true);
+		        
+		    
+			 }
+		 if(AppName.equalsIgnoreCase("Chips")) {			
+			 capability.setCapability("deviceName","Android");
+			 capability.setCapability("automationName", "UIAutomator2");
+		     capability.setCapability("platformName","Android");
+			 capability.setCapability("udid",Device); //여러 디바이스가 설치된 경우, 테스트하고자 하는 디바이스를 선택 
+		     
+			 capability.setCapability("appPackage", "com.skt.aidev.nugufriends");
+			 capability.setCapability("appActivity", "com.skt.aidev.nugufriends.ui.home.HomeActivity");
+		       
+			 
+		        
+		     ChromeOptions chromeOptions = new ChromeOptions();
+		     chromeOptions.setExperimentalOption("w3c", false);
+		     capability.setCapability("chromedriverArgs", chromeOptions); 
+		     
+		      
+		     capability.setCapability("showChromedriverLog", true);
+		     
+		    
+		        
+		     capability.setCapability("chromedriverExecutable", "C:\\chromedriver_win32\\chromedriver.exe"); 
 		        
 		    
 			 }

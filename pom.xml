@@ -3,7 +3,7 @@
   
   <groupId>com.github.ksszidane</groupId>
   <artifactId>Applium-unit-lib</artifactId>
-  <version>0.0.04</version>
+  <version>0.0.05</version>
   <packaging>jar</packaging>
   
   <name>Applium-unit-lib</name>
@@ -178,16 +178,7 @@
 		<artifactId>org.eclipse.egit.github.core</artifactId>
 		<version>2.0.4</version>
 	</dependency>
-	
-	<dependency>
-		<groupId>org.eclipse.mylyn.github</groupId>
-		<artifactId>org.eclipse.egit.github.core</artifactId>
-		<version>2.0.3</version>
-	</dependency>
-	
-	
 
-	
   </dependencies>
   
   

@@ -43,6 +43,7 @@ public class TestCase {
 	public String Project;
 	public String Place;
 	public String udid;
+	public String App;
 	
 	public String NU100_4228C8_did;
 	public String NU100_4228C8_token;
@@ -58,14 +59,15 @@ public class TestCase {
 	public String ksszidane10;
 	
 
-	@Parameters({"OS", "hubAddress", "Server", "Project", "TestPlace", "MobileDevice", "userID_ksszidane", "userID_ksszidane10",
+	@Parameters({"OS", "AppName", "hubAddress", "Server", "Project", "TestPlace", "MobileDevice", "userID_ksszidane", "userID_ksszidane10",
 		"deviceID_NU100_4228C8", "oAuth_Token_NU100_4228C8", 
 		"deviceID_NU200_3F2B99", "oAuth_Token_NU200_3F2B99",
 		"deviceID_NU200_95C146", "oAuth_Token_NU200_95C146",
 		"deviceID_smart3","oAuth_Token_smart3",
 		"deviceID_AI2", "oAuth_Token_AI2"})
 	@BeforeClass
-	public void setupClass (String OS, String hubAddress, String Server, String Project, String TestPlace, String MobileDevice,
+	public void setupClass (String OS, String AppName, String hubAddress, String Server, 
+			String Project, String TestPlace, String MobileDevice,
 			String userID_ksszidane, String userID_ksszidane10, 
 			String deviceID_NU100_4228C8, String oAuth_Token_NU100_4228C8,
 			String deviceID_NU200_3F2B99, String oAuth_Token_NU200_3F2B99,
@@ -79,6 +81,7 @@ public class TestCase {
 		ServerName = Server;
 		udid = MobileDevice;
 		Place = TestPlace;
+		App = AppName;
 		
 		NU100_4228C8_did = deviceID_NU100_4228C8;
 		NU100_4228C8_token = oAuth_Token_NU100_4228C8;
@@ -100,7 +103,7 @@ public class TestCase {
 		
 		extent = ExtentManager.GetExtent();
 		
-		capability = Capabilities.gridSetUp(OS, MobileDevice);		
+		capability = Capabilities.gridSetUp(OS, MobileDevice, AppName);		
 		util = new Utilities(hubAddress, capability);
 
 		util.unlockDevice();
@@ -109,7 +112,7 @@ public class TestCase {
 		util.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS); 
 	
 		
-		System.out.println("\n▒▒ Start Suite : " + util.printClassName(this)+ " ▒▒ ("+ OS + " | "+ Server +")\n");
+		System.out.println("\n▒▒ Start Suite : " + util.printClassName(this)+ " ▒▒ ("+ OS + " | "+ Server + " | "+ App +")\n");
 			
 	}
 	
@@ -153,7 +156,7 @@ public class TestCase {
 		"deviceID_smart3","oAuth_Token_smart3",
 		"deviceID_AI2", "oAuth_Token_AI2"})
 	@AfterClass
-	public void tearDownClass(String Server, String TestPlace, String MobileDevice,
+	public void tearDownClass(String Server, String AppName, String TestPlace, String MobileDevice,
 			String userID_ksszidane, String userID_ksszidane10, 
 			String deviceID_NU100_4228C8, String oAuth_Token_NU100_4228C8,
 			String deviceID_NU200_3F2B99, String oAuth_Token_NU200_3F2B99,
