@@ -3,7 +3,7 @@
   
   <groupId>com.github.ksszidane</groupId>
   <artifactId>Applium-unit-lib</artifactId>
-  <version>0.0.05</version>
+  <version>0.0.04</version>
   <packaging>jar</packaging>
   
   <name>Applium-unit-lib</name>
@@ -33,13 +33,9 @@
   
 
   <distributionManagement> 
-  	<repository> 
-  		<id>internal.repo</id>
-  		<name>Temporary Staging Repository</name>
-  		<url>file://${project.build.directory}/mvn-repo</url>
-  	</repository>
-
-
+  	
+  	
+  	
   </distributionManagement>
 
 	<repositories>
@@ -58,6 +54,12 @@
     	</snapshots>
 	</repository>
  	-->
+ 	
+ 	<repository>
+ 		<id>internal.repo</id>
+ 		<name>Temporary Staging Repository</name>
+ 		<url>file://${project.build.directory}/mvn-repo</url>
+	</repository>
 
 
 	</repositories>
@@ -170,13 +172,22 @@
 		<artifactId>json-simple</artifactId>
 		<version>1.1</version>
   	</dependency>
-  	<!-- 
+  	
 	<dependency>
 		<groupId>org.eclipse.mylyn.github</groupId>
 		<artifactId>org.eclipse.egit.github.core</artifactId>
 		<version>2.0.4</version>
 	</dependency>
-	-->
+	
+	<dependency>
+		<groupId>org.eclipse.mylyn.github</groupId>
+		<artifactId>org.eclipse.egit.github.core</artifactId>
+		<version>2.1.5</version>
+	</dependency>
+	
+	
+
+	
   </dependencies>
   
   
@@ -184,7 +195,7 @@
 	<plugins>
 		<plugin>
 			<artifactId>maven-surefire-plugin</artifactId>
-			<version>2.19.1</version>
+			<version>3.0.0-M5</version>
 			<configuration>
 				<encoding>UTF-8</encoding>
 				<outputEncoding>UTF-8</outputEncoding>
@@ -201,6 +212,7 @@
 		<plugin>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-compiler-plugin</artifactId>
+			<version>3.8.1</version>
 			<configuration>
 				<source>1.8</source>
 				<target>1.8</target>
@@ -211,7 +223,7 @@
 		<plugin> 
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-jar-plugin</artifactId> 
-			<version>2.3.2</version> 
+			<version>3.2.0</version> 
 			<configuration>
             	<encoding>UTF-8</encoding>
             	<outputEncoding>UTF-8</outputEncoding>
@@ -230,7 +242,7 @@
 		
 		<plugin>
         	<artifactId>maven-deploy-plugin</artifactId>
-        	<version>2.8.1</version>
+        	<version>3.0.0-M1</version>
         	<configuration>
                <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
         	</configuration>
@@ -306,7 +318,7 @@
         		<message>Creating site for ${project.version}</message>
         		<noJekyll>true</noJekyll>
         		<outputDirectory>${project.build.directory}/mvn-repo</outputDirectory>
-				<branch>refs/origin/mvn-repo</branch>
+				<branch>refs/heads/mvn-repo</branch>
 				<includes>
 					<include>**/*</include>
 				</includes>
@@ -319,19 +331,9 @@
           			<goals>
             			<goal>site</goal>
           			</goals>
-          			<phase>site</phase>
+          			<phase>deploy</phase>
         		</execution>
       		</executions>
-      		
-      		<dependencies>
-        		<dependency>
-            		<groupId>org.eclipse.mylyn.github</groupId>
-            		<artifactId>org.eclipse.egit.github.core</artifactId>
-            		<version>2.0.4</version>
-        		</dependency>
-    		</dependencies>
-
-
    		</plugin>
 
 
