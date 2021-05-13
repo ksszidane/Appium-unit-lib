@@ -142,13 +142,17 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	  	WebElement superElement = wait.until(ExpectedConditions.elementToBeClickable(locator));    
 		return superElement;
   }
-		public WebElement findElementLocated(By locator) throws Exception {
+	
+	
+    public WebElement findElementLocated(By locator) throws Exception {
 		   
 	  	WebDriverWait wait = (WebDriverWait) new WebDriverWait(this, TIME_OUT_SEC);
 		//wait.until(ExpectedConditions.elementToBeClickable(locator));    
 		//WebElement superElement = findElement(locator);
 	  	WebElement superElement = wait.until(ExpectedConditions.presenceOfElementLocated(locator));    
 		return superElement;
+		
+		
   }
 	
 	
@@ -932,6 +936,26 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		
 		//waitProgressCompleted();
 	}
+	@SuppressWarnings("rawtypes")
+	public void click2(By locator) throws Exception {
+		
+		waitForPageToLoad();
+		
+		Thread.sleep(2000);
+	    TouchAction touchAction = new TouchAction(this);
+		WebElement element = null;
+		//waitForIsElementPresent (locator);
+		
+		element = WaitfindElement(locator);
+		element.click();
+		
+
+
+
+		
+		//waitProgressCompleted();
+	}
+	
 	
 	// to do : 앞 머리에 공백인 경우 전체 선택 안됨 -> 무한루프
 	@SuppressWarnings("rawtypes")

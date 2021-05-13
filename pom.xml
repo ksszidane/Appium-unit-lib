@@ -3,7 +3,7 @@
   
   <groupId>com.github.ksszidane</groupId>
   <artifactId>Appium-unit-lib</artifactId>
-  <version>0.0.07</version>
+  <version>0.0.08</version>
   <packaging>jar</packaging>
   
   <name>Appium-unit-lib</name>
@@ -107,6 +107,13 @@
 		<artifactId>selenium-java</artifactId>
 		<version>3.14.0</version>
 	</dependency>
+	
+	<dependency>
+    	<groupId>org.seleniumhq.selenium</groupId>
+    	<artifactId>selenium-chrome-driver</artifactId>
+    	<version>3.141.59</version>
+	</dependency>
+	
 	<dependency>
     	<groupId>com.aventstack</groupId>
     	<artifactId>extentreports</artifactId>
