@@ -53,12 +53,12 @@ public class Chips_TestCase {
 
 	@Parameters({"OS", "AppName", "hubAddress", "Server", "Project", "TestPlace", "MobileDevice", 
 		"userID_ksszidane", "userID_ksszidane10",
-		"deviceID_Chips", "oAuth_Token_Chips"})
+		"deviceID_Chips"})
 	@BeforeClass
 	public void setupClass (String OS, String AppName, String hubAddress, String Server, 
 			String Project, String TestPlace, String MobileDevice,
 			String userID_ksszidane, String userID_ksszidane10, 
-			String deviceID_Chips, String oAuth_Token_Chips) throws Exception {
+			String deviceID_Chips) throws Exception {
 		
 		OS_ClassName = OS;
 		//Server = "Server : "+ Server;
@@ -69,7 +69,6 @@ public class Chips_TestCase {
 		App = AppName;
 		
 		Chips_did = deviceID_Chips;
-		Chips_token = oAuth_Token_Chips;
 		
 		ksszidane = userID_ksszidane;
 		ksszidane10 = userID_ksszidane10;
@@ -127,11 +126,11 @@ public class Chips_TestCase {
 	} 
 	
 	@Parameters({"Server", "AppName", "TestPlace", "MobileDevice", "userID_ksszidane", "userID_ksszidane10",
-		"deviceID_Chips", "oAuth_Token_Chips"})
+		"deviceID_Chips"})
 	@AfterClass
 	public void tearDownClass(String Server, String AppName, String TestPlace, String MobileDevice,
 			String userID_ksszidane, String userID_ksszidane10, 
-			String deviceID_Chips, String oAuth_Token_Chips) throws Exception {
+			String deviceID_Chips) throws Exception {
 		
 		//util.sendPost("그만", userID_ksszidane, deviceID_Chips, Server, Place, oAuth_Token_Chips);
 		System.out.println("\n");

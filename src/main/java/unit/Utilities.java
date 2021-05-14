@@ -1377,6 +1377,76 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 
     }
     
+    @SuppressWarnings("unchecked")
+   	public void SWFsendPost(String command, String Server, String oAuth_Token) throws Exception {
+       	
+       	System.out.println("sendPost 뭐라고 나오는지 찍어보자 : "+ Server +" "+ oAuth_Token);
+       	
+       	String CommandText = command;
+       	
+       	JSONObject Main_jsonObject = new JSONObject();
+       	JSONObject clientStatus_data = new JSONObject();
+       	clientStatus_data.put("nugu_sdk_version", "4.4.0");
+       	
+       	Main_jsonObject.put("requestId", "ALDFH3D1Q7W6071EFE41;asr;;210415-220425;43033381;");  
+       	Main_jsonObject.put("requestText", CommandText);
+       	Main_jsonObject.put("accessToken", oAuth_Token);
+       	Main_jsonObject.put("clientStatus", clientStatus_data);
+       	Main_jsonObject.put("flowCode", "NLU01");
+       	
+       	System.out.println(Main_jsonObject);
+       	
+       	MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+       	
+       	// form parameters
+       	@SuppressWarnings("deprecation")
+   		RequestBody body = RequestBody.create(JSON, Main_jsonObject.toString());
+       	
+
+       	if (Server.equals("PRD")) {
+       		System.out.println("PRD + in");
+       		Request request = new Request.Builder()
+                       .url("https://pif.t-aicloud.co.kr/nlp/rest/nlu") //PRD directive URL
+                       .addHeader("Content-Type", "application/json")
+                       .addHeader("cache-control", "no-cache")
+                       .addHeader("X-AI-Access-Token", oAuth_Token)
+                       .addHeader("Accept", "application/json")
+                       .post(body)
+                       .build();
+       		
+       		try (Response response = httpClient.newCall(request).execute()) {
+
+                   if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+                   // Get response body
+                   System.out.println(response.body().string());
+               }
+       	} else if (Server.equals("STG")) {
+       		System.out.println("STG + out");
+       		Request request = new Request.Builder()
+       				.url("http://stg-pif-ai.aicloud.kr/nlp/rest/nlu") //STG directive URL
+                       .addHeader("Content-Type", "application/json")
+                       .addHeader("cache-control", "no-cache")
+                       .addHeader("X-AI-Access-Token", oAuth_Token)
+                       .addHeader("Accept", "application/json")
+                       .post(body)
+                       .build();
+       		
+       		try (Response response = httpClient.newCall(request).execute()) {
+
+                   if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+                   // Get response body
+                   System.out.println(response.body().string());
+       		}
+       	} else {
+       		System.out.println("서버 조건 불만족");
+       	}
+       	
+       	Thread.sleep(9000);
+
+       }
+    
     public String DateTime() throws Exception {
 
     	Calendar calendar = Calendar.getInstance();
@@ -1509,7 +1579,9 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 
     }
     
-public String TTS_JsonParsing(String userID, String deviceID, String Server, String Place, int size) throws Exception {
+    
+    
+    public String TTS_JsonParsing(String userID, String deviceID, String Server, String Place, int size) throws Exception {
     	
     	
     	Calendar calendar = Calendar.getInstance();
@@ -1981,6 +2053,200 @@ public String TTS_JsonParsing(String userID, String deviceID, String Server, Str
 		return activity;
 
     }
+	
+	public String TransactionID_JsonParsing(String userID, String deviceID, String Server, String Place) throws Exception {
+    	
+    	
+    	Calendar calendar = Calendar.getInstance();
+        java.util.Date date = calendar.getTime();
+        String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+        
+        String logArray[];    
+        
+        String server = null;
+        String urlStr = null;
+        
+        int size = 1;
+        
+        if(Server.equals("PRD")) {
+        	server = "prd";
+        } else if (Server.equals("STG")) {
+        	server = "stg";
+        }
+        
+        System.out.println("오늘날짜 : " + today);
+        System.out.println("대상서버 : " + server);
+    	
+        if(Place.equals("in")) {
+        	//사내망에서는 http://172.27.97.221:7090
+        	urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	System.out.println(urlStr);
+        	
+        } else if (Place.equals("out")) {
+        	//vpn으로는 http://10.40.89.245:8190
+        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	System.out.println(urlStr);
+        }
+        
+    	
+    	URL url = new URL(urlStr);
+    	
+    	BufferedReader bf; 
+    	String line = ""; 
+    	
+    	int x = 0;
+    	String[] transaction_id = new String[size];
+    	//String[] tts_strip = new String[size];
+    	
+    	Thread.sleep(3000);
+    	for (int y=0; y < size; y++) {
+    		
+    		String result=""; 
+    		
+    		bf = new BufferedReader(new InputStreamReader(url.openStream())); 
+        	
+        	while((line=bf.readLine())!=null) { 
+        		result=result.concat(line); 
+        		//System.out.println(result); 
+        	}
+        	
+        	
+        	JSONParser parser = new JSONParser(); 
+        	JSONObject obj = (JSONObject) parser.parse(result);
+        	
+        	JSONArray parse_data_list = (JSONArray) obj.get("data");
+        	//System.out.println("parse_data_list.size() : " + parse_data_list.size()); 
+        	
+        	JSONObject data;
+        	
+        	for(int i = 0 ; i < parse_data_list.size(); i++) { 
+        		data = (JSONObject) parse_data_list.get(i);
+        			
+        		JSONObject parse_source = (JSONObject) data.get("_source");
+        		JSONObject parse_item = (JSONObject) parse_source.get("item");
+        		
+        		transaction_id[i] = (String) parse_item.get("transaction_id");
+        		transaction_id[x] = (String) parse_item.get("transaction_id");
+        		x++;
+
+        	}
+    	}
+    	
+    	
+    	//System.out.println(Arrays.deepToString(tts_strip));
+    	
+    	for(String str:transaction_id) {
+    		//System.out.println(str); 
+    	}
+    
+    	logArray = transaction_id;
+    	
+    	String s = Arrays.deepToString(logArray);
+    	String s1 = s.replace("[", "");
+    	String tid = s1.replace("]", "");
+    	System.out.println(tid);
+		return tid;
+
+    }
+	
+	public String acceesToken_JsonParsing(String Server, String Place, String tid) throws Exception {
+    	
+    	
+    	Calendar calendar = Calendar.getInstance();
+        java.util.Date date = calendar.getTime();
+        String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+        
+        String logArray[];    
+        
+        String server = null;
+        String urlStr = null;
+        
+        int size = 1;
+        
+        if(Server.equals("PRD")) {
+        	server = "prd";
+        } else if (Server.equals("STG")) {
+        	server = "stg";
+        }
+        
+        System.out.println("오늘날짜 : " + today);
+        System.out.println("대상서버 : " + server);
+    	
+        if(Place.equals("in")) {
+        	//사내망에서는 http://172.27.97.221:7090
+        	urlStr = "http://172.27.97.221:7090/pulse_n/get_raw_log/v3/?env=prd&transaction_id="+tid;
+        	System.out.println(urlStr);
+        	
+        } else if (Place.equals("out")) {
+        	//vpn으로는 http://10.40.89.245:8190
+        	urlStr = "http://10.40.89.245:8190/pulse_n/get_raw_log/v3/?env=prd&transaction_id="+tid;
+        	System.out.println(urlStr);
+        }
+        
+    	
+    	URL url = new URL(urlStr);
+    	
+    	BufferedReader bf; 
+    	String line = ""; 
+    	
+    	int x = 0;
+    	String[] source_access_token = new String[size];
+    	//String[] tts_strip = new String[size];
+    	
+    	Thread.sleep(3000);
+    	for (int y=0; y < size; y++) {
+    		
+    		String result=""; 
+    		
+    		bf = new BufferedReader(new InputStreamReader(url.openStream())); 
+        	
+        	while((line=bf.readLine())!=null) { 
+        		result=result.concat(line); 
+        		//System.out.println(result); 
+        	}
+        	
+        	
+        	JSONParser parser = new JSONParser(); 
+        	JSONObject obj = (JSONObject) parser.parse(result);
+        	
+        	JSONObject parse_data = (JSONObject) obj.get("data");
+        	JSONObject parse_relation= (JSONObject) parse_data.get("relation");
+        	JSONArray parse_rdv_in_list = (JSONArray) parse_relation.get("rdv_in");
+        	//System.out.println("parse_data_list.size() : " + parse_data_list.size()); 
+        	
+        	JSONObject rdv_in;
+        	
+        	for(int i = 0 ; i < parse_rdv_in_list.size(); i++) { 
+        		rdv_in = (JSONObject) parse_rdv_in_list.get(i);
+        			
+        		JSONObject parse_value= (JSONObject) rdv_in.get("value");
+        		JSONObject parse_body1 = (JSONObject) parse_value.get("body");
+        		JSONObject parse_body2 = (JSONObject) parse_body1.get("body");
+        		JSONObject parse_access_token = (JSONObject) parse_body2.get("access_token");
+        		
+        		source_access_token[i] = (String) parse_access_token.get("source_access_token");
+        		source_access_token[x] = (String) parse_access_token.get("source_access_token");
+        		x++;
+
+        	}
+    	}
+    	
+    	
+    	//System.out.println(Arrays.deepToString(tts_strip));
+    	
+    	for(String str:source_access_token) {
+    		//System.out.println(str); 
+    	}
+    
+    	logArray = source_access_token;
+    	
+    	String s = Arrays.deepToString(logArray);
+    	String s1 = s.replace("[", "");
+    	String actn = s1.replace("]", "");
+    	System.out.println(actn);
+		return actn;
+
+    }
     
     public void AppCard_Delete(String userID, String deviceID, String AuthToken) throws Exception {
         
@@ -2175,6 +2441,24 @@ public String TTS_JsonParsing(String userID, String deviceID, String Server, Str
 
 		} catch (NoSuchElementException e) {
 			System.out.println("공지 안내 팝업 [없음]");
+		}		
+	}
+	
+	public void view_close_btn_check() throws Exception {
+		
+		Thread.sleep(350);
+		try {	
+			if(this.isElementPresent(By.id("close"))) {
+				System.out.println("play 카드 [있음] - 카드 닫기");
+				this.click(By.id("close"));
+
+			} else {
+				System.out.println("play 카드 [없음]");
+				Thread.sleep(100);
+			}
+
+		} catch (NoSuchElementException e) {
+			System.out.println("play 카드 [없음]");
 		}		
 	}
 	

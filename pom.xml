@@ -3,7 +3,7 @@
   
   <groupId>com.github.ksszidane</groupId>
   <artifactId>Appium-unit-lib</artifactId>
-  <version>0.0.08</version>
+  <version>0.0.09</version>
   <packaging>jar</packaging>
   
   <name>Appium-unit-lib</name>
