@@ -63,5 +63,12 @@ public class data {
 	
 	public static String 뮤직CP목록 [] = {"FLO", "멜론", "벅스"};
 	
+	public static String CHIPS_USD [] = {"NUGU Chips에서는 지원하지 않아요.", "NUGU Chips에서는 제공하지 않아요.", "NUGU Chips에서는 할 수 없는 기능이에요."};
+	public List<String> CHIPS_USD_list = Arrays.asList(CHIPS_USD);  
+	public Set<String> CHIPS_USD_set = new HashSet<String>(Arrays.asList(CHIPS_USD));
+	
+	public static String OOS [] = {"그건 어려워요.", "그건 모르겠어요.", "제가 할 수 없어요."};
+	public List<String> OOS_list = Arrays.asList(OOS);  
+	public Set<String> OOS_set = new HashSet<String>(Arrays.asList(OOS));
 	
 }

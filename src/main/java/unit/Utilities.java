@@ -933,29 +933,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		
 		element = WaitfindElement(locator);
 		element.click();
-		
 		//waitProgressCompleted();
 	}
-	@SuppressWarnings("rawtypes")
-	public void click2(By locator) throws Exception {
-		
-		waitForPageToLoad();
-		
-		Thread.sleep(2000);
-	    TouchAction touchAction = new TouchAction(this);
-		WebElement element = null;
-		//waitForIsElementPresent (locator);
-		
-		element = WaitfindElement(locator);
-		element.click();
-		
-
-
-
-		
-		//waitProgressCompleted();
-	}
-	
 	
 	// to do : 앞 머리에 공백인 경우 전체 선택 안됨 -> 무한루프
 	@SuppressWarnings("rawtypes")
@@ -1226,9 +1205,9 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
             	break;
             }
         }
-        System.out.println("스위칭된 context : " + getContext() + "\n");
+        System.out.println("스위칭 완료 context : " + getContext() + "\n");
         
-        Thread.sleep(500);
+        Thread.sleep(700);
  	
     }
    
@@ -1378,9 +1357,9 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     }
     
     @SuppressWarnings("unchecked")
-   	public void SWFsendPost(String command, String Server, String oAuth_Token) throws Exception {
+   	public void SWFsendPost(String command, String Server, String Access_Token) throws Exception {
        	
-       	System.out.println("sendPost 뭐라고 나오는지 찍어보자 : "+ Server +" "+ oAuth_Token);
+       	System.out.println("sendPost 뭐라고 나오는지 찍어보자 : "+ Server +" "+ Access_Token);
        	
        	String CommandText = command;
        	
@@ -1390,7 +1369,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        	
        	Main_jsonObject.put("requestId", "ALDFH3D1Q7W6071EFE41;asr;;210415-220425;43033381;");  
        	Main_jsonObject.put("requestText", CommandText);
-       	Main_jsonObject.put("accessToken", oAuth_Token);
+       	Main_jsonObject.put("accessToken", Access_Token);
        	Main_jsonObject.put("clientStatus", clientStatus_data);
        	Main_jsonObject.put("flowCode", "NLU01");
        	
@@ -1409,7 +1388,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
                        .url("https://pif.t-aicloud.co.kr/nlp/rest/nlu") //PRD directive URL
                        .addHeader("Content-Type", "application/json")
                        .addHeader("cache-control", "no-cache")
-                       .addHeader("X-AI-Access-Token", oAuth_Token)
+                       .addHeader("X-AI-Access-Token", Access_Token)
                        .addHeader("Accept", "application/json")
                        .post(body)
                        .build();
@@ -1427,7 +1406,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        				.url("http://stg-pif-ai.aicloud.kr/nlp/rest/nlu") //STG directive URL
                        .addHeader("Content-Type", "application/json")
                        .addHeader("cache-control", "no-cache")
-                       .addHeader("X-AI-Access-Token", oAuth_Token)
+                       .addHeader("X-AI-Access-Token", Access_Token)
                        .addHeader("Accept", "application/json")
                        .post(body)
                        .build();
@@ -1496,8 +1475,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         
         String server = null;
         String urlStr = null;
-        int size = 7;
-        int repeat = 2;
+        int size = 2;
+        int repeat = 1;
         
         if(Server.equals("PRD")) {
         	server = "prd";
@@ -1529,7 +1508,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String[] tts_strip = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
-    	Thread.sleep(8000);
+    	Thread.sleep(3000);
     	for (int y=0; y < repeat; y++) {
     		Thread.sleep(2000);
     		
@@ -1579,6 +1558,100 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 
     }
     
+    public String TTS_JsonParsing_most_recent(String userID, String deviceID, String Server, String Place ) throws Exception {
+    	
+    	
+    	Calendar calendar = Calendar.getInstance();
+        java.util.Date date = calendar.getTime();
+        String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+        
+        String logArray[];    
+        
+        String server = null;
+        String urlStr = null;
+        int size = 1;
+        int repeat = 1;
+        
+        if(Server.equals("PRD")) {
+        	server = "prd";
+        } else if (Server.equals("STG")) {
+        	server = "stg";
+        }
+        
+        System.out.println("오늘날짜 : " + today);
+        System.out.println("대상서버 : " + server);
+    	
+        if(Place.equals("in")) {
+        	//사내망에서는 http://172.27.97.221:7090
+        	urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	System.out.println(urlStr);
+        	
+        } else if (Place.equals("out")) {
+        	//vpn으로는 http://10.40.89.245:8190
+        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	System.out.println(urlStr);
+        }
+        
+    	
+    	URL url = new URL(urlStr);
+    	
+    	BufferedReader bf; 
+    	String line = ""; 
+    	
+    	int x = 0;
+    	String[] tts_strip = new String[size*repeat];
+    	//String[] tts_strip = new String[size];
+    	
+    	Thread.sleep(5000);
+    	for (int y=0; y < repeat; y++) {
+    		
+    		String result=""; 
+    		
+    		bf = new BufferedReader(new InputStreamReader(url.openStream())); 
+        	
+        	while((line=bf.readLine())!=null) { 
+        		result=result.concat(line); 
+        		//System.out.println(result); 
+        	}
+        	
+        	
+        	JSONParser parser = new JSONParser(); 
+        	JSONObject obj = (JSONObject) parser.parse(result);
+        	
+        	JSONArray parse_data_list = (JSONArray) obj.get("data");
+        	//System.out.println("parse_data_list.size() : " + parse_data_list.size()); 
+        	
+        	JSONObject data;
+        	
+        	for(int i = 0 ; i < parse_data_list.size(); i++) { 
+        		data = (JSONObject) parse_data_list.get(i);
+        			
+        		JSONObject parse_source = (JSONObject) data.get("_source");
+        		JSONObject parse_item = (JSONObject) parse_source.get("item");
+        		
+        		tts_strip[i] = (String) parse_item.get("tts_strip");
+        		tts_strip[x] = (String) parse_item.get("tts_strip");
+        		x++;
+
+        	}
+    	}
+    	
+    	
+    	//System.out.println(Arrays.deepToString(tts_strip));
+    	
+    	for(String str:tts_strip) {
+    		//System.out.println(str); 
+    	}
+    
+    	logArray = tts_strip;
+    	
+    	String s = Arrays.deepToString(logArray);
+    	String s1 = s.replace("[", "");
+    	String tts = s1.replace("]", "");
+    	System.out.println(tts);
+		return tts;
+		
+    }
     
     
     public String TTS_JsonParsing(String userID, String deviceID, String Server, String Place, int size) throws Exception {
@@ -2247,7 +2320,99 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		return actn;
 
     }
+	public String action_type_JsonParsing(String userID, String deviceID, String Server, String Place ) throws Exception {
+    	
+    	
+    	Calendar calendar = Calendar.getInstance();
+        java.util.Date date = calendar.getTime();
+        String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+        
+        String logArray[];    
+        
+        String server = null;
+        String urlStr = null;
+        int size = 1;
+        int repeat = 1;
+        
+        if(Server.equals("PRD")) {
+        	server = "prd";
+        } else if (Server.equals("STG")) {
+        	server = "stg";
+        }
+        
+        System.out.println("오늘날짜 : " + today);
+        System.out.println("대상서버 : " + server);
+    	
+        if(Place.equals("in")) {
+        	//사내망에서는 http://172.27.97.221:7090
+        	urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	System.out.println(urlStr);
+        	
+        } else if (Place.equals("out")) {
+        	//vpn으로는 http://10.40.89.245:8190
+        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	System.out.println(urlStr);
+        }
+        
+    	
+    	URL url = new URL(urlStr);
+    	
+    	BufferedReader bf; 
+    	String line = ""; 
+    	
+    	int x = 0;
+    	String[] action_type = new String[size*repeat];
+    	//String[] tts_strip = new String[size];
+    	
+    	Thread.sleep(3000);
+    	for (int y=0; y < repeat; y++) {
+    		
+    		String result=""; 
+    		
+    		bf = new BufferedReader(new InputStreamReader(url.openStream())); 
+        	
+        	while((line=bf.readLine())!=null) { 
+        		result=result.concat(line); 
+        		//System.out.println(result); 
+        	}
+        	
+        	
+        	JSONParser parser = new JSONParser(); 
+        	JSONObject obj = (JSONObject) parser.parse(result);
+        	
+        	JSONArray parse_data_list = (JSONArray) obj.get("data");
+        	//System.out.println("parse_data_list.size() : " + parse_data_list.size()); 
+        	
+        	JSONObject data;
+        	
+        	for(int i = 0 ; i < parse_data_list.size(); i++) { 
+        		data = (JSONObject) parse_data_list.get(i);
+        			
+        		JSONObject parse_source = (JSONObject) data.get("_source");
+        		JSONObject parse_item = (JSONObject) parse_source.get("item");
+        		
+        		action_type[i] = (String) parse_item.get("action_type");
+        		action_type[x] = (String) parse_item.get("action_type");
+        		x++;
+
+        	}
+    	}
+    	
+    	
+    	//System.out.println(Arrays.deepToString(tts_strip));
+    	
+    	for(String str:action_type) {
+    		//System.out.println(str); 
+    	}
     
+    	logArray = action_type;
+    	
+    	String actiontype = Arrays.deepToString(logArray);
+    	System.out.println(actiontype);
+		return actiontype;
+
+    }
+	
     public void AppCard_Delete(String userID, String deviceID, String AuthToken) throws Exception {
         
     	String get_urlStr = "https://api.sktnugu.com/v1/setting/appCard/test";
@@ -2419,7 +2584,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
             System.out.println(text + " : " + dataName);
         	
         	if(text.equals(dataName)) {
-            	System.out.println(dataName + " 에 매칭된: " + text);
+            	System.out.println(dataName + " : [매칭 완료] : " + text);
             	return true;
             } 
         }
@@ -2446,7 +2611,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	
 	public void view_close_btn_check() throws Exception {
 		
-		Thread.sleep(350);
+		Thread.sleep(500);
 		try {	
 			if(this.isElementPresent(By.id("close"))) {
 				System.out.println("play 카드 [있음] - 카드 닫기");
