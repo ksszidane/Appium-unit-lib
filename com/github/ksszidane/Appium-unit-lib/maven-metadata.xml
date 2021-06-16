@@ -3,7 +3,7 @@
   <groupId>com.github.ksszidane</groupId>
   <artifactId>Appium-unit-lib</artifactId>
   <versioning>
-    <release>1.0.11</release>
+    <release>1.0.12</release>
     <versions>
       <version>0.0.07</version>
       <version>0.0.08</version>
@@ -11,7 +11,8 @@
       <version>0.0.10</version>
       <version>1.0.10</version>
       <version>1.0.11</version>
+      <version>1.0.12</version>
     </versions>
-    <lastUpdated>20210616101214</lastUpdated>
+    <lastUpdated>20210616102137</lastUpdated>
   </versioning>
 </metadata>
