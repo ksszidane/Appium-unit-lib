@@ -1,4 +1,4 @@
-package unit;
+package TestNG_Set;
 
 import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
@@ -20,10 +20,12 @@ import com.aventstack.extentreports.Status;
 
 import NUGU_data.data;
 import unit.Capabilities;
+import unit.ExtentManager;
 import unit.Utilities;
 import unit.ADB;
 
-public class SDK_TestCase {
+
+public class NUGU_TestCase {
 	
 	public ExtentReports extent;
 	public ExtentTest test;
@@ -44,18 +46,36 @@ public class SDK_TestCase {
 	public String udid;
 	public String App;
 	
-	public String SampleApp_did;
+	public String NU100_4228C8_did;
+	public String NU100_4228C8_token;
+	public String NU200_3F2B99_did;
+	public String NU200_3F2B99_token;
+	public String NU200_95C146_did;
+	public String NU200_95C146_token;
+	public String smart3_did;
+	public String smart3_token;
+	public String AI2_did;
+	public String AI2_token;
 	
-	public String nuguqa01;
-
+	public String ksszidane;
+	public String ksszidane10;
 	
 
-	@Parameters({"OS", "AppName", "hubAddress", "Server", "Project", "TestPlace", "MobileDevice", 
-		"userID_nuguqa01", "deviceID_SampleApp"})
+	@Parameters({"OS", "AppName", "hubAddress", "Server", "Project", "TestPlace", "MobileDevice", "userID_ksszidane", "userID_ksszidane10",
+		"deviceID_NU100_4228C8", "oAuth_Token_NU100_4228C8", 
+		"deviceID_NU200_3F2B99", "oAuth_Token_NU200_3F2B99",
+		"deviceID_NU200_95C146", "oAuth_Token_NU200_95C146",
+		"deviceID_smart3","oAuth_Token_smart3",
+		"deviceID_AI2", "oAuth_Token_AI2"})
 	@BeforeClass
 	public void setupClass (String OS, String AppName, String hubAddress, String Server, 
-			String Project, String TestPlace, String MobileDevice, String userID_nuguqa01, 
-			String deviceID_SampleApp) throws Exception {
+			String Project, String TestPlace, String MobileDevice,
+			String userID_ksszidane, String userID_ksszidane10, 
+			String deviceID_NU100_4228C8, String oAuth_Token_NU100_4228C8,
+			String deviceID_NU200_3F2B99, String oAuth_Token_NU200_3F2B99,
+			String deviceID_NU200_95C146, String oAuth_Token_NU200_95C146, 
+			String deviceID_smart3, String oAuth_Token_smart3, 
+			String deviceID_AI2, String oAuth_Token_AI2) throws Exception {
 		
 		OS_ClassName = OS;
 		//Server = "Server : "+ Server;
@@ -65,9 +85,19 @@ public class SDK_TestCase {
 		Place = TestPlace;
 		App = AppName;
 		
-		SampleApp_did = deviceID_SampleApp;
+		NU100_4228C8_did = deviceID_NU100_4228C8;
+		NU100_4228C8_token = oAuth_Token_NU100_4228C8;
+		NU200_3F2B99_did = deviceID_NU200_3F2B99;
+		NU200_3F2B99_token = oAuth_Token_NU200_3F2B99;
+		NU200_95C146_did = deviceID_NU200_95C146;
+		NU200_95C146_token = oAuth_Token_NU200_95C146;
+		smart3_did = deviceID_smart3;
+		smart3_token = oAuth_Token_smart3;
+		AI2_did = deviceID_AI2;
+		AI2_token = oAuth_Token_AI2;
 		
-		nuguqa01 = userID_nuguqa01;
+		ksszidane = userID_ksszidane;
+		ksszidane10 = userID_ksszidane10;
 		
 		adb = new ADB();
 		
@@ -121,14 +151,26 @@ public class SDK_TestCase {
 	    
 	} 
 	
-	@Parameters({"Server", "AppName", "TestPlace", "MobileDevice", "userID_ksszidane", "userID_ksszidane10",
-		"deviceID_Chips"})
+	@Parameters({"Server", "TestPlace", "MobileDevice", "userID_ksszidane", "userID_ksszidane10",
+		"deviceID_NU100_4228C8", "oAuth_Token_NU100_4228C8", 
+		"deviceID_NU200_3F2B99", "oAuth_Token_NU200_3F2B99",
+		"deviceID_NU200_95C146", "oAuth_Token_NU200_95C146",
+		"deviceID_smart3","oAuth_Token_smart3",
+		"deviceID_AI2", "oAuth_Token_AI2"})
 	@AfterClass
 	public void tearDownClass(String Server, String AppName, String TestPlace, String MobileDevice,
 			String userID_ksszidane, String userID_ksszidane10, 
-			String deviceID_Chips) throws Exception {
+			String deviceID_NU100_4228C8, String oAuth_Token_NU100_4228C8,
+			String deviceID_NU200_3F2B99, String oAuth_Token_NU200_3F2B99,
+			String deviceID_NU200_95C146, String oAuth_Token_NU200_95C146, 
+			String deviceID_smart3, String oAuth_Token_smart3, 
+			String deviceID_AI2, String oAuth_Token_AI2) throws Exception {
 		
-		//util.sendPost("그만", userID_ksszidane, deviceID_Chips, Server, Place, oAuth_Token_Chips);
+		util.sendPost("그만", userID_ksszidane, deviceID_NU100_4228C8, Server, Place, oAuth_Token_NU100_4228C8);
+		util.sendPost("그만", userID_ksszidane10, deviceID_NU200_3F2B99, Server, Place, oAuth_Token_NU200_3F2B99);
+		util.sendPost("그만", userID_ksszidane, deviceID_NU200_95C146, Server, Place, oAuth_Token_NU200_95C146);
+		util.sendPost("그만", userID_ksszidane10, deviceID_smart3, Server, Place, oAuth_Token_smart3);
+		util.sendPost("그만", userID_ksszidane, deviceID_AI2, Server, Place, oAuth_Token_AI2);
 		System.out.println("\n");
 		
 		
@@ -142,9 +184,10 @@ public class SDK_TestCase {
 		System.out.println("\n▒▒ Quit Suite : " + util.printClassName(this)+ " ▒▒\n");
 		
 		adb.ADB_cellular_On(udid);
+		adb.ADB_WiFi_On(udid);
+		adb.NUGUAPP_permission_LOCATION_On(udid);
 		adb.ADB_GPS_On(udid);
-		adb.ADB_ScreenLock(udid); //시나리오 테스트 진핸 완료 후에는 주석 풀기
+		adb.ADB_ScreenLock(udid);
 		
 	}
-
 }
