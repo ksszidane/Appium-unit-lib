@@ -1194,7 +1194,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     
     public void switchContext (String context) throws Exception {
     	
-    	Thread.sleep(4000);
+    	Thread.sleep(5000);
     	
     	Set<String> contextNames = getContextHandles(); 
         for (String contextName : contextNames) {
@@ -1359,7 +1359,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     @SuppressWarnings("unchecked")
    	public void SWFsendPost(String command, String Server, String Access_Token) throws Exception {
        	
-       	System.out.println("sendPost 뭐라고 나오는지 찍어보자 : "+ Server +" "+ Access_Token);
+       	System.out.println("sendPost 발동 옵션: | 발화문 :  "+ command +" | 서버 : "+ Server +" | Access_Token : "+ Access_Token);
        	
        	String CommandText = command;
        	

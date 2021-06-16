@@ -23,7 +23,7 @@ import unit.Capabilities;
 import unit.Utilities;
 import unit.ADB;
 
-public class Chips_TestCase {
+public class SDK_TestCase {
 	
 	public ExtentReports extent;
 	public ExtentTest test;
@@ -44,21 +44,18 @@ public class Chips_TestCase {
 	public String udid;
 	public String App;
 	
-	public String Chips_did;
-	public String Chips_token;
+	public String SampleApp_did;
 	
-	public String ksszidane;
-	public String ksszidane10;
+	public String nuguqa01;
+
 	
 
 	@Parameters({"OS", "AppName", "hubAddress", "Server", "Project", "TestPlace", "MobileDevice", 
-		"userID_ksszidane", "userID_ksszidane10",
-		"deviceID_Chips"})
+		"userID_nuguqa01", "deviceID_SampleApp"})
 	@BeforeClass
 	public void setupClass (String OS, String AppName, String hubAddress, String Server, 
-			String Project, String TestPlace, String MobileDevice,
-			String userID_ksszidane, String userID_ksszidane10, 
-			String deviceID_Chips) throws Exception {
+			String Project, String TestPlace, String MobileDevice, String userID_nuguqa01, 
+			String deviceID_SampleApp) throws Exception {
 		
 		OS_ClassName = OS;
 		//Server = "Server : "+ Server;
@@ -68,10 +65,9 @@ public class Chips_TestCase {
 		Place = TestPlace;
 		App = AppName;
 		
-		Chips_did = deviceID_Chips;
+		SampleApp_did = deviceID_SampleApp;
 		
-		ksszidane = userID_ksszidane;
-		ksszidane10 = userID_ksszidane10;
+		nuguqa01 = userID_nuguqa01;
 		
 		adb = new ADB();
 		
