@@ -1371,6 +1371,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        	Main_jsonObject.put("requestText", CommandText);
        	Main_jsonObject.put("accessToken", Access_Token);
        	Main_jsonObject.put("clientStatus", clientStatus_data);
+       	//Main_jsonObject.put("clientVersion", "7.0.1.190545");
        	Main_jsonObject.put("flowCode", "NLU01");
        	
        	System.out.println(Main_jsonObject);
@@ -1383,7 +1384,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        	
 
        	if (Server.equals("PRD")) {
-       		System.out.println("PRD + in");
+       		System.out.println("PRD");
        		Request request = new Request.Builder()
                        .url("https://pif.t-aicloud.co.kr/nlp/rest/nlu") //PRD directive URL
                        .addHeader("Content-Type", "application/json")
@@ -1400,8 +1401,26 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
                    // Get response body
                    System.out.println(response.body().string());
                }
+       	} else if (Server.equals("RTG")) {
+       		System.out.println("RTG");
+       		Request request = new Request.Builder()
+                       .url("http://rtg-pif-ai.aicloud.kr/nlp/rest/nlu") //PRD directive URL
+                       .addHeader("Content-Type", "application/json")
+                       .addHeader("cache-control", "no-cache")
+                       .addHeader("X-AI-Access-Token", Access_Token)
+                       .addHeader("Accept", "application/json")
+                       .post(body)
+                       .build();
+       		
+       		try (Response response = httpClient.newCall(request).execute()) {
+
+                   if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+                   // Get response body
+                   System.out.println(response.body().string());
+               }
        	} else if (Server.equals("STG")) {
-       		System.out.println("STG + out");
+       		System.out.println("STG");
        		Request request = new Request.Builder()
        				.url("http://stg-pif-ai.aicloud.kr/nlp/rest/nlu") //STG directive URL
                        .addHeader("Content-Type", "application/json")
@@ -1482,6 +1501,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         	server = "prd";
         } else if (Server.equals("STG")) {
         	server = "stg";
+        } else if (Server.equals("RTG")) {
+        	server = "rtg";
         }
         
         System.out.println("오늘날짜 : " + today);
@@ -1576,6 +1597,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         	server = "prd";
         } else if (Server.equals("STG")) {
         	server = "stg";
+        } else if (Server.equals("RTG")) {
+        	server = "rtg";
         }
         
         System.out.println("오늘날짜 : " + today);
@@ -1672,6 +1695,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         	server = "prd";
         } else if (Server.equals("STG")) {
         	server = "stg";
+        } else if (Server.equals("RTG")) {
+        	server = "rtg";
         }
         
         System.out.println("오늘날짜 : " + today);
@@ -1766,6 +1791,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         	server = "prd";
         } else if (Server.equals("STG")) {
         	server = "stg";
+        } else if (Server.equals("RTG")) {
+        	server = "rtg";
         }
         
         System.out.println("오늘날짜 : " + today);
@@ -1860,6 +1887,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         	server = "prd";
         } else if (Server.equals("STG")) {
         	server = "stg";
+        } else if (Server.equals("RTG")) {
+        	server = "rtg";
         }
         
         System.out.println("오늘날짜 : " + today);
@@ -1955,6 +1984,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         	server = "prd";
         } else if (Server.equals("STG")) {
         	server = "stg";
+        } else if (Server.equals("RTG")) {
+        	server = "rtg";
         }
         
         System.out.println("오늘날짜 : " + today);
@@ -2050,6 +2081,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         	server = "prd";
         } else if (Server.equals("STG")) {
         	server = "stg";
+        } else if (Server.equals("RTG")) {
+        	server = "rtg";
         }
         
         System.out.println("오늘날짜 : " + today);
@@ -2145,6 +2178,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         	server = "prd";
         } else if (Server.equals("STG")) {
         	server = "stg";
+        } else if (Server.equals("RTG")) {
+        	server = "rtg";
         }
         
         System.out.println("오늘날짜 : " + today);
@@ -2171,7 +2206,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String[] transaction_id = new String[size];
     	//String[] tts_strip = new String[size];
     	
-    	Thread.sleep(3000);
+    	Thread.sleep(4000);
     	for (int y=0; y < size; y++) {
     		
     		String result=""; 
@@ -2233,6 +2268,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         
         String server = null;
         String urlStr = null;
+        String actn = null; 
         
         int size = 1;
         
@@ -2240,19 +2276,22 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         	server = "prd";
         } else if (Server.equals("STG")) {
         	server = "stg";
-        }
+        } else if (Server.equals("RTG")) {
+        	server = "rtg";
+        }  
         
         System.out.println("오늘날짜 : " + today);
         System.out.println("대상서버 : " + server);
     	
+        Thread.sleep(3000);
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
-        	urlStr = "http://172.27.97.221:7090/pulse_n/get_raw_log/v3/?env=prd&transaction_id="+tid;
+        	urlStr = "http://172.27.97.221:7090/pulse_n/get_raw_log/v3/?env="+server+"&transaction_id="+tid;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
         	//vpn으로는 http://10.40.89.245:8190
-        	urlStr = "http://10.40.89.245:8190/pulse_n/get_raw_log/v3/?env=prd&transaction_id="+tid;
+        	urlStr = "http://10.40.89.245:8190/pulse_n/get_raw_log/v3/?env="+server+"&transaction_id="+tid;
         	System.out.println(urlStr);
         }
         
@@ -2266,60 +2305,107 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String[] source_access_token = new String[size];
     	//String[] tts_strip = new String[size];
     	
-    	Thread.sleep(3000);
+    	
     	for (int y=0; y < size; y++) {
+    		Thread.sleep(3000);	
     		
-    		String result=""; 
-    		
-    		bf = new BufferedReader(new InputStreamReader(url.openStream())); 
-        	
-        	while((line=bf.readLine())!=null) { 
-        		result=result.concat(line); 
-        		//System.out.println(result); 
-        	}
-        	
-        	
-        	JSONParser parser = new JSONParser(); 
-        	JSONObject obj = (JSONObject) parser.parse(result);
-        	
-        	JSONObject parse_data = (JSONObject) obj.get("data");
-        	JSONObject parse_relation= (JSONObject) parse_data.get("relation");
-        	JSONArray parse_rdv_in_list = (JSONArray) parse_relation.get("rdv_in");
-        	//System.out.println("parse_data_list.size() : " + parse_data_list.size()); 
-        	
-        	JSONObject rdv_in;
-        	
-        	for(int i = 0 ; i < parse_rdv_in_list.size(); i++) { 
-        		rdv_in = (JSONObject) parse_rdv_in_list.get(i);
-        			
-        		JSONObject parse_value= (JSONObject) rdv_in.get("value");
-        		JSONObject parse_body1 = (JSONObject) parse_value.get("body");
-        		JSONObject parse_body2 = (JSONObject) parse_body1.get("body");
-        		JSONObject parse_access_token = (JSONObject) parse_body2.get("access_token");
+    		if (Server.equals("PRD") || Server.equals("STG")) {
+    			String result=""; 
         		
-        		source_access_token[i] = (String) parse_access_token.get("source_access_token");
-        		source_access_token[x] = (String) parse_access_token.get("source_access_token");
-        		x++;
-
+        		bf = new BufferedReader(new InputStreamReader(url.openStream())); 
+            	
+            	while((line=bf.readLine())!=null) { 
+            		result=result.concat(line); 
+            		//System.out.println(result); 
+            	}
+            	
+            	
+            	JSONParser parser = new JSONParser(); 
+            	JSONObject obj = (JSONObject) parser.parse(result);
+            	
+            	JSONObject parse_data = (JSONObject) obj.get("data");
+            	JSONObject parse_relation= (JSONObject) parse_data.get("relation");
+            	JSONArray parse_rdv_in_list = (JSONArray) parse_relation.get("rdv_in");
+            	//System.out.println("parse_data_list.size() : " + parse_data_list.size()); 
+            	
+            	JSONObject rdv_in;
+            	
+            	for(int i = 0 ; i < parse_rdv_in_list.size(); i++) { 
+            		rdv_in = (JSONObject) parse_rdv_in_list.get(i);
+            			
+            		JSONObject parse_value= (JSONObject) rdv_in.get("value");
+            		JSONObject parse_body1 = (JSONObject) parse_value.get("body");
+            		JSONObject parse_body2 = (JSONObject) parse_body1.get("body");
+            		JSONObject parse_access_token = (JSONObject) parse_body2.get("access_token");
+            		
+            		source_access_token[i] = (String) parse_access_token.get("source_access_token");
+            		source_access_token[x] = (String) parse_access_token.get("source_access_token");
+            		x++;
+            		
+            		for(String str:source_access_token) {
+                		//System.out.println(str); 
+                	}
+                
+                	logArray = source_access_token;
+                	
+                	String s = Arrays.deepToString(logArray);
+                	String s1 = s.replace("[", "");
+                	actn = s1.replace("]", "");
+                	System.out.println(actn);
+            	}
+    		} else if(Server.equals("RTG")) {
+    			String result=""; 
+        		
+        		bf = new BufferedReader(new InputStreamReader(url.openStream())); 
+            	
+            	while((line=bf.readLine())!=null) { 
+            		result=result.concat(line); 
+            		//System.out.println(result); 
+            	}
+            	
+            	
+            	JSONParser parser = new JSONParser(); 
+            	JSONObject obj = (JSONObject) parser.parse(result);
+            	
+            	JSONObject parse_data = (JSONObject) obj.get("data");
+            	JSONObject parse_relation= (JSONObject) parse_data.get("relation");
+            	JSONArray parse_rtm_list = (JSONArray) parse_relation.get("rtm");
+            	//System.out.println("parse_data_list.size() : " + parse_data_list.size()); 
+            	
+            	JSONObject rtm;
+            	
+            	for(int i = 0 ; i < parse_rtm_list.size(); i++) { 
+            		rtm = (JSONObject) parse_rtm_list.get(i);
+            			
+            		JSONObject parse_value= (JSONObject) rtm.get("value");
+            		JSONObject parse_body1 = (JSONObject) parse_value.get("body");
+            		JSONObject parse_access_token = (JSONObject) parse_body1.get("access_token");
+            		
+            		source_access_token[i] = (String) parse_access_token.get("source_access_token");
+            		source_access_token[x] = (String) parse_access_token.get("source_access_token");
+            		x++;
+            		
+            		for(String str:source_access_token) {
+                		//System.out.println(str); 
+                	}
+                
+                	logArray = source_access_token;
+                	
+                	String s = Arrays.deepToString(logArray);
+                	String s1 = s.replace("[", "");
+                	actn = s1.replace("]", "");
+                	System.out.println(actn);
+            		
+            	}
         	}
     	}
-    	
+    	return actn;
+	}
+  
     	
     	//System.out.println(Arrays.deepToString(tts_strip));
     	
-    	for(String str:source_access_token) {
-    		//System.out.println(str); 
-    	}
     
-    	logArray = source_access_token;
-    	
-    	String s = Arrays.deepToString(logArray);
-    	String s1 = s.replace("[", "");
-    	String actn = s1.replace("]", "");
-    	System.out.println(actn);
-		return actn;
-
-    }
 	public String action_type_JsonParsing(String userID, String deviceID, String Server, String Place ) throws Exception {
     	
     	
@@ -2338,6 +2424,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         	server = "prd";
         } else if (Server.equals("STG")) {
         	server = "stg";
+        } else if (Server.equals("RTG")) {
+        	server = "rtg";
         }
         
         System.out.println("오늘날짜 : " + today);
@@ -2625,6 +2713,17 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		} catch (NoSuchElementException e) {
 			System.out.println("play 카드 [없음]");
 		}		
+	}
+	
+	public void chips_update_check(String Server) throws Exception {
+		 
+		if(Server.equals("PRD")) {
+			System.out.println("서버 : PRD | dialogLayout [없음]");
+        } else if (Server.equals("STG")) {
+        	System.out.println("서버 : PRD | dialogLayout [있음]");
+        	this.click(By.id("negativeButton"));
+        }
+		
 	}
 	
 

@@ -78,7 +78,7 @@ public class Capabilities {
 		        
 		    
 			 }
-		 if(AppName.equalsIgnoreCase("CHIPS")) {			
+		 if(AppName.equalsIgnoreCase("SDK")) {			
 			 capability.setCapability("deviceName","Android");
 			 capability.setCapability("automationName", "UIAutomator2");
 		     capability.setCapability("platformName","Android");
@@ -100,7 +100,7 @@ public class Capabilities {
 		    
 		}
 		 
-		 if(AppName.equalsIgnoreCase("SDK")) {			
+		 if(AppName.equalsIgnoreCase("CHIPS")) {			
 			 capability.setCapability("deviceName","Android");
 			 capability.setCapability("automationName", "UIAutomator2");
 		     capability.setCapability("platformName","Android");

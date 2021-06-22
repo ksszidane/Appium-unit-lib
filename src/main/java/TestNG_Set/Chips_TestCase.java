@@ -50,16 +50,14 @@ public class Chips_TestCase {
 	
 	public String ksszidane;
 	public String ksszidane10;
+	public String nuguqa001;
 	
 
 	@Parameters({"OS", "AppName", "hubAddress", "Server", "Project", "TestPlace", "MobileDevice", 
-		"userID_ksszidane", "userID_ksszidane10",
-		"deviceID_Chips"})
+		"userID_ksszidane", "userID_ksszidane10","userID_nuguqa001", "deviceID_Chips"})
 	@BeforeClass
-	public void setupClass (String OS, String AppName, String hubAddress, String Server, 
-			String Project, String TestPlace, String MobileDevice,
-			String userID_ksszidane, String userID_ksszidane10, 
-			String deviceID_Chips) throws Exception {
+	public void setupClass (String OS, String AppName, String hubAddress, String Server, String Project, String TestPlace, 
+			String MobileDevice, String userID_ksszidane, String userID_ksszidane10, String userID_nuguqa001, String deviceID_Chips) throws Exception {
 		
 		OS_ClassName = OS;
 		//Server = "Server : "+ Server;
@@ -73,6 +71,7 @@ public class Chips_TestCase {
 		
 		ksszidane = userID_ksszidane;
 		ksszidane10 = userID_ksszidane10;
+		nuguqa001 = userID_nuguqa001;
 		
 		adb = new ADB();
 		
@@ -126,12 +125,11 @@ public class Chips_TestCase {
 	    
 	} 
 	
-	@Parameters({"Server", "AppName", "TestPlace", "MobileDevice", "userID_ksszidane", "userID_ksszidane10",
+	@Parameters({"Server", "AppName", "TestPlace", "MobileDevice", "userID_ksszidane", "userID_ksszidane10", "userID_nuguqa001", 
 		"deviceID_Chips"})
 	@AfterClass
 	public void tearDownClass(String Server, String AppName, String TestPlace, String MobileDevice,
-			String userID_ksszidane, String userID_ksszidane10, 
-			String deviceID_Chips) throws Exception {
+			String userID_ksszidane, String userID_ksszidane10, String userID_nuguqa001,String deviceID_Chips) throws Exception {
 		
 		//util.sendPost("그만", userID_ksszidane, deviceID_Chips, Server, Place, oAuth_Token_Chips);
 		System.out.println("\n");
