@@ -90,7 +90,7 @@ public class Capabilities {
 			 
 		        
 		     ChromeOptions chromeOptions = new ChromeOptions();
-		     chromeOptions.setExperimentalOption("w3c", false);
+		     chromeOptions.setExperimentalOption("w3c", true);
 		     capability.setCapability("chromedriverArgs", chromeOptions); 
 		     
 		     capability.setCapability("showChromedriverLog", true);
@@ -112,7 +112,7 @@ public class Capabilities {
 			 
 		        
 		     ChromeOptions chromeOptions = new ChromeOptions();
-		     chromeOptions.setExperimentalOption("w3c", false);
+		     chromeOptions.setExperimentalOption("w3c", true);
 		     capability.setCapability("chromedriverArgs", chromeOptions); 
 		     
 		     capability.setCapability("showChromedriverLog", true);

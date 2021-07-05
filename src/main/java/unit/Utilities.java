@@ -25,7 +25,10 @@ import okhttp3.Response;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ByteArrayInputStream;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
@@ -1194,7 +1197,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     
     public void switchContext (String context) throws Exception {
     	
-    	Thread.sleep(5000);
+    	Thread.sleep(6000);
     	
     	Set<String> contextNames = getContextHandles(); 
         for (String contextName : contextNames) {
@@ -1441,7 +1444,70 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        		System.out.println("서버 조건 불만족");
        	}
        	
-       	Thread.sleep(9000);
+       	Thread.sleep(7000);
+
+       }
+    
+    @SuppressWarnings("unchecked")
+   	public String NUGU_Insight_Token(String TestPlace) throws Exception {
+       	
+       	System.out.println("NUGU_Insight_Token 발동 옵션: | 장소 :  "+ TestPlace);
+       	
+       	String s = null;
+       	
+       	JSONObject Main_jsonObject = new JSONObject();
+
+       	Main_jsonObject.put("identity", "kei_es");  
+       	Main_jsonObject.put("password", "nhn12345!!");
+       	
+       	MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+       	
+       	// form parameters
+       	@SuppressWarnings("deprecation")
+   		RequestBody body = RequestBody.create(JSON, Main_jsonObject.toString());
+       	
+
+       	if (TestPlace.equals("in")) {
+       		System.out.println("in");
+       		Request request = new Request.Builder()
+                       .url("http://172.27.97.221:7090/auth") 
+                       .addHeader("Content-Type", "application/json")
+                       .post(body)
+                       .build();
+       		
+       		try (Response response = httpClient.newCall(request).execute()) {
+
+                   if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+                   // Get response body
+                   //System.out.println(response.body().string());
+                   s = response.body().string();
+               }
+       	} else if (TestPlace.equals("out")) {
+       		System.out.println("out");
+       		Request request = new Request.Builder()
+                       .url("http://10.40.89.245:8190/auth") 
+                       .post(body)
+                       .build();
+       		
+       		try (Response response = httpClient.newCall(request).execute()) {
+
+                   if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+                   // Get response body
+                   //System.out.println(response.body().string());
+                   s = response.body().string();
+               }
+       	} else {
+       		System.out.println("조회 조건 불만족");
+       	}
+
+       	JSONParser parser = new JSONParser(); 
+    	JSONObject obj = (JSONObject) parser.parse(s);
+        String access_token = (String) obj.get("access_token");
+    
+		return access_token;
+       	
 
        }
     
@@ -1485,6 +1551,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     
     public String TTS_JsonParsing(String userID, String deviceID, String Server, String Place ) throws Exception {
     	
+    	String access_token = NUGU_Insight_Token(Place);
     	
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
@@ -1494,7 +1561,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         
         String server = null;
         String urlStr = null;
-        int size = 2;
+        int size = 3;
         int repeat = 1;
         
         if(Server.equals("PRD")) {
@@ -1521,6 +1588,17 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         
     	
     	URL url = new URL(urlStr);
+    	Request request = new Request.Builder()
+        		.url(url) 
+                .addHeader("Authorization", "Bearer " + access_token)
+                .get()
+                .build();
+		
+        Response response = httpClient.newCall(request).execute();
+
+        // Get response body
+		//System.out.println(response.body().string());
+        String api_get_result = response.body().string();
     	
     	BufferedReader bf; 
     	String line = ""; 
@@ -1534,8 +1612,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     		Thread.sleep(2000);
     		
     		String result=""; 
-    		
-    		bf = new BufferedReader(new InputStreamReader(url.openStream())); 
+    		InputStream is = new ByteArrayInputStream(api_get_result.getBytes());
+			bf = new BufferedReader(new InputStreamReader(is)); 
         	
         	while((line=bf.readLine())!=null) { 
         		result=result.concat(line); 
@@ -1581,6 +1659,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     
     public String TTS_JsonParsing_most_recent(String userID, String deviceID, String Server, String Place ) throws Exception {
     	
+    	String access_token = NUGU_Insight_Token(Place);
     	
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
@@ -1615,8 +1694,19 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         	System.out.println(urlStr);
         }
         
-    	
     	URL url = new URL(urlStr);
+    	
+    	Request request = new Request.Builder()
+        		.url(url) 
+                .addHeader("Authorization", "Bearer " + access_token)
+                .get()
+                .build();
+		
+        Response response = httpClient.newCall(request).execute();
+
+        // Get response body
+		//System.out.println(response.body().string());
+        String api_get_result = response.body().string();
     	
     	BufferedReader bf; 
     	String line = ""; 
@@ -1625,12 +1715,12 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String[] tts_strip = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
-    	Thread.sleep(5000);
+    	Thread.sleep(2000);
     	for (int y=0; y < repeat; y++) {
     		
     		String result=""; 
-    		
-    		bf = new BufferedReader(new InputStreamReader(url.openStream())); 
+    		InputStream is = new ByteArrayInputStream(api_get_result.getBytes());
+			bf = new BufferedReader(new InputStreamReader(is)); 
         	
         	while((line=bf.readLine())!=null) { 
         		result=result.concat(line); 
@@ -1679,6 +1769,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     
     public String TTS_JsonParsing(String userID, String deviceID, String Server, String Place, int size) throws Exception {
     	
+    	String access_token = NUGU_Insight_Token(Place);
     	
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
@@ -1713,8 +1804,19 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         	System.out.println(urlStr);
         }
         
-    	
     	URL url = new URL(urlStr);
+    	
+    	Request request = new Request.Builder()
+        		.url(url) 
+                .addHeader("Authorization", "Bearer " + access_token)
+                .get()
+                .build();
+		
+        Response response = httpClient.newCall(request).execute();
+
+        // Get response body
+		//System.out.println(response.body().string());
+        String api_get_result = response.body().string();
     	
     	BufferedReader bf; 
     	String line = ""; 
@@ -1728,8 +1830,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     		Thread.sleep(2000);
     		
     		String result=""; 
-    		
-    		bf = new BufferedReader(new InputStreamReader(url.openStream())); 
+    		InputStream is = new ByteArrayInputStream(api_get_result.getBytes());
+			bf = new BufferedReader(new InputStreamReader(is)); 
         	
         	while((line=bf.readLine())!=null) { 
         		result=result.concat(line); 
@@ -1775,6 +1877,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     
     public String context_JsonParsing(String userID, String deviceID, String Server, String Place ) throws Exception {
     	
+    	String access_token = NUGU_Insight_Token(Place);
     	
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
@@ -1809,8 +1912,19 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         	System.out.println(urlStr);
         }
         
-    	
     	URL url = new URL(urlStr);
+    	
+    	Request request = new Request.Builder()
+        		.url(url) 
+                .addHeader("Authorization", "Bearer " + access_token)
+                .get()
+                .build();
+		
+        Response response = httpClient.newCall(request).execute();
+
+        // Get response body
+		//System.out.println(response.body().string());
+        String api_get_result = response.body().string();
     	
     	BufferedReader bf; 
     	String line = ""; 
@@ -1824,8 +1938,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     		Thread.sleep(2000);
     		
     		String result=""; 
-    		
-    		bf = new BufferedReader(new InputStreamReader(url.openStream())); 
+    		InputStream is = new ByteArrayInputStream(api_get_result.getBytes());
+			bf = new BufferedReader(new InputStreamReader(is)); 
         	
         	while((line=bf.readLine())!=null) { 
         		result=result.concat(line); 
@@ -1872,6 +1986,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     
     public String context_JsonParsing(String userID, String deviceID, String Server, String Place, int size) throws Exception {
     	
+    	String access_token = NUGU_Insight_Token(Place);
     	
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
@@ -1905,8 +2020,19 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         	System.out.println(urlStr);
         }
         
-    	
     	URL url = new URL(urlStr);
+    	
+    	Request request = new Request.Builder()
+        		.url(url) 
+                .addHeader("Authorization", "Bearer " + access_token)
+                .get()
+                .build();
+		
+        Response response = httpClient.newCall(request).execute();
+
+        // Get response body
+		//System.out.println(response.body().string());
+        String api_get_result = response.body().string();
     	
     	BufferedReader bf; 
     	String line = ""; 
@@ -1920,8 +2046,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     		Thread.sleep(2000);
     		
     		String result=""; 
-    		
-    		bf = new BufferedReader(new InputStreamReader(url.openStream())); 
+    		InputStream is = new ByteArrayInputStream(api_get_result.getBytes());
+			bf = new BufferedReader(new InputStreamReader(is)); 
         	
         	while((line=bf.readLine())!=null) { 
         		result=result.concat(line); 
@@ -1968,6 +2094,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     
     public String event_JsonParsing(String userID, String deviceID, String Server, String Place, int size) throws Exception {
     	
+    	String access_token = NUGU_Insight_Token(Place);
     	
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
@@ -2002,8 +2129,19 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         	System.out.println(urlStr);
         }
         
-    	
     	URL url = new URL(urlStr);
+    	
+    	Request request = new Request.Builder()
+        		.url(url) 
+                .addHeader("Authorization", "Bearer " + access_token)
+                .get()
+                .build();
+		
+        Response response = httpClient.newCall(request).execute();
+
+        // Get response body
+		//System.out.println(response.body().string());
+        String api_get_result = response.body().string();
     	
     	BufferedReader bf; 
     	String line = ""; 
@@ -2017,8 +2155,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     		Thread.sleep(2000);
     		
     		String result=""; 
-    		
-    		bf = new BufferedReader(new InputStreamReader(url.openStream())); 
+    		InputStream is = new ByteArrayInputStream(api_get_result.getBytes());
+			bf = new BufferedReader(new InputStreamReader(is)); 
         	
         	while((line=bf.readLine())!=null) { 
         		result=result.concat(line); 
@@ -2065,7 +2203,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     
 	public String audio_activity_JsonParsing(String userID, String deviceID, String Server, String Place, int size ) throws Exception {
     	
-    	
+		String access_token = NUGU_Insight_Token(Place);
+		
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
@@ -2099,8 +2238,19 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         	System.out.println(urlStr);
         }
         
-    	
     	URL url = new URL(urlStr);
+    	
+    	Request request = new Request.Builder()
+        		.url(url) 
+                .addHeader("Authorization", "Bearer " + access_token)
+                .get()
+                .build();
+		
+        Response response = httpClient.newCall(request).execute();
+
+        // Get response body
+		//System.out.println(response.body().string());
+        String api_get_result = response.body().string();
     	
     	BufferedReader bf; 
     	String line = ""; 
@@ -2114,8 +2264,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     		Thread.sleep(2000);
     		
     		String result=""; 
-    		
-    		bf = new BufferedReader(new InputStreamReader(url.openStream())); 
+    		InputStream is = new ByteArrayInputStream(api_get_result.getBytes());
+			bf = new BufferedReader(new InputStreamReader(is)); 
         	
         	while((line=bf.readLine())!=null) { 
         		result=result.concat(line); 
@@ -2162,7 +2312,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	
 	public String TransactionID_JsonParsing(String userID, String deviceID, String Server, String Place) throws Exception {
     	
-    	
+		String access_token = NUGU_Insight_Token(Place);
+		
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
@@ -2171,6 +2322,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         
         String server = null;
         String urlStr = null;
+        String api_get_result = null;
         
         int size = 1;
         
@@ -2196,22 +2348,33 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         	System.out.println(urlStr);
         }
         
+        URL url = new URL(urlStr);
+
+        Request request = new Request.Builder()
+        		.url(url) 
+                .addHeader("Authorization", "Bearer " + access_token)
+                .get()
+                .build();
+		
+        Response response = httpClient.newCall(request).execute();
+
+        // Get response body
+		//System.out.println(response.body().string());
+		api_get_result = response.body().string();
     	
-    	URL url = new URL(urlStr);
+		BufferedReader bf; 
+		String line = ""; 
     	
-    	BufferedReader bf; 
-    	String line = ""; 
+		int x = 0;
+		String[] transaction_id = new String[size];
+		//String[] tts_strip = new String[size];
     	
-    	int x = 0;
-    	String[] transaction_id = new String[size];
-    	//String[] tts_strip = new String[size];
-    	
-    	Thread.sleep(4000);
-    	for (int y=0; y < size; y++) {
+		Thread.sleep(4000);
+		for (int y=0; y < size; y++) {
     		
-    		String result=""; 
-    		
-    		bf = new BufferedReader(new InputStreamReader(url.openStream())); 
+			String result=""; 
+			InputStream is = new ByteArrayInputStream(api_get_result.getBytes());
+			bf = new BufferedReader(new InputStreamReader(is)); 
         	
         	while((line=bf.readLine())!=null) { 
         		result=result.concat(line); 
@@ -2259,7 +2422,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	
 	public String acceesToken_JsonParsing(String Server, String Place, String tid) throws Exception {
     	
-    	
+		String access_token = NUGU_Insight_Token(Place);
+		
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
@@ -2294,9 +2458,20 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         	urlStr = "http://10.40.89.245:8190/pulse_n/get_raw_log/v3/?env="+server+"&transaction_id="+tid;
         	System.out.println(urlStr);
         }
-        
-    	
+
     	URL url = new URL(urlStr);
+    	
+    	Request request = new Request.Builder()
+        		.url(url) 
+                .addHeader("Authorization", "Bearer " + access_token)
+                .get()
+                .build();
+		
+        Response response = httpClient.newCall(request).execute();
+
+        // Get response body
+		//System.out.println(response.body().string());
+        String api_get_result = response.body().string();
     	
     	BufferedReader bf; 
     	String line = ""; 
@@ -2311,8 +2486,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     		
     		if (Server.equals("PRD") || Server.equals("STG")) {
     			String result=""; 
-        		
-        		bf = new BufferedReader(new InputStreamReader(url.openStream())); 
+    			InputStream is = new ByteArrayInputStream(api_get_result.getBytes());
+    			bf = new BufferedReader(new InputStreamReader(is)); 
             	
             	while((line=bf.readLine())!=null) { 
             		result=result.concat(line); 
@@ -2355,8 +2530,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
             	}
     		} else if(Server.equals("RTG")) {
     			String result=""; 
-        		
-        		bf = new BufferedReader(new InputStreamReader(url.openStream())); 
+    			InputStream is = new ByteArrayInputStream(api_get_result.getBytes());
+    			bf = new BufferedReader(new InputStreamReader(is)); 
             	
             	while((line=bf.readLine())!=null) { 
             		result=result.concat(line); 
@@ -2408,7 +2583,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     
 	public String action_type_JsonParsing(String userID, String deviceID, String Server, String Place ) throws Exception {
     	
-    	
+		String access_token = NUGU_Insight_Token(Place);
+		
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
@@ -2442,8 +2618,19 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         	System.out.println(urlStr);
         }
         
-    	
     	URL url = new URL(urlStr);
+    	
+    	Request request = new Request.Builder()
+        		.url(url) 
+                .addHeader("Authorization", "Bearer " + access_token)
+                .get()
+                .build();
+		
+        Response response = httpClient.newCall(request).execute();
+
+        // Get response body
+		//System.out.println(response.body().string());
+        String api_get_result = response.body().string();
     	
     	BufferedReader bf; 
     	String line = ""; 
@@ -2456,8 +2643,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	for (int y=0; y < repeat; y++) {
     		
     		String result=""; 
-    		
-    		bf = new BufferedReader(new InputStreamReader(url.openStream())); 
+    		InputStream is = new ByteArrayInputStream(api_get_result.getBytes());
+			bf = new BufferedReader(new InputStreamReader(is)); 
         	
         	while((line=bf.readLine())!=null) { 
         		result=result.concat(line); 
@@ -2712,7 +2899,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 
 		} catch (NoSuchElementException e) {
 			System.out.println("play 카드 [없음]");
-		}		
+		}
+		Thread.sleep(1000);
 	}
 	
 	public void chips_update_check(String Server) throws Exception {
@@ -2720,9 +2908,17 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		if(Server.equals("PRD")) {
 			System.out.println("서버 : PRD | dialogLayout [없음]");
         } else if (Server.equals("STG")) {
-        	System.out.println("서버 : PRD | dialogLayout [있음]");
+        	System.out.println("서버 : STG | dialogLayout [있음]");
         	this.click(By.id("negativeButton"));
+        } else if (Server.equals("STG")) {
+        	System.out.println("서버 : PRD | dialogLayout [없음]");
         }
+		
+	}
+	
+	public void goto_Background() throws Exception {
+		 
+		this.runAppInBackground(Duration.ofSeconds(3));
 		
 	}
 	

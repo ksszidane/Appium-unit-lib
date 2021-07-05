@@ -46,6 +46,7 @@ public class Chips_TestCase {
 	public String App;
 	
 	public String Chips_did;
+	public String Chips10_did;
 	public String Chips_token;
 	
 	public String ksszidane;
@@ -54,10 +55,10 @@ public class Chips_TestCase {
 	
 
 	@Parameters({"OS", "AppName", "hubAddress", "Server", "Project", "TestPlace", "MobileDevice", 
-		"userID_ksszidane", "userID_ksszidane10","userID_nuguqa001", "deviceID_Chips"})
+		"userID_ksszidane", "userID_ksszidane10","userID_nuguqa001", "deviceID_Chips", "deviceID_Chips10"})
 	@BeforeClass
-	public void setupClass (String OS, String AppName, String hubAddress, String Server, String Project, String TestPlace, 
-			String MobileDevice, String userID_ksszidane, String userID_ksszidane10, String userID_nuguqa001, String deviceID_Chips) throws Exception {
+	public void setupClass (String OS, String AppName, String hubAddress, String Server, String Project, String TestPlace, String MobileDevice, 
+			String userID_ksszidane, String userID_ksszidane10, String userID_nuguqa001, String deviceID_Chips, String deviceID_Chips10) throws Exception {
 		
 		OS_ClassName = OS;
 		//Server = "Server : "+ Server;
@@ -68,6 +69,7 @@ public class Chips_TestCase {
 		App = AppName;
 		
 		Chips_did = deviceID_Chips;
+		Chips10_did = deviceID_Chips10;
 		
 		ksszidane = userID_ksszidane;
 		ksszidane10 = userID_ksszidane10;
@@ -104,6 +106,7 @@ public class Chips_TestCase {
 	@AfterMethod
 	 public void AfterMethod(ITestResult result) throws Exception {
 		
+		util.context("NATIVE_APP");
 		
 		if (result.getStatus() == ITestResult.FAILURE) { 
 			 String Time = util.getTime();
@@ -126,10 +129,10 @@ public class Chips_TestCase {
 	} 
 	
 	@Parameters({"Server", "AppName", "TestPlace", "MobileDevice", "userID_ksszidane", "userID_ksszidane10", "userID_nuguqa001", 
-		"deviceID_Chips"})
+		"deviceID_Chips", "deviceID_Chips10"})
 	@AfterClass
 	public void tearDownClass(String Server, String AppName, String TestPlace, String MobileDevice,
-			String userID_ksszidane, String userID_ksszidane10, String userID_nuguqa001,String deviceID_Chips) throws Exception {
+			String userID_ksszidane, String userID_ksszidane10, String userID_nuguqa001,String deviceID_Chips, String deviceID_Chips10) throws Exception {
 		
 		//util.sendPost("그만", userID_ksszidane, deviceID_Chips, Server, Place, oAuth_Token_Chips);
 		System.out.println("\n");
@@ -146,7 +149,7 @@ public class Chips_TestCase {
 		
 		adb.ADB_cellular_On(udid);
 		adb.ADB_GPS_On(udid);
-		adb.ADB_ScreenLock(udid); //시나리오 테스트 진핸 완료 후에는 주석 풀기
+		//adb.ADB_ScreenLock(udid); //시나리오 테스트 진핸 완료 후에는 주석 풀기
 		
 	}
 
