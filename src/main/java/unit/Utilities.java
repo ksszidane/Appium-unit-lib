@@ -22,12 +22,12 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ByteArrayInputStream;
+import java.io.BufferedReader;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -700,28 +700,22 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	}
 	
 	/**
-	 * Element가 fucused or checked 되었는지 확인하는 메소드
+	 * Element가 fucused 되었는지 확인하는 메소드
 	 * @param locator 존재 확인 할 Element를 지정
 	 * @return boolean
-	 * @throws Exception - Selenium Exception
 	 */
 	public boolean isFucused(By locator) throws Exception{
 		
 		boolean result = false;
-		manage().timeouts().implicitlyWait(MIN_WAIT_TIME, TimeUnit.SECONDS);
-		
-		try {		
-			WebElement element = locator.findElement((SearchContext) this);
-			if (element.getAttribute("checked").equals("false") 
-					|| element.getAttribute("fucused").equals("true")) {
-				manage().timeouts().implicitlyWait(MAX_WAIT_TIME, TimeUnit.SECONDS);
-				result = true;
-			}
-		} catch (NoSuchElementException e) {
-			manage().timeouts().implicitlyWait(MAX_WAIT_TIME, TimeUnit.SECONDS);
-			return false;
+		String value = this.findElement(locator).getAttribute("fucused");
+		if (value.equals("true")) {
+			System.out.println(1);
+			result = true;
+		} else if (value.equals("false")) {
+			System.out.println(2);
+			result = false;
 		}
-		manage().timeouts().implicitlyWait(MAX_WAIT_TIME, TimeUnit.SECONDS);
+	
 		return result;
 	}
 	
@@ -1553,6 +1547,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	
     	String access_token = NUGU_Insight_Token(Place);
     	
+    	Thread.sleep(7000);
+    	
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
@@ -1607,7 +1603,6 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String[] tts_strip = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
-    	Thread.sleep(3000);
     	for (int y=0; y < repeat; y++) {
     		Thread.sleep(2000);
     		
@@ -1715,7 +1710,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String[] tts_strip = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
-    	Thread.sleep(2000);
+    	Thread.sleep(7000);
     	for (int y=0; y < repeat; y++) {
     		
     		String result=""; 
@@ -1825,7 +1820,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String[] tts_strip = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
-    	Thread.sleep(8000);
+    	Thread.sleep(7000);
     	for (int y=0; y < repeat; y++) {
     		Thread.sleep(2000);
     		
@@ -2314,6 +2309,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	
 		String access_token = NUGU_Insight_Token(Place);
 		
+		Thread.sleep(12000);
+		
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
@@ -2369,7 +2366,6 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		String[] transaction_id = new String[size];
 		//String[] tts_strip = new String[size];
     	
-		Thread.sleep(4000);
 		for (int y=0; y < size; y++) {
     		
 			String result=""; 
@@ -2447,7 +2443,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         System.out.println("오늘날짜 : " + today);
         System.out.println("대상서버 : " + server);
     	
-        Thread.sleep(3000);
+        Thread.sleep(4000);
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
         	urlStr = "http://172.27.97.221:7090/pulse_n/get_raw_log/v3/?env="+server+"&transaction_id="+tid;
@@ -2482,7 +2478,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	
     	
     	for (int y=0; y < size; y++) {
-    		Thread.sleep(3000);	
+    		Thread.sleep(5000);	
     		
     		if (Server.equals("PRD") || Server.equals("STG")) {
     			String result=""; 
@@ -2829,7 +2825,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		try {
 			boolean 연결로딩 = this.isElementPresent(By.className("android.widget.ProgressBar"));
 			if(연결로딩 == true) {
-				Thread.sleep(2000);
+				Thread.sleep(3000);
 			} else { 
 				Thread.sleep(1000);
 			}

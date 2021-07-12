@@ -67,8 +67,12 @@ public class data {
 	public List<String> CHIPS_USD_list = Arrays.asList(CHIPS_USD);  
 	public Set<String> CHIPS_USD_set = new HashSet<String>(Arrays.asList(CHIPS_USD));
 	
-	public static String OOS [] = {"그건 어려워요.", "그건 모르겠어요.", "제가 할 수 없어요."};
+	public static String OOS [] = {"그건 어려워요.", "그건 모르겠어요.", "제가 할 수 없어요.", "아직은 지원하지 않는 기능입니다."};
 	public List<String> OOS_list = Arrays.asList(OOS);  
 	public Set<String> OOS_set = new HashSet<String>(Arrays.asList(OOS));
+	
+	public static String 음악시작 [] = {"시작할게요.", "들려드릴게요.", "들려드리겠습니다.", "시작합니다."};
+	public List<String> 음악시작_list = Arrays.asList(음악시작);  
+	public Set<String> 음악시작_set = new HashSet<String>(Arrays.asList(음악시작));
 	
 }
