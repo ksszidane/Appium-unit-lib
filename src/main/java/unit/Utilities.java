@@ -539,6 +539,11 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 				context(contextName);
 		}
 	}
+
+	public void refresh() {
+		
+			this.refresh();
+	}
 	
 	/**
 	  * 로그를 출력하는 메소드

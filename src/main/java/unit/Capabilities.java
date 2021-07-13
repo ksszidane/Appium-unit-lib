@@ -83,7 +83,7 @@ public class Capabilities {
 			 capability.setCapability("automationName", "UIAutomator2");
 		     capability.setCapability("platformName","Android");
 			 capability.setCapability("udid",Device); //여러 디바이스가 설치된 경우, 테스트하고자 하는 디바이스를 선택 
-		     
+			 
 			 capability.setCapability("appPackage", "com.skt.nugu.sampleapp");
 			 capability.setCapability("appActivity", "com.skt.nugu.sampleapp.activity.LoginActivity");
 		       
@@ -92,6 +92,11 @@ public class Capabilities {
 		     ChromeOptions chromeOptions = new ChromeOptions();
 		     chromeOptions.setExperimentalOption("w3c", true);
 		     capability.setCapability("chromedriverArgs", chromeOptions); 
+		     
+		     capability.setCapability("recreateChromeDriverSessions", false); 
+		     capability.setCapability("extractChromeAndroidPackageFromContextName", true); 
+		
+		     capability.setCapability("focused", true); 
 		     
 		     capability.setCapability("showChromedriverLog", true);
 		     
@@ -105,7 +110,7 @@ public class Capabilities {
 			 capability.setCapability("automationName", "UIAutomator2");
 		     capability.setCapability("platformName","Android");
 			 capability.setCapability("udid",Device); //여러 디바이스가 설치된 경우, 테스트하고자 하는 디바이스를 선택 
-		     
+			 
 			 capability.setCapability("appPackage", "com.skt.aidev.nugufriends");
 			 capability.setCapability("appActivity", "com.skt.aidev.nugufriends.ui.home.HomeActivity");
 		       
@@ -114,6 +119,11 @@ public class Capabilities {
 		     ChromeOptions chromeOptions = new ChromeOptions();
 		     chromeOptions.setExperimentalOption("w3c", true);
 		     capability.setCapability("chromedriverArgs", chromeOptions); 
+		     
+		     capability.setCapability("recreateChromeDriverSessions", false); 
+		     capability.setCapability("extractChromeAndroidPackageFromContextName", true); 
+		     
+		     capability.setCapability("focused", true); 
 		     
 		     capability.setCapability("showChromedriverLog", true);
 		     
