@@ -254,6 +254,24 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	}
 	
 	/**
+	 * 현재 열려있는 창의 인덱스 수집 후 그 번호에 맞는 창전환
+	 * @param 윈도우 URL 값의 contains
+	 * @throws Exception
+	 */
+	public void switchToWindwosURL(String URL) throws Exception {
+		
+		Set<String> allWindows = getWindowHandles();
+		if(!allWindows.isEmpty()) {
+			for (String windowId : allWindows) {
+				if(switchTo().window(windowId).getCurrentUrl().contains(URL)) {
+					waitForPageToLoad();
+					break;
+				}
+			}
+		}
+	}
+	
+	/**
 	 * 현재 날짜 및 시간 정보 [yyyy.MM.dd_HH:mm:ss]
 	 * @throws Exception - Exception
 	 */
