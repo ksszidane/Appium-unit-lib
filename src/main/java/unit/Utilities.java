@@ -34,6 +34,7 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -269,6 +270,31 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 				}
 			}
 		}
+	}
+	
+	/**
+	 * 현재 열려있는 창의 인덱스 수집 후 그 번호에 맞는 창전환
+	 * @param 윈도우 인덱스 번호
+	 * @throws Exception
+	 */
+	public void switchToWindwosIndex(int windowIndex) throws Exception {
+		
+		
+		ArrayList<String> AllWindows = new ArrayList<String>(getWindowHandles());
+        switchTo().window(AllWindows.get(windowIndex));
+	}
+	
+	/**
+	 * 현재 열려있는 창의 인덱스 수집 후 갯수 카운터로 반환
+	 * @param 윈도우 인덱스 번호
+	 * @throws Exception
+	 */
+	public int allWindwosIndexCount() throws Exception {
+		
+		
+		ArrayList<String> AllWindows = new ArrayList<String>(getWindowHandles());
+		return AllWindows.size();
+       
 	}
 	
 	/**
