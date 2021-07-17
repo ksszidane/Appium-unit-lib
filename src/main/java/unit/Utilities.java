@@ -1411,13 +1411,13 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        	
        	JSONObject Main_jsonObject = new JSONObject();
        	JSONObject clientStatus_data = new JSONObject();
-       	clientStatus_data.put("nugu_sdk_version", "4.4.0");
+       	clientStatus_data.put("nugu_sdk_version", "4.5.0");
        	
-       	Main_jsonObject.put("requestId", "ALDFH3D1Q7W6071EFE41;asr;;210415-220425;43033381;");  
+       	Main_jsonObject.put("requestId", "ALDF3NYA6C0D0C654DD2;asr;;210415-220425;43033381;");  
        	Main_jsonObject.put("requestText", CommandText);
        	Main_jsonObject.put("accessToken", Access_Token);
        	Main_jsonObject.put("clientStatus", clientStatus_data);
-       	//Main_jsonObject.put("clientVersion", "7.0.1.190545");
+       	Main_jsonObject.put("clientVersion", "1.1.0");
        	Main_jsonObject.put("flowCode", "NLU01");
        	
        	System.out.println(Main_jsonObject);
@@ -1490,6 +1490,98 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        	Thread.sleep(7000);
 
        }
+    
+    @SuppressWarnings("unchecked")
+   	public void SWFsendPost_playStatus(String command, String Server, String Access_Token, String play_type) throws Exception {
+       	
+       	System.out.println("sendPost 발동 옵션: | 발화문 :  "+ command +" | 서버 : "+ Server +" | Access_Token : "+ Access_Token +" | play_type : " + play_type);
+       	
+       	String CommandText = command;
+       	
+       	JSONObject Main_jsonObject = new JSONObject();
+       	JSONObject clientStatus_data = new JSONObject();
+       	clientStatus_data.put("nugu_sdk_version", "4.5.0");
+       	clientStatus_data.put("play_type", play_type);
+       	clientStatus_data.put("play_status", "play");
+       	
+       	Main_jsonObject.put("requestId", "ALDF3NYA6C0D0C654DD2;asr;;210415-220425;43033381;");  
+       	Main_jsonObject.put("requestText", CommandText);
+       	Main_jsonObject.put("accessToken", Access_Token);
+       	Main_jsonObject.put("clientStatus", clientStatus_data);
+       	Main_jsonObject.put("clientVersion", "1.1.0");
+       	Main_jsonObject.put("flowCode", "NLU01");
+       	
+       	System.out.println(Main_jsonObject);
+       	
+       	MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+       	
+       	// form parameters
+       	@SuppressWarnings("deprecation")
+   		RequestBody body = RequestBody.create(JSON, Main_jsonObject.toString());
+       	
+
+       	if (Server.equals("PRD")) {
+       		System.out.println("PRD");
+       		Request request = new Request.Builder()
+                       .url("https://pif.t-aicloud.co.kr/nlp/rest/nlu") //PRD directive URL
+                       .addHeader("Content-Type", "application/json")
+                       .addHeader("cache-control", "no-cache")
+                       .addHeader("X-AI-Access-Token", Access_Token)
+                       .addHeader("Accept", "application/json")
+                       .post(body)
+                       .build();
+       		
+       		try (Response response = httpClient.newCall(request).execute()) {
+
+                   if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+                   // Get response body
+                   System.out.println(response.body().string());
+               }
+       	} else if (Server.equals("RTG")) {
+       		System.out.println("RTG");
+       		Request request = new Request.Builder()
+                       .url("http://rtg-pif-ai.aicloud.kr/nlp/rest/nlu") //PRD directive URL
+                       .addHeader("Content-Type", "application/json")
+                       .addHeader("cache-control", "no-cache")
+                       .addHeader("X-AI-Access-Token", Access_Token)
+                       .addHeader("Accept", "application/json")
+                       .post(body)
+                       .build();
+       		
+       		try (Response response = httpClient.newCall(request).execute()) {
+
+                   if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+                   // Get response body
+                   System.out.println(response.body().string());
+               }
+       	} else if (Server.equals("STG")) {
+       		System.out.println("STG");
+       		Request request = new Request.Builder()
+       				.url("http://stg-pif-ai.aicloud.kr/nlp/rest/nlu") //STG directive URL
+                       .addHeader("Content-Type", "application/json")
+                       .addHeader("cache-control", "no-cache")
+                       .addHeader("X-AI-Access-Token", Access_Token)
+                       .addHeader("Accept", "application/json")
+                       .post(body)
+                       .build();
+       		
+       		try (Response response = httpClient.newCall(request).execute()) {
+
+                   if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+                   // Get response body
+                   System.out.println(response.body().string());
+       		}
+       	} else {
+       		System.out.println("서버 조건 불만족");
+       	}
+       	
+       	Thread.sleep(7000);
+
+       }
+    
     
     @SuppressWarnings("unchecked")
    	public String NUGU_Insight_Token(String TestPlace) throws Exception {
@@ -1810,7 +1902,6 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		
     }
     
-    
     public String TTS_JsonParsing(String userID, String deviceID, String Server, String Place, int size) throws Exception {
     	
     	String access_token = NUGU_Insight_Token(Place);
@@ -1917,6 +2008,224 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	System.out.println(tts);
 		return tts;
 
+    }
+    
+    public String Domain_JsonParsing_most_recent(String userID, String deviceID, String Server, String Place ) throws Exception {
+    	
+    	String access_token = NUGU_Insight_Token(Place);
+    	
+    	Calendar calendar = Calendar.getInstance();
+        java.util.Date date = calendar.getTime();
+        String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+        
+        String logArray[];    
+        
+        String server = null;
+        String urlStr = null;
+        int size = 1;
+        int repeat = 1;
+        
+        if(Server.equals("PRD")) {
+        	server = "prd";
+        } else if (Server.equals("STG")) {
+        	server = "stg";
+        } else if (Server.equals("RTG")) {
+        	server = "rtg";
+        }
+        
+        System.out.println("오늘날짜 : " + today);
+        System.out.println("대상서버 : " + server);
+    	
+        if(Place.equals("in")) {
+        	//사내망에서는 http://172.27.97.221:7090
+        	urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	System.out.println(urlStr);
+        	
+        } else if (Place.equals("out")) {
+        	//vpn으로는 http://10.40.89.245:8190
+        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	System.out.println(urlStr);
+        }
+        
+    	URL url = new URL(urlStr);
+    	
+    	Request request = new Request.Builder()
+        		.url(url) 
+                .addHeader("Authorization", "Bearer " + access_token)
+                .get()
+                .build();
+		
+        Response response = httpClient.newCall(request).execute();
+
+        // Get response body
+		//System.out.println(response.body().string());
+        String api_get_result = response.body().string();
+    	
+    	BufferedReader bf; 
+    	String line = ""; 
+    	
+    	int x = 0;
+    	String[] domain = new String[size*repeat];
+    	//String[] tts_strip = new String[size];
+    	
+    	Thread.sleep(7000);
+    	for (int y=0; y < repeat; y++) {
+    		
+    		String result=""; 
+    		InputStream is = new ByteArrayInputStream(api_get_result.getBytes());
+			bf = new BufferedReader(new InputStreamReader(is)); 
+        	
+        	while((line=bf.readLine())!=null) { 
+        		result=result.concat(line); 
+        		//System.out.println(result); 
+        	}
+        	
+        	
+        	JSONParser parser = new JSONParser(); 
+        	JSONObject obj = (JSONObject) parser.parse(result);
+        	
+        	JSONArray parse_data_list = (JSONArray) obj.get("data");
+        	//System.out.println("parse_data_list.size() : " + parse_data_list.size()); 
+        	
+        	JSONObject data;
+        	
+        	for(int i = 0 ; i < parse_data_list.size(); i++) { 
+        		data = (JSONObject) parse_data_list.get(i);
+        			
+        		JSONObject parse_source = (JSONObject) data.get("_source");
+        		JSONObject parse_item = (JSONObject) parse_source.get("item");
+        		
+        		domain[i] = (String) parse_item.get("domain");
+        		domain[x] = (String) parse_item.get("domain");
+        		x++;
+
+        	}
+    	}
+    	
+    	
+    	//System.out.println(Arrays.deepToString(tts_strip));
+    	
+    	for(String str:domain) {
+    		//System.out.println(str); 
+    	}
+    
+    	logArray = domain;
+    	
+    	String s = Arrays.deepToString(logArray);
+    	String s1 = s.replace("[", "");
+    	String domain_String = s1.replace("]", "");
+    	System.out.println(domain_String);
+		return domain_String;
+		
+    }
+    
+    public String intent_JsonParsing_most_recent(String userID, String deviceID, String Server, String Place ) throws Exception {
+    	
+    	String access_token = NUGU_Insight_Token(Place);
+    	
+    	Calendar calendar = Calendar.getInstance();
+        java.util.Date date = calendar.getTime();
+        String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+        
+        String logArray[];    
+        
+        String server = null;
+        String urlStr = null;
+        int size = 1;
+        int repeat = 1;
+        
+        if(Server.equals("PRD")) {
+        	server = "prd";
+        } else if (Server.equals("STG")) {
+        	server = "stg";
+        } else if (Server.equals("RTG")) {
+        	server = "rtg";
+        }
+        
+        System.out.println("오늘날짜 : " + today);
+        System.out.println("대상서버 : " + server);
+    	
+        if(Place.equals("in")) {
+        	//사내망에서는 http://172.27.97.221:7090
+        	urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	System.out.println(urlStr);
+        	
+        } else if (Place.equals("out")) {
+        	//vpn으로는 http://10.40.89.245:8190
+        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	System.out.println(urlStr);
+        }
+        
+    	URL url = new URL(urlStr);
+    	
+    	Request request = new Request.Builder()
+        		.url(url) 
+                .addHeader("Authorization", "Bearer " + access_token)
+                .get()
+                .build();
+		
+        Response response = httpClient.newCall(request).execute();
+
+        // Get response body
+		//System.out.println(response.body().string());
+        String api_get_result = response.body().string();
+    	
+    	BufferedReader bf; 
+    	String line = ""; 
+    	
+    	int x = 0;
+    	String[] intent = new String[size*repeat];
+    	//String[] tts_strip = new String[size];
+    	
+    	Thread.sleep(7000);
+    	for (int y=0; y < repeat; y++) {
+    		
+    		String result=""; 
+    		InputStream is = new ByteArrayInputStream(api_get_result.getBytes());
+			bf = new BufferedReader(new InputStreamReader(is)); 
+        	
+        	while((line=bf.readLine())!=null) { 
+        		result=result.concat(line); 
+        		//System.out.println(result); 
+        	}
+        	
+        	
+        	JSONParser parser = new JSONParser(); 
+        	JSONObject obj = (JSONObject) parser.parse(result);
+        	
+        	JSONArray parse_data_list = (JSONArray) obj.get("data");
+        	//System.out.println("parse_data_list.size() : " + parse_data_list.size()); 
+        	
+        	JSONObject data;
+        	
+        	for(int i = 0 ; i < parse_data_list.size(); i++) { 
+        		data = (JSONObject) parse_data_list.get(i);
+        			
+        		JSONObject parse_source = (JSONObject) data.get("_source");
+        		JSONObject parse_item = (JSONObject) parse_source.get("item");
+        		
+        		intent[i] = (String) parse_item.get("intent");
+        		intent[x] = (String) parse_item.get("intent");
+        		x++;
+
+        	}
+    	}
+    	
+    	
+    	//System.out.println(Arrays.deepToString(tts_strip));
+    	
+    	for(String str:intent) {
+    		//System.out.println(str); 
+    	}
+    
+    	logArray = intent;
+    	
+    	String s = Arrays.deepToString(logArray);
+    	String s1 = s.replace("[", "");
+    	String intent_String = s1.replace("]", "");
+    	System.out.println(intent_String);
+		return intent_String;
+		
     }
     
     public String context_JsonParsing(String userID, String deviceID, String Server, String Place ) throws Exception {
