@@ -75,4 +75,12 @@ public class data {
 	public List<String> 음악시작_list = Arrays.asList(음악시작);  
 	public Set<String> 음악시작_set = new HashSet<String>(Arrays.asList(음악시작));
 	
+	public static String 시간 [] = {"오전", "오후", "시", "분"};
+	public List<String> 시간_list = Arrays.asList(시간);  
+	public Set<String> 시간_set = new HashSet<String>(Arrays.asList(시간));
+	
+	public static String 날짜 [] = {"오늘은", "월", "일", "요일입니다."};
+	public List<String> 날짜_list = Arrays.asList(날짜);  
+	public Set<String> 날짜_set = new HashSet<String>(Arrays.asList(날짜));
+	
 }
