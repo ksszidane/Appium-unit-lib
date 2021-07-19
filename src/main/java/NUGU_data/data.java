@@ -83,4 +83,24 @@ public class data {
 	public List<String> 날짜_list = Arrays.asList(날짜);  
 	public Set<String> 날짜_set = new HashSet<String>(Arrays.asList(날짜));
 	
+	public static String 메뉴추천도움말 [] = {"요즘 먹기 좋은 제철음식이 궁금하세요? \"제철음식 알려줘\" 라고 말씀해보세요.", "오늘 메뉴가 고민되시나요? \"오늘 뭐 먹을까?\" 라고 물어봐주세요.", "맛있는 저녁메뉴를 찾고 계신가요? \"저녁 뭐 먹을까?\" 라고 물어봐주세요.", "다양한 식사 메뉴를 추천해드려요. \"메뉴 추천해줘\" 라고 말씀해보세요."};
+	public List<String> 메뉴추천도움말_list = Arrays.asList(메뉴추천도움말);  
+	public Set<String> 메뉴추천도움말_set = new HashSet<String>(Arrays.asList(메뉴추천도움말));
+	
+	public static String 지금강수확률 [] = {"지금은 비가 오지 않고 있네요.", "지금 비가 오고 있어요."};
+	public List<String> 지금강수확률_list = Arrays.asList(지금강수확률);  
+	public Set<String> 지금강수확률_set = new HashSet<String>(Arrays.asList(지금강수확률));
+	
+	public static String 오늘강수확률 [] = {"오늘은 비가 오지 않을 것 같아요.", "오늘은 비가 올 것 같네요."};
+	public List<String> 오늘강수확률_list = Arrays.asList(오늘강수확률);  
+	public Set<String> 오늘강수확률_set = new HashSet<String>(Arrays.asList(오늘강수확률));
+	
+	public static String 내일강수확률 [] = {"내일은 비가 오지 않을 것 같아요.", "내일은 비가 올 것 같네요."};
+	public List<String> 내일강수확률_list = Arrays.asList(내일강수확률);  
+	public Set<String> 내일강수확률_set = new HashSet<String>(Arrays.asList(내일강수확률));
+	
+	public static String 모레강수확률 [] = {"비가 오지 않을 것 같아요.", "비가 올 것 같네요."};
+	public List<String> 모레강수확률_list = Arrays.asList(모레강수확률);  
+	public Set<String> 모레강수확률_set = new HashSet<String>(Arrays.asList(모레강수확률));
+	
 }

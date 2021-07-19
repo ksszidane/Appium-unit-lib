@@ -149,7 +149,7 @@ public class Chips_TestCase {
 		
 		adb.ADB_cellular_On(udid);
 		adb.ADB_GPS_On(udid);
-		//adb.ADB_ScreenLock(udid); //시나리오 테스트 진핸 완료 후에는 주석 풀기
+		adb.ADB_ScreenLock(udid); //빌드할때와 시나리오 테스트 진핸 완료 후에는 주석 풀기
 		
 	}
 

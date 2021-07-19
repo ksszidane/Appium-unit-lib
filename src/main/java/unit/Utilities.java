@@ -32,16 +32,21 @@ import java.io.BufferedReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.ZoneId;
+import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
@@ -297,23 +302,156 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        
 	}
 	
+	public int getHour() {
+		int xInt = 0;
+		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"),Locale.KOREA);
+		SimpleDateFormat form = new SimpleDateFormat("H");
+		xInt = Integer.parseInt(form.format(cal.getTime()));
+		return xInt;
+	}
+	
+	public String Hour00to18() throws Exception {
+		String section = "" ;
+		int xInt = getHour();
+		
+		if (0 < xInt && xInt < 18 ) {
+			section = "A구간";
+		} else if (18 < xInt && xInt < 24) {
+			section = "B구간";
+		}
+		
+		return section;
+	}
+	
 	/**
 	 * 현재 날짜 및 시간 정보 [yyyy.MM.dd_HH:mm:ss]
 	 * @throws Exception - Exception
 	 */
 	public String getDate() {
 		
-		Calendar cal = Calendar.getInstance();
+		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"),Locale.KOREA);
 		SimpleDateFormat form = new SimpleDateFormat("[yyyy.MM.dd_HH:mm:ss]");
 		return form.format(cal.getTime());	
 	}
 	
 	public String getSimpleDate() {
 		
-		Calendar cal = Calendar.getInstance();
+		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"),Locale.KOREA);
 		SimpleDateFormat form = new SimpleDateFormat("yyMMdd");
 		return form.format(cal.getTime());	
 	}
+	
+	public String getKoreaDate() {
+		
+		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"),Locale.KOREA);
+		SimpleDateFormat form = new SimpleDateFormat("M월 d일");
+		return form.format(cal.getTime());	
+		
+	}
+	
+	public String getJustYesterdayDate() {
+		
+		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"),Locale.KOREA);
+		SimpleDateFormat form = new SimpleDateFormat("M월 d일");
+		cal.add(Calendar.DATE, -1);
+		return form.format(cal.getTime());	
+	}
+	
+	public String getChangePreviousDate(int date) {
+		
+		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"),Locale.KOREA);
+		SimpleDateFormat form = new SimpleDateFormat("M월 d일");
+		cal.add(Calendar.DATE, date);
+		return form.format(cal.getTime());	
+	}
+	
+	/**
+	 * 특정 날짜에 대하여 요일을 구함(일 ~ 토)
+	 * @param date 금일기준의 +/- 일자 0이면 오늘
+	 * @return
+	 * @throws Exception
+	 */
+	public String getDayOfWeek(int date) throws Exception {
+	 
+	    String day = "" ;
+	     
+	    Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"),Locale.KOREA) ;
+	    cal.add(Calendar.DATE, date);
+	     
+	    int dayNum = cal.get(Calendar.DAY_OF_WEEK) ;
+
+	    switch(dayNum){
+	        case 1:
+	            day = "일";
+	            break ;
+	        case 2:
+	            day = "월";
+	            break ;
+	        case 3:
+	            day = "화";
+	            break ;
+	        case 4:
+	            day = "수";
+	            break ;
+	        case 5:
+	            day = "목";
+	            break ;
+	        case 6:
+	            day = "금";
+	            break ;
+	        case 7:
+	            day = "토";
+	            break ;
+	             
+	    }
+	    return day ;
+	}
+	
+	public String getWeekSaturday() throws Exception {
+		
+		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"),Locale.KOREA);
+		SimpleDateFormat form = new SimpleDateFormat("M월 d일");
+		cal.set(Calendar.DAY_OF_WEEK,Calendar.SATURDAY);
+		return form.format(cal.getTime());	
+	}
+	
+	public String getNextWeekSaturday() throws Exception {
+		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"),Locale.KOREA);
+		SimpleDateFormat form = new SimpleDateFormat("M월 d일");
+		cal.add(Calendar.DATE, 7);
+		cal.set(Calendar.DAY_OF_WEEK,Calendar.SATURDAY);
+		return form.format(cal.getTime());	
+	}
+	
+	public int calDateBetweenAandB() throws Exception {
+		
+		int xInt = 0;
+		
+	    try{ 
+
+			SimpleDateFormat form = new SimpleDateFormat("M월 d일");
+	 
+	        Date FirstDate = form.parse(this.getKoreaDate());
+	        Date SecondDate = form.parse(this.getNextWeekSaturday());
+	
+	        long calDate = FirstDate.getTime() - SecondDate.getTime(); 
+	        
+	        long calDateDays = calDate / ( 24*60*60*1000); 
+	 
+	        calDateDays = Math.abs(calDateDays);
+	        
+	        System.out.println("두 날짜의 날짜 차이: "+calDateDays);
+	        xInt = Long.valueOf(calDateDays).intValue();
+	        
+	        }
+	        catch(ParseException e)
+	        {
+	            // 예외 처리
+	        }
+	    return xInt;
+	}    
+	
+	
 	
 	/** 
 	 * 무작위 숫자 생성
@@ -1487,7 +1625,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        		System.out.println("서버 조건 불만족");
        	}
        	
-       	Thread.sleep(7000);
+       	Thread.sleep(8000);
 
        }
     
@@ -1664,6 +1802,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         return today;
     }
     
+    
+    
     public String Time_HOUR_after() throws Exception {
     	
     	String today = null; 	 
@@ -1699,6 +1839,115 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         String server = null;
         String urlStr = null;
         int size = 3;
+        int repeat = 1;
+        
+        if(Server.equals("PRD")) {
+        	server = "prd";
+        } else if (Server.equals("STG")) {
+        	server = "stg";
+        } else if (Server.equals("RTG")) {
+        	server = "rtg";
+        }
+        
+        System.out.println("오늘날짜 : " + today);
+        System.out.println("대상서버 : " + server);
+    	
+        if(Place.equals("in")) {
+        	//사내망에서는 http://172.27.97.221:7090
+        	urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	System.out.println(urlStr);
+        	
+        } else if (Place.equals("out")) {
+        	//vpn으로는 http://10.40.89.245:8190
+        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	System.out.println(urlStr);
+        }
+        
+    	
+    	URL url = new URL(urlStr);
+    	Request request = new Request.Builder()
+        		.url(url) 
+                .addHeader("Authorization", "Bearer " + access_token)
+                .get()
+                .build();
+		
+        Response response = httpClient.newCall(request).execute();
+
+        // Get response body
+		//System.out.println(response.body().string());
+        String api_get_result = response.body().string();
+    	
+    	BufferedReader bf; 
+    	String line = ""; 
+    	
+    	int x = 0;
+    	String[] tts_strip = new String[size*repeat];
+    	//String[] tts_strip = new String[size];
+    	
+    	for (int y=0; y < repeat; y++) {
+    		Thread.sleep(2000);
+    		
+    		String result=""; 
+    		InputStream is = new ByteArrayInputStream(api_get_result.getBytes());
+			bf = new BufferedReader(new InputStreamReader(is)); 
+        	
+        	while((line=bf.readLine())!=null) { 
+        		result=result.concat(line); 
+        		//System.out.println(result); 
+        	}
+        	
+        	
+        	JSONParser parser = new JSONParser(); 
+        	JSONObject obj = (JSONObject) parser.parse(result);
+        	
+        	JSONArray parse_data_list = (JSONArray) obj.get("data");
+        	//System.out.println("parse_data_list.size() : " + parse_data_list.size()); 
+        	
+        	JSONObject data;
+        	
+        	for(int i = 0 ; i < parse_data_list.size(); i++) { 
+        		data = (JSONObject) parse_data_list.get(i);
+        			
+        		JSONObject parse_source = (JSONObject) data.get("_source");
+        		JSONObject parse_item = (JSONObject) parse_source.get("item");
+        		
+        		tts_strip[i] = (String) parse_item.get("tts_strip");
+        		tts_strip[x] = (String) parse_item.get("tts_strip");
+        		x++;
+
+        	}
+    	}
+    	
+    	
+    	//System.out.println(Arrays.deepToString(tts_strip));
+    	
+    	for(String str:tts_strip) {
+    		//System.out.println(str); 
+    	}
+    
+    	logArray = tts_strip;
+    	
+    	String tts = Arrays.deepToString(logArray);
+    	System.out.println(tts);
+		return tts;
+
+    }
+    
+    public String TTS_JsonParsing_delay(String userID, String deviceID, String Server, String Place, int time) throws Exception {
+    	
+    	String access_token = NUGU_Insight_Token(Place);
+    	
+    	Thread.sleep(time);
+    	
+    	Calendar calendar = Calendar.getInstance();
+        java.util.Date date = calendar.getTime();
+        String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+        
+        String logArray[];    
+        
+        String server = null;
+        String urlStr = null;
+        int size = 1;
         int repeat = 1;
         
         if(Server.equals("PRD")) {
