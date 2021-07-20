@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import junit.framework.Assert;
+
 public class data {
 	
 	public static String 홈카드페이지이동카드 [] = {"지점을 등록하고", "피자가 생각날 땐", "11번가 초이스!", "재미로 보는 오늘의 운세", "운동할 때 뭐 듣지?", 
@@ -102,5 +104,32 @@ public class data {
 	public static String 모레강수확률 [] = {"비가 오지 않을 것 같아요.", "비가 올 것 같네요."};
 	public List<String> 모레강수확률_list = Arrays.asList(모레강수확률);  
 	public Set<String> 모레강수확률_set = new HashSet<String>(Arrays.asList(모레강수확률));
+	
+	public boolean 습도지수체크(String tts) throws Exception {
+		boolean result = false;
+		String str1 = tts;          
+		str1 = str1.substring(str1.indexOf("습도는 "), str1.indexOf("%"));
+		str1 = str1.replace("습도는 ", "");
+		int i = Integer.parseInt(str1);
+		
+		if (0 < i && i <= 15) {
+			Assert.assertTrue(tts.contains("매우 건조해요."));
+			result = true;
+		} else if (15 < i && i < 30) {
+			Assert.assertTrue(tts.contains("건조해요."));
+			result = true;
+		} else if (30 < i && i <= 70 ) {
+			Assert.assertTrue(tts.contains("에요."));
+			result = true;
+		} else if (70 < i && i <= 85) {
+			Assert.assertTrue(tts.contains("다소 습해요."));
+			result = true;
+		} else if (85 < i) {
+			Assert.assertTrue(tts.contains("매우 습해요."));
+			result = true;
+		}
+		return result;
+	}
+	
 	
 }

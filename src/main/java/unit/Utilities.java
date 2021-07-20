@@ -310,16 +310,80 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		return xInt;
 	}
 	
+	public int getMonth() {
+		int xInt = 0;
+		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"),Locale.KOREA);
+		SimpleDateFormat form = new SimpleDateFormat("M");
+		xInt = Integer.parseInt(form.format(cal.getTime()));
+		return xInt;
+	}
+	public int getMonthDay() {
+		int xInt = 0;
+		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"),Locale.KOREA);
+		SimpleDateFormat form = new SimpleDateFormat("MMdd");
+		xInt = Integer.parseInt(form.format(cal.getTime()));
+		return xInt;
+	}
+	
 	public String Hour00to18() throws Exception {
 		String section = "" ;
 		int xInt = getHour();
 		
-		if (0 < xInt && xInt < 18 ) {
+		if (0 <= xInt && xInt < 18 ) {
 			section = "A구간";
-		} else if (18 < xInt && xInt < 24) {
+		} else if (18 <= xInt && xInt < 24) {
 			section = "B구간";
 		}
+		return section;
+	}
+	
+	public String Hour00to06() throws Exception {
+		String section = "" ;
+		int xInt = getHour();
 		
+		if (0 <= xInt && xInt < 6 ) {
+			section = "A구간";
+		} else if (6 <= xInt && xInt < 24) {
+			section = "B구간";
+		}
+		return section;
+	}
+	
+	public String Month5to9() throws Exception {
+		String section = "" ;
+		int xInt = getMonth();
+		
+		if (5 <= xInt && xInt <= 9 ) {
+			section = "A구간";
+		} else {
+			section = "B구간";
+		}
+		return section;
+	}
+	
+	public String Month4to11() throws Exception {
+		String section = "" ;
+		int xInt = getMonth();
+		
+		if (4 <= xInt && xInt <= 11 ) {
+			section = "A구간";
+		} else {
+			section = "B구간";
+		}
+		return section;
+	}
+	
+	public String Month1015to90415() throws Exception {
+		String section = "" ;
+		int xInt = getMonthDay();
+		
+		if (1014 < xInt && xInt <= 1231 ) {
+			section = "B구간";
+		} else if (0101 <= xInt && xInt < 0415 ) {
+			section = "C구간";
+		} else {
+			section = "A구간";
+		}
 		return section;
 	}
 	
@@ -421,6 +485,24 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		cal.add(Calendar.DATE, 7);
 		cal.set(Calendar.DAY_OF_WEEK,Calendar.SATURDAY);
 		return form.format(cal.getTime());	
+	}
+	
+	public String compare9Time() throws ParseException {
+		String section = "" ;
+		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"),Locale.KOREA);
+		Date getTime = cal.getTime();
+	    
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+	    Date date1 = sdf.parse("00:00:00");
+		Date date2 = sdf.parse("09:00:00");
+
+	    if(getTime.after(date1) && getTime.before(date2)){
+	    	section = "9시이전";
+	    } else {
+	    	section = "9시이후";
+	    }
+	    return section;
+	   
 	}
 	
 	public int calDateBetweenAandB() throws Exception {
