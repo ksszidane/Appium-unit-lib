@@ -131,5 +131,13 @@ public class data {
 		return result;
 	}
 	
+	public static String 백과도움말 [] = {"구 백과가 궁금하신 정보를 알려드릴게요.", "누구 백과에서 검색하시려면"};
+	public List<String> 백과도움말_list = Arrays.asList(백과도움말);  
+	public Set<String> 백과도움말_set = new HashSet<String>(Arrays.asList(백과도움말));
+	
+	public static String 삼성증권도움말 [] = {"내 주식은 얼마나 올랐을까 궁금하세요? 에스케이텔레콤 주식시세 알려줘라고 말씀해 주세요.", "종합주가지수 알려줘라고 말씀하시면 현재 코스피, 코스닥 지수를 알려 드릴게요.", "삼성증권에서는 주식 종목 추천 서비스를 제공해드리고 있어요. \"주식 추천해줘\"라고 말씀해주세요."};
+	public List<String> 삼성증권도움말_list = Arrays.asList(삼성증권도움말);  
+	public Set<String> 삼성증권도움말_set = new HashSet<String>(Arrays.asList(삼성증권도움말));
+	
 	
 }

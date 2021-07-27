@@ -84,6 +84,11 @@ import org.testng.Reporter;
 import org.testng.SkipException;
 import org.testng.annotations.Parameters;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.Connection;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import static org.testng.Assert.fail;
 
@@ -302,10 +307,27 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        
 	}
 	
+	public String getTime() {
+		
+		Calendar cal = Calendar.getInstance();
+		//SimpleDateFormat form = new SimpleDateFormat("yyyy.MM.dd-");
+		SimpleDateFormat form = new SimpleDateFormat("yyyyMMddHHmmss");
+		
+		return form.format(cal.getTime());	
+	}
+	
 	public int getHour() {
 		int xInt = 0;
 		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"),Locale.KOREA);
 		SimpleDateFormat form = new SimpleDateFormat("H");
+		xInt = Integer.parseInt(form.format(cal.getTime()));
+		return xInt;
+	}
+	
+	public int getHourMinute() {
+		int xInt = 0;
+		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"),Locale.KOREA);
+		SimpleDateFormat form = new SimpleDateFormat("Hmm");
 		xInt = Integer.parseInt(form.format(cal.getTime()));
 		return xInt;
 	}
@@ -323,6 +345,21 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		SimpleDateFormat form = new SimpleDateFormat("MMdd");
 		xInt = Integer.parseInt(form.format(cal.getTime()));
 		return xInt;
+	}
+	
+	public String StockTimeTable() throws Exception {
+		String section = "" ;
+		int xInt = getHourMinute();
+		System.out.println(xInt);
+		
+		if (0 <= xInt && xInt < 900 ) {
+			section = "장전";
+		} else if (900 <= xInt && xInt < 1530) {
+			section = "장중";
+		} else {
+			section = "장종";
+		}
+		return section;
 	}
 	
 	public String Hour00to18() throws Exception {
@@ -486,20 +523,53 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		cal.set(Calendar.DAY_OF_WEEK,Calendar.SATURDAY);
 		return form.format(cal.getTime());	
 	}
+	public String getLastWeekSunday() throws Exception {
+		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"),Locale.KOREA);
+		SimpleDateFormat form = new SimpleDateFormat("M월 d일");
+		cal.add(Calendar.DATE, 0);
+		cal.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
+		return form.format(cal.getTime());	
+	}
 	
 	public String compare9Time() throws ParseException {
 		String section = "" ;
 		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"),Locale.KOREA);
-		Date getTime = cal.getTime();
 	    
-		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-	    Date date1 = sdf.parse("00:00:00");
-		Date date2 = sdf.parse("09:00:00");
-
-	    if(getTime.after(date1) && getTime.before(date2)){
+		SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+	    Date time = format.parse(format.format(cal.getTime()));
+		Date date1 = format.parse("00:00:00");
+		Date date2 = format.parse("09:00:00");
+		
+		System.out.println(time);
+		System.out.println(date1);
+		System.out.println(date2);
+		
+	    if(time.after(date1) && time.before(date2)){
 	    	section = "9시이전";
 	    } else {
 	    	section = "9시이후";
+	    }
+	    return section;
+	   
+	}
+	
+	public String compare12Time() throws ParseException {
+		String section = "" ;
+		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"),Locale.KOREA);
+	    
+		SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+	    Date time = format.parse(format.format(cal.getTime()));
+		Date date1 = format.parse("00:00:00");
+		Date date2 = format.parse("12:00:00");
+		
+		System.out.println(time);
+		System.out.println(date1);
+		System.out.println(date2);
+		
+	    if(time.after(date1) && time.before(date2)){
+	    	section = "12시이전";
+	    } else {
+	    	section = "12시이후";
 	    }
 	    return section;
 	   
@@ -1426,15 +1496,6 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	public String printClassName(Object obj) {
         return (obj.getClass().getName());
     }
-	
-    public String getTime() {
-		
-		Calendar cal = Calendar.getInstance();
-		//SimpleDateFormat form = new SimpleDateFormat("yyyy.MM.dd-");
-		SimpleDateFormat form = new SimpleDateFormat("yyyyMMddHHmmss");
-		
-		return form.format(cal.getTime());	
-	}
     
     public String ErrorScreenshots(WebElement webElement,String screenShotName) throws IOException
     {
@@ -1911,6 +1972,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String access_token = NUGU_Insight_Token(Place);
     	
     	Thread.sleep(7000);
+    	String transaction_id="";
     	
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
@@ -1978,7 +2040,6 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         		//System.out.println(result); 
         	}
         	
-        	
         	JSONParser parser = new JSONParser(); 
         	JSONObject obj = (JSONObject) parser.parse(result);
         	
@@ -1995,6 +2056,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         		
         		tts_strip[i] = (String) parse_item.get("tts_strip");
         		tts_strip[x] = (String) parse_item.get("tts_strip");
+        		transaction_id = (String) parse_item.get("transaction_id");
+        		System.out.println("transaction_id : " + transaction_id);
         		x++;
 
         	}
@@ -2010,7 +2073,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	logArray = tts_strip;
     	
     	String tts = Arrays.deepToString(logArray);
-    	System.out.println(tts);
+    	System.out.println("tts : " + tts);
 		return tts;
 
     }
@@ -2020,6 +2083,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String access_token = NUGU_Insight_Token(Place);
     	
     	Thread.sleep(time);
+    	String transaction_id="";
     	
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
@@ -2104,6 +2168,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         		
         		tts_strip[i] = (String) parse_item.get("tts_strip");
         		tts_strip[x] = (String) parse_item.get("tts_strip");
+        		transaction_id = (String) parse_item.get("transaction_id");
+        		System.out.println("transaction_id : " + transaction_id);
         		x++;
 
         	}
@@ -2119,7 +2185,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	logArray = tts_strip;
     	
     	String tts = Arrays.deepToString(logArray);
-    	System.out.println(tts);
+    	System.out.println("tts : " + tts);
 		return tts;
 
     }
@@ -2133,6 +2199,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
         
         String logArray[];    
+        String transaction_id="";
         
         String server = null;
         String urlStr = null;
@@ -2211,6 +2278,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         		
         		tts_strip[i] = (String) parse_item.get("tts_strip");
         		tts_strip[x] = (String) parse_item.get("tts_strip");
+        		transaction_id = (String) parse_item.get("transaction_id");
+        		System.out.println("transaction_id : " + transaction_id);
         		x++;
 
         	}
@@ -2228,7 +2297,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String s = Arrays.deepToString(logArray);
     	String s1 = s.replace("[", "");
     	String tts = s1.replace("]", "");
-    	System.out.println(tts);
+    	System.out.println("tts : " + tts);
 		return tts;
 		
     }
@@ -2242,6 +2311,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
         
         String logArray[];    
+        String transaction_id="";
         
         String server = null;
         String urlStr = null;
@@ -2321,6 +2391,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         		
         		tts_strip[i] = (String) parse_item.get("tts_strip");
         		tts_strip[x] = (String) parse_item.get("tts_strip");
+        		transaction_id = (String) parse_item.get("transaction_id");
+        		System.out.println("transaction_id : " + transaction_id);
         		x++;
 
         	}
@@ -2336,7 +2408,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	logArray = tts_strip;
     	
     	String tts = Arrays.deepToString(logArray);
-    	System.out.println(tts);
+    	System.out.println("tts : " + tts);
 		return tts;
 
     }
@@ -3573,9 +3645,9 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		
 		Thread.sleep(500);
 		try {	
-			if(this.isElementPresent(By.id("close"))) {
+			if(this.isElementPresent(By.xpath("//android.support.v7.widget.RecyclerView/android.view.ViewGroup/android.widget.ImageView"))) {
 				System.out.println("play 카드 [있음] - 카드 닫기");
-				this.click(By.id("close"));
+				this.click(By.xpath("//android.support.v7.widget.RecyclerView/android.view.ViewGroup/android.widget.ImageView"));
 
 			} else {
 				System.out.println("play 카드 [없음]");
@@ -3607,5 +3679,49 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		
 	}
 	
+	public String Naver_Stock_Crawler_rise(String sise) throws Exception {
+		
+		String URL = "";
+		String stock = "";
+		
+		 if(sise.equals("상승")) {
+			 URL = "https://finance.naver.com/sise/sise_rise.nhn";
+			 System.out.println(URL);	
+	     } else if (sise.equals("하락")) {
+	    	 URL = "https://finance.naver.com/sise/sise_fall.nhn";
+	     } else if (sise.equals("보합")) {
+	    	 URL = "https://finance.naver.com/sise/sise_steady.nhn";
+	     } else if (sise.equals("정지")) {
+	    	 URL = "https://finance.naver.com/sise/trading_halt.nhn";
+	     }
+        try {
+        	int sum = 0;
+            Connection conn = Jsoup.connect(URL);
+            Document html = conn.get(); // conn.post();
+            
+            Elements fileblocks = html.getElementsByClass("tltle");
+            for( Element fileblock : fileblocks ) {
+            	sum += 1;
+            	Elements files = fileblock.getElementsByTag("a");
+                String text = files.text();
+                
+                System.out.println(sise+" 종목 : "+ text );
+                stock = text;
+                if (sum == 1) {
+                	 break;  
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return stock;
+    }
+	
+
+	
+
+	
+
+		
 
 }
