@@ -118,13 +118,13 @@ public class data {
 		} else if (15 < i && i < 30) {
 			Assert.assertTrue(tts.contains("건조해요."));
 			result = true;
-		} else if (30 < i && i <= 70 ) {
+		} else if (30 <= i && i <= 70 ) {
 			Assert.assertTrue(tts.contains("에요."));
 			result = true;
-		} else if (70 < i && i <= 85) {
+		} else if (70 < i && i < 85) {
 			Assert.assertTrue(tts.contains("다소 습해요."));
 			result = true;
-		} else if (85 < i) {
+		} else if (85 <= i) {
 			Assert.assertTrue(tts.contains("매우 습해요."));
 			result = true;
 		}

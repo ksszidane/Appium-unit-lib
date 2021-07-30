@@ -3645,9 +3645,9 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		
 		Thread.sleep(500);
 		try {	
-			if(this.isElementPresent(By.xpath("//android.support.v7.widget.RecyclerView/android.view.ViewGroup/android.widget.ImageView"))) {
+			if(this.isElementPresent(By.id("close"))) {
 				System.out.println("play 카드 [있음] - 카드 닫기");
-				this.click(By.xpath("//android.support.v7.widget.RecyclerView/android.view.ViewGroup/android.widget.ImageView"));
+				this.click(By.id("close"));
 
 			} else {
 				System.out.println("play 카드 [없음]");
