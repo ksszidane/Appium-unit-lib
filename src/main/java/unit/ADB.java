@@ -65,15 +65,21 @@ public class ADB {
 	public void ADB_WakeUpDevice(String Device) throws Exception {
 		
 		runCommand("adb -s "+Device+" shell input keyevent KEYCODE_WAKEUP");
-		System.out.println("adb -s "+Device+" shell input keyevent 26");
-		runCommand("adb -s "+Device+" shell input keyevent 82");
-		System.out.println("adb -s "+Device+" shell input keyevent 82");
+		System.out.println("adb -s "+Device+" shell input KEYCODE_WAKEUP");
+		//runCommand("adb -s "+Device+" shell input keyevent 82");
+		//System.out.println("adb -s "+Device+" shell input keyevent 82");
 	}
 	
 	public void ADB_ScreenLock(String Device) throws Exception {
 		
 		runCommand("adb -s "+Device+" shell input keyevent 26");
 		System.out.println("adb -s "+Device+" shell input keyevent 26");
+	}
+	
+	public void ADB_AppStop(String Device, String PakageName) throws Exception {
+		
+		runCommand("adb -s "+Device+" shell pm clear" + PakageName);
+		System.out.println("adb -s "+Device+" shell pm clear" + PakageName);
 	}
 	
 	public void ADB_WiFi_Off(String Device) throws Exception {
