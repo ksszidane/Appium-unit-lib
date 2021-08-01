@@ -154,7 +154,38 @@ public class ADB {
 		System.out.println("adb -s "+Device+" shell pm grant com.skt.aladdin android.permission.ACCESS_COARSE_LOCATION");
 		Thread.sleep(1000);
 		
+	}
+	
+	public void ChipsApp_permission_LOCATION_On(String Device) throws Exception {
 		
+		runCommand("adb -s "+Device+" shell pm grant com.skt.aidev.nugufriends android.permission.ACCESS_FINE_LOCATION");
+		//System.out.println("adb -s "+Device+" shell pm grant com.skt.aladdin android.permission.ACCESS_FINE_LOCATION"); //사용하는 동안
+		System.out.println("adb -s "+Device+" shell pm grant com.skt.aidev.nugufriends android.permission.ACCESS_FINE_LOCATION"); //항상
+		Thread.sleep(1000);
+	}
+	
+	public void ChipsApp_permission_LOCATION_Off(String Device) throws Exception {
+		
+		runCommand("adb -s "+Device+" shell pm revoke com.skt.aidev.nugufriends android.permission.ACCESS_FINE_LOCATION");
+		//System.out.println("adb -s "+Device+" shell pm revoke com.skt.aladdin android.permission.ACCESS_FINE_LOCATION"); //사용하는 동안
+		System.out.println("adb -s "+Device+" shell pm revoke com.skt.aidev.nugufriends android.permission.ACCESS_FINE_LOCATION"); //항상
+		Thread.sleep(1000);
+	}
+	
+	public void ChipsApp_permission_MIC_On(String Device) throws Exception {
+		
+		runCommand("adb -s "+Device+" shell pm grant com.skt.aidev.nugufriends android.permission.RECORD_AUDIO");
+		//System.out.println("adb -s "+Device+" shell pm grant com.skt.aladdin android.permission.ACCESS_FINE_LOCATION"); //사용하는 동안
+		System.out.println("adb -s "+Device+" shell pm grant com.skt.aidev.nugufriends android.permission.RECORD_AUDIO"); //항상
+		Thread.sleep(1000);
+	}
+	
+	public void ChipsApp_permission_MIC_Off(String Device) throws Exception {
+		
+		runCommand("adb -s "+Device+" shell pm revoke com.skt.aidev.nugufriends android.permission.RECORD_AUDIO");
+		//System.out.println("adb -s "+Device+" shell pm revoke com.skt.aladdin android.permission.ACCESS_FINE_LOCATION"); //사용하는 동안
+		System.out.println("adb -s "+Device+" shell pm revoke com.skt.aidev.nugufriends android.permission.RECORD_AUDIO"); //항상
+		Thread.sleep(1000);
 	}
 
 }
