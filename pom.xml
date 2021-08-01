@@ -3,7 +3,7 @@
   
   <groupId>com.github.ksszidane</groupId>
   <artifactId>Appium-unit-lib</artifactId>
-  <version>1.0.24</version>
+  <version>1.0.25</version>
   <packaging>jar</packaging>
   
   <name>Appium-unit-lib</name>
@@ -319,7 +319,7 @@
         		<message>Creating site for ${project.version}</message>
         		<noJekyll>true</noJekyll>
         		<outputDirectory>${project.build.directory}/mvn-repo</outputDirectory>
-				<branch>refs/origin/mvn-repo</branch>
+				<branch>refs/heads/mvn-repo</branch>
 				<includes>
 					<include>**/*</include>
 				</includes>
