@@ -3647,7 +3647,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		try {	
 			if(this.isElementPresent(By.id("close"))) {
 				System.out.println("play 카드 [있음] - 카드 닫기");
-				this.click(By.id("close"));
+				this.click(By.id("com.skt.aidev.nugufriends:id/close"));
 
 			} else {
 				System.out.println("play 카드 [없음]");
