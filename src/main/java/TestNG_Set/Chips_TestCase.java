@@ -101,7 +101,7 @@ public class Chips_TestCase {
 	@BeforeMethod
 	public void BeforeMethod(Method method) throws Exception {
 		System.out.println("\n - method name :" + method.getName() + " 시작 \n");
-		test = extent.createTest(method.getName()+" | "+OS_ClassName, ServerName).assignCategory(ProjectName+" | "+OS_ClassName+" | "+ServerName);
+		extent.createTest(method.getName()+" | "+OS_ClassName, ServerName).assignCategory(ProjectName+" | "+OS_ClassName+" | "+ServerName);
 		
 	}
 	
