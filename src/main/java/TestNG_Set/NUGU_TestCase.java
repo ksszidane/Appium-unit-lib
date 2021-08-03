@@ -13,13 +13,14 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
 
-import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+import com.aventstack.extentreports.ExtentReporter;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 
 import NUGU_data.data;
 import unit.Capabilities;
+import unit.ExtentManager;
 import unit.Utilities;
 import unit.ADB;
 
@@ -34,8 +35,6 @@ public class NUGU_TestCase {
 	public ADB adb;
 	
 	public static final data data = new data();
-	
-	private static String filePath = "./extentreport.html";
 	
 	public String OS_ClassName;
 	public String OS;
@@ -104,9 +103,7 @@ public class NUGU_TestCase {
 		
 		adb.ADB_SetCommand(udid);
 		
-		ExtentReports extent = new ExtentReports();
-        ExtentSparkReporter spark = new ExtentSparkReporter(filePath);
-        extent.attachReporter(spark);
+		extent = ExtentManager.GetExtent();
 		
 		capability = Capabilities.gridSetUp(OS, MobileDevice, AppName);		
 		util = new Utilities(hubAddress, capability);
