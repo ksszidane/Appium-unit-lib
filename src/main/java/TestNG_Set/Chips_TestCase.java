@@ -80,7 +80,7 @@ public class Chips_TestCase {
 		
 		adb.ADB_SetCommand(udid);
 		
-		ExtentReports extent = new ExtentReports();
+		extent = new ExtentReports();
         ExtentSparkReporter spark = new ExtentSparkReporter(filePath);
         extent.attachReporter(spark);
 		
@@ -101,7 +101,7 @@ public class Chips_TestCase {
 	@BeforeMethod
 	public void BeforeMethod(Method method) throws Exception {
 		System.out.println("\n - method name :" + method.getName() + " 시작 \n");
-		extent.createTest(method.getName()+" | "+OS_ClassName, ServerName).assignCategory(ProjectName+" | "+OS_ClassName+" | "+ServerName);
+		test = extent.createTest(method.getName()+" | "+OS_ClassName, ServerName).assignCategory(ProjectName+" | "+OS_ClassName+" | "+ServerName);
 		
 	}
 	
