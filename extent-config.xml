@@ -3,7 +3,7 @@
     <configuration>
         <!-- report theme -->
         <!-- standard, dark -->
-        <theme>standard</theme>
+        <theme>dark</theme>
     
         <!-- document encoding -->
         <!-- defaults to UTF-8 -->
@@ -18,6 +18,14 @@
         
         <!-- report name - displayed at top-nav -->
         <reportName>Regression</reportName>
+        
+        <!-- global date format override -->
+   		<!-- defaults to yyyy-MM-dd -->
+    	<dateFormat>yyyy-MM-dd</dateFormat>
+    
+    	<!-- global time format override -->
+    	<!-- defaults to HH:mm:ss -->
+    	<timeFormat>HH:mm:ss</timeFormat>
         
         <!-- location of charts in the test view -->
         <!-- top, bottom -->

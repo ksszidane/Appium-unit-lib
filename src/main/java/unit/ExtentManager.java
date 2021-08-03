@@ -43,7 +43,7 @@ public class ExtentManager {
         htmlReporter.config().setChartVisibilityOnOpen(true);
 		
         htmlReporter.config().setDocumentTitle("QA report");
-        htmlReporter.config().setReportName(" automation");
+        htmlReporter.config().setReportName("automation");
         
      // chart location - top, bottom
         htmlReporter.config().setTestViewChartLocation(ChartLocation.TOP);
