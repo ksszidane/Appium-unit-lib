@@ -7,6 +7,7 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.testng.annotations.Parameters;
 
 import com.aventstack.extentreports.AnalysisStrategy;
 import com.aventstack.extentreports.ExtentReports; //3.x
@@ -24,15 +25,19 @@ public class ExtentManager {
 	
 	private static final ExtentReports extentReports = new ExtentReports();
 	
-    public synchronized static ExtentReports getExtentReports() {
+    public synchronized static ExtentReports getExtentReports(String OS, String AppName, String Server, String Project, String TestPlace) {
         ExtentSparkReporter reporter = new ExtentSparkReporter(filePath);
         reporter.config().setReportName("QA 자동화 테스트 결과");
         reporter.config().setDocumentTitle("QA 자동화 테스트 결과");
         reporter.config().setEncoding("UTF-8");
         reporter.config().setOfflineMode(true);
         extentReports.attachReporter(reporter);
-        extentReports.setSystemInfo("Blog Name", "SW Test Academy");
-        extentReports.setSystemInfo("Author", "Onur Baskirt");
+        
+        extentReports.setSystemInfo("OS", OS);
+        extentReports.setSystemInfo("AppName", AppName);
+        extentReports.setSystemInfo("ServerName", Server);
+        extentReports.setSystemInfo("Project", Project);
+        extentReports.setSystemInfo("Place", TestPlace);
         return extentReports;
     }
 	

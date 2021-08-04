@@ -103,7 +103,7 @@ public class NUGU_TestCase {
 		
 		adb.ADB_SetCommand(udid);
 		
-		extent = ExtentManager.getExtentReports();
+		extent = ExtentManager.getExtentReports(OS, AppName, Server, Project, TestPlace);
 		
 		capability = Capabilities.gridSetUp(OS, MobileDevice, AppName);		
 		util = new Utilities(hubAddress, capability);
