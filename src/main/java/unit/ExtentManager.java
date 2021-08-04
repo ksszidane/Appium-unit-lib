@@ -11,8 +11,8 @@ import org.openqa.selenium.WebDriver;
 import com.aventstack.extentreports.AnalysisStrategy;
 import com.aventstack.extentreports.ExtentReports; //3.x
 import com.aventstack.extentreports.ExtentTest; //3.x
-import com.aventstack.extentreports.reporter.ExtentHtmlReporter; //3.x
-import com.aventstack.extentreports.reporter.configuration.ChartLocation;
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 
 
 
@@ -20,35 +20,21 @@ public class ExtentManager {
 	
 	private static ExtentReports extent;
 	private static ExtentTest test;
-	private static ExtentHtmlReporter htmlReporter;
 	private static String filePath = "./extentreport.html";
 	
+	private static final ExtentReports extentReports = new ExtentReports();
 	
-	
-	public static ExtentReports GetExtent(){
-		if (extent != null)
-                    return extent; //avoid creating new instance of html file
-                extent = new ExtentReports();		
-		extent.attachReporter(getHtmlReporter());
-		
-		//extent.setAnalysisStrategy(AnalysisStrategy.TEST);
-		return extent;
-	}
- 
-	private static ExtentHtmlReporter getHtmlReporter() {
-	
-        htmlReporter = new ExtentHtmlReporter(filePath);
-		
-	// make the charts visible on report open
-        htmlReporter.config().setChartVisibilityOnOpen(true);
-		
-        htmlReporter.config().setDocumentTitle("QA report");
-        htmlReporter.config().setReportName("automation");
-        
-     // chart location - top, bottom
-        htmlReporter.config().setTestViewChartLocation(ChartLocation.TOP);
-        return htmlReporter;
-	}
+    public synchronized static ExtentReports getExtentReports() {
+        ExtentSparkReporter reporter = new ExtentSparkReporter(filePath);
+        reporter.config().setReportName("QA 자동화 테스트 결과");
+        reporter.config().setDocumentTitle("QA 자동화 테스트 결과");
+        reporter.config().setEncoding("UTF-8");
+        reporter.config().setOfflineMode(true);
+        extentReports.attachReporter(reporter);
+        extentReports.setSystemInfo("Blog Name", "SW Test Academy");
+        extentReports.setSystemInfo("Author", "Onur Baskirt");
+        return extentReports;
+    }
 	
 	public static ExtentTest createTest(String name, String description){
 		test = extent.createTest(name, description);

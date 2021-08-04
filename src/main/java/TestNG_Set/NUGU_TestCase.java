@@ -13,7 +13,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
 
-import com.aventstack.extentreports.ExtentReporter;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
@@ -103,7 +103,7 @@ public class NUGU_TestCase {
 		
 		adb.ADB_SetCommand(udid);
 		
-		extent = ExtentManager.GetExtent();
+		extent = ExtentManager.getExtentReports();
 		
 		capability = Capabilities.gridSetUp(OS, MobileDevice, AppName);		
 		util = new Utilities(hubAddress, capability);
