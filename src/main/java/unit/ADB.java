@@ -32,8 +32,6 @@ public class ADB {
 		ADB_stopADB();
 		ADB_startADB();
 		ADB_devices();
-		ADB_WakeUpDevice(Device);
-		ADB_GPS_On(Device);
 		
 	}
 	

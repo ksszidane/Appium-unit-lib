@@ -147,8 +147,6 @@ public class Chips_TestCase {
 		}
 		System.out.println("\n▒▒ Quit Suite : " + util.printClassName(this)+ " ▒▒\n");
 		
-		adb.ADB_cellular_On(udid);
-		adb.ADB_GPS_On(udid);
 		adb.ADB_AppStop(udid, "com.skt.aidev.nugufriends");
 		adb.ADB_ScreenLock(udid); //빌드할때와 시나리오 테스트 진핸 완료 후에는 주석 풀기
 		
