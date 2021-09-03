@@ -1560,7 +1560,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     @SuppressWarnings("unchecked")
 	public void sendPost(String command, String userID, String deviceID, String Server, String Place, String oAuth_Token) throws Exception {
     	
-    	System.out.println("sendPost 뭐라고 나오는지 찍어보자 : " + userID +" "+ deviceID +" "+ Server +" "+ Place +" "+ oAuth_Token);
+    	System.out.println("sendPost 발동 옵션: | 발화문 :  "+ command +" | 서버 : "+ Server +" | Auth_Token : "+ oAuth_Token);
     	
     	String CommandText = command;
     	
@@ -1603,7 +1603,6 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	// form parameters
     	@SuppressWarnings("deprecation")
 		RequestBody body = RequestBody.create(JSON, Main_jsonObject.toString());
-    	
 
     	if (Server.equals("PRD") && Place.equals("in")) {
     		System.out.println("PRD + in");

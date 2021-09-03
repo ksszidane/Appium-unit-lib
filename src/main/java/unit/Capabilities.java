@@ -86,6 +86,8 @@ public class Capabilities {
 			 
 			 capability.setCapability("appPackage", "com.skt.nugu.sampleapp");
 			 capability.setCapability("appActivity", "com.skt.nugu.sampleapp.activity.LoginActivity");
+			 
+			 capability.setCapability("noReset",true);
 		       
 			 
 		        
@@ -95,7 +97,7 @@ public class Capabilities {
 		     
 		     capability.setCapability("recreateChromeDriverSessions", false); 
 		     capability.setCapability("extractChromeAndroidPackageFromContextName", true); 
-		
+		     
 		     capability.setCapability("focused", true); 
 		     
 		     capability.setCapability("showChromedriverLog", true);
