@@ -52,10 +52,10 @@ public class SDK_TestCase {
 	
 
 	@Parameters({"OS", "AppName", "hubAddress", "Server", "Project", "TestPlace", "MobileDevice", 
-		"userID", "deviceID_SampleApp", "Auth_Token_SampleApp" })
+		"userID", "deviceID_SampleApp" })
 	@BeforeClass
 	public void setupClass (String OS, String AppName, String hubAddress, String Server, String Project, String TestPlace, String MobileDevice, 
-			String userID, String deviceID_SampleApp, String Auth_Token_SampleApp) throws Exception {
+			String userID, String deviceID_SampleApp) throws Exception {
 		
 		OS_ClassName = OS;
 		//Server = "Server : "+ Server;
@@ -66,7 +66,6 @@ public class SDK_TestCase {
 		App = AppName;
 		
 		SampleApp_did = deviceID_SampleApp;
-		SampleApp_token = Auth_Token_SampleApp;
 		uID = userID;
 		
 		adb = new ADB();
@@ -122,9 +121,9 @@ public class SDK_TestCase {
 	    
 	} 
 	
-	@Parameters({"Server", "AppName", "TestPlace", "MobileDevice", "userID", "deviceID_SampleApp", "Auth_Token_SampleApp"})
+	@Parameters({"Server", "AppName", "TestPlace", "MobileDevice", "userID", "deviceID_SampleApp"})
 	@AfterClass
-	public void tearDownClass(String Server, String AppName, String TestPlace, String MobileDevice, String userID, String deviceID_SampleApp, String Auth_Token_SampleApp) throws Exception {
+	public void tearDownClass(String Server, String AppName, String TestPlace, String MobileDevice, String userID, String deviceID_SampleApp) throws Exception {
 		
 		//util.sendPost("그만", userID_nuguqa001, deviceID_SampleApp, Server, Place, Auth_Token_SampleApp);
 		System.out.println("\n");

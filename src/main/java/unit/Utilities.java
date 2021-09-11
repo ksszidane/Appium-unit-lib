@@ -3335,6 +3335,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	
 	public String authToken_JsonParsing(String userID, String deviceID, String Server, String Place) throws Exception {
     	
+		Thread.sleep(12000);
+		
 		String access_token = NUGU_Insight_Token(Place);
 		
     	Calendar calendar = Calendar.getInstance();
@@ -3393,8 +3395,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	//String[] tts_strip = new String[size];
     	
     	
-    	for (int y=0; y < size; y++) {
-    		Thread.sleep(5000);	
+    	for (int y=0; y < size; y++) {	
     		
     		String result=""; 
     		InputStream is = new ByteArrayInputStream(api_get_result.getBytes());
@@ -3421,13 +3422,14 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         		JSONObject parse_item = (JSONObject) parse_source.get("item");
         		JSONObject api_event_in = (JSONObject) parse_item.get("api_event_in");
         		
-        		context_auth_token[i] = (String) api_event_in.get("context");
-        		context_auth_token[x] = (String) api_event_in.get("context");
+        		context_auth_token[i] = (String) api_event_in.get("event");
+        		context_auth_token[x] = (String) api_event_in.get("event");
         		x++;
         		
         		logArray = context_auth_token;
             	
             	String s = Arrays.deepToString(logArray);
+            	System.out.println(s);
             	String s1 = s.replace("[", "");
             	String s2 = s1.replace("]", "");
             	String s3 = s2.substring(0, s2.indexOf("-bitrate:"));
