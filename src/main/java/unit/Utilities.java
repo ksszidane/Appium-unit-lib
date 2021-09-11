@@ -3537,8 +3537,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         		JSONArray parse_headers_list = (JSONArray) directive_info.get("headers");
         		System.out.println("asdasdasdsa : " + parse_headers_list);
         		
-        		JSONArray jArray = new JSONArray();
-        		jArray.parse_headers_list.get(i);
+        		
         		
         		//directive_headers[i] = list.toString();
             	//directive_headers[x] = list.toString();
