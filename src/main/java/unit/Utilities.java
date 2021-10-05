@@ -3,7 +3,6 @@ package unit;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 
-
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidTouchAction;
@@ -2630,6 +2629,115 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		
     }
     
+    public String intent_JsonParsing(String userID, String deviceID, String Server, String Place ) throws Exception {
+    	
+    	String access_token = NUGU_Insight_Token(Place);
+    	
+    	Calendar calendar = Calendar.getInstance();
+        java.util.Date date = calendar.getTime();
+        String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+        
+        String logArray[];    
+        
+        String server = null;
+        String urlStr = null;
+        int size = 3;
+        int repeat = 1;
+        
+        if(Server.equals("PRD")) {
+        	server = "prd";
+        } else if (Server.equals("STG")) {
+        	server = "stg";
+        } else if (Server.equals("RTG")) {
+        	server = "rtg";
+        }
+        
+        System.out.println("오늘날짜 : " + today);
+        System.out.println("대상서버 : " + server);
+    	
+        if(Place.equals("in")) {
+        	//사내망에서는 http://172.27.97.221:7090
+        	urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	System.out.println(urlStr);
+        	
+        } else if (Place.equals("out")) {
+        	//vpn으로는 http://10.40.89.245:8190
+        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	System.out.println(urlStr);
+        }
+        
+    	URL url = new URL(urlStr);
+    	
+    	Request request = new Request.Builder()
+        		.url(url) 
+                .addHeader("Authorization", "Bearer " + access_token)
+                .get()
+                .build();
+		
+        Response response = httpClient.newCall(request).execute();
+
+        // Get response body
+		//System.out.println(response.body().string());
+        String api_get_result = response.body().string();
+    	
+    	BufferedReader bf; 
+    	String line = ""; 
+    	
+    	int x = 0;
+    	String[] intent = new String[size*repeat];
+    	//String[] tts_strip = new String[size];
+    	
+    	Thread.sleep(7000);
+    	for (int y=0; y < repeat; y++) {
+    		
+    		String result=""; 
+    		InputStream is = new ByteArrayInputStream(api_get_result.getBytes());
+			bf = new BufferedReader(new InputStreamReader(is)); 
+        	
+        	while((line=bf.readLine())!=null) { 
+        		result=result.concat(line); 
+        		//System.out.println(result); 
+        	}
+        	
+        	
+        	JSONParser parser = new JSONParser(); 
+        	JSONObject obj = (JSONObject) parser.parse(result);
+        	
+        	JSONArray parse_data_list = (JSONArray) obj.get("data");
+        	//System.out.println("parse_data_list.size() : " + parse_data_list.size()); 
+        	
+        	JSONObject data;
+        	
+        	for(int i = 0 ; i < parse_data_list.size(); i++) { 
+        		data = (JSONObject) parse_data_list.get(i);
+        			
+        		JSONObject parse_source = (JSONObject) data.get("_source");
+        		JSONObject parse_item = (JSONObject) parse_source.get("item");
+        		
+        		intent[i] = (String) parse_item.get("intent");
+        		intent[x] = (String) parse_item.get("intent");
+        		x++;
+
+        	}
+    	}
+    	
+    	
+    	//System.out.println(Arrays.deepToString(tts_strip));
+    	
+    	for(String str:intent) {
+    		//System.out.println(str); 
+    	}
+    
+    	logArray = intent;
+    	
+    	String s = Arrays.deepToString(logArray);
+    	String s1 = s.replace("[", "");
+    	String intent_String = s1.replace("]", "");
+    	System.out.println(intent_String);
+		return intent_String;
+		
+    }
+    
     public String context_JsonParsing(String userID, String deviceID, String Server, String Place ) throws Exception {
     	
     	String access_token = NUGU_Insight_Token(Place);
@@ -2969,7 +3077,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         String server = null;
         String urlStr = null;
         
-        int repeat = 2;
+        int repeat = 1;
         
         if(Server.equals("PRD")) {
         	server = "prd";
@@ -3014,7 +3122,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String[] audio_activity = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
-    	Thread.sleep(8000);
+    	Thread.sleep(12000);
     	for (int y=0; y < repeat; y++) {
     		Thread.sleep(2000);
     		
@@ -3442,9 +3550,9 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	return actn;
 	}
 	
-	public String directive_info_JsonParsing(String userID, String deviceID, String Server, String Place) throws Exception {
+	public String directive_JsonParsing(String userID, String deviceID, String Server, String Place) throws Exception {
     	
-		Thread.sleep(10000);
+		Thread.sleep(12000);
 		
 		String access_token = NUGU_Insight_Token(Place);
 		
@@ -3458,7 +3566,118 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         String urlStr = null;
         String actn = null; 
         
-        int size = 5;
+        int size = 6;
+        
+        if(Server.equals("PRD")) {
+        	server = "prd";
+        } else if (Server.equals("STG")) {
+        	server = "stg";
+        } else if (Server.equals("RTG")) {
+        	server = "rtg";
+        }  
+        
+        System.out.println("오늘날짜 : " + today);
+        System.out.println("대상서버 : " + server);
+    	
+        if(Place.equals("in")) {
+        	//사내망에서는 http://172.27.97.221:7090
+        	urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	System.out.println(urlStr);
+        	
+        } else if (Place.equals("out")) {
+        	//vpn으로는 http://10.40.89.245:8190
+        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	System.out.println(urlStr);
+        }
+
+    	URL url = new URL(urlStr);
+    	
+    	Request request = new Request.Builder()
+        		.url(url) 
+                .addHeader("Authorization", "Bearer " + access_token)
+                .get()
+                .build();
+		
+        Response response = httpClient.newCall(request).execute();
+
+        // Get response body
+		//System.out.println(response.body().string());
+        String api_get_result = response.body().string();
+    	
+    	BufferedReader bf; 
+    	String line = ""; 
+    	
+    	int x = 0;
+    	String[] directives = new String[size];
+    	//String[] tts_strip = new String[size];
+    	
+    	
+    	for (int y=0; y < 1; y++) {	
+    		
+    		Thread.sleep(1500);
+    		
+    		String result=""; 
+    		InputStream is = new ByteArrayInputStream(api_get_result.getBytes());
+			bf = new BufferedReader(new InputStreamReader(is)); 
+        	
+        	while((line=bf.readLine())!=null) { 
+        		result=result.concat(line); 
+        		//System.out.println(result); 
+        	}
+        	
+        	
+        	JSONParser parser = new JSONParser(); 
+        	JSONObject obj = (JSONObject) parser.parse(result);
+        	
+        	JSONArray parse_data_list = (JSONArray) obj.get("data");
+        	//System.out.println("parse_data_list.size() : " + parse_data_list.size()); 
+        	
+        	JSONObject data;
+        	
+        	for(int i = 0 ; i < parse_data_list.size(); i++) { 
+        		data = (JSONObject) parse_data_list.get(i);
+        			
+        		JSONObject parse_source = (JSONObject) data.get("_source");
+        		JSONObject parse_item = (JSONObject) parse_source.get("item");
+        		JSONObject api_event_out = (JSONObject) parse_item.get("api_event_out");
+        		
+        		directives[i] = (String) api_event_out.get("directives");
+        		directives[x] = (String) api_event_out.get("directives");
+        		x++;
+        		
+        		for(String str:directives) {
+            		//System.out.println(str); 
+            	}
+            
+            	logArray = directives;
+            	
+            	String s = Arrays.deepToString(logArray);
+            	String s1 = s.replace("[", "");
+            	actn = s1.replace("]", "");
+
+        	}
+    	}
+    	System.out.println(actn);
+    	return actn;
+	}
+	
+	public String directive_info_JsonParsing(String userID, String deviceID, String Server, String Place) throws Exception {
+    	
+		Thread.sleep(12000);
+		
+		String access_token = NUGU_Insight_Token(Place);
+		
+    	Calendar calendar = Calendar.getInstance();
+        java.util.Date date = calendar.getTime();
+        String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+        
+        String[] logArray;      
+        
+        String server = null;
+        String urlStr = null;
+        String actn = null; 
+        
+        int size = 6;
         
         if(Server.equals("PRD")) {
         	server = "prd";
@@ -3535,31 +3754,162 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         		JSONObject directive_info = (JSONObject) api_event_out.get("directive_info");
         		
         		JSONArray parse_headers_list = (JSONArray) directive_info.get("headers");
-        		System.out.println("asdasdasdsa : " + parse_headers_list);
         		
-        		
-        		
-        		//directive_headers[i] = list.toString();
-            	//directive_headers[x] = list.toString();
+        		ArrayList<String> list = new ArrayList<String>();     
+        		JSONArray jsonArray = (JSONArray) parse_headers_list; 
+        		if (jsonArray != null) { 
+        		   int len = jsonArray.size();
+        		   String[] arrayString = new String[len];
+        		   
+        		   for (int j=0; j<len; j++){ 
+        		    list.add(jsonArray.get(j).toString());
+
+        		    arrayString[j] = (String) list.get(j);
+        		    logArray = arrayString;
+                    
+                    String s = Arrays.deepToString(logArray);
+        		    directive_headers[i] = s;
+    
+        		   } 
+        		} 
         		
             	x++;
             	
             	logArray = directive_headers;
-                
-                String s = Arrays.deepToString(logArray);
-                System.out.println(s);
-                
+                String s = Arrays.deepToString(logArray);           
                 actn = s;
-                System.out.println(actn);
+                
         		
         	}
     	}
+    	System.out.println(actn);
     	return actn;
 	}
   
     	
-    	//System.out.println(Arrays.deepToString(tts_strip));
+	public String event_info_JsonParsing(String userID, String deviceID, String Server, String Place) throws Exception {
     	
+		Thread.sleep(12000);
+		
+		String access_token = NUGU_Insight_Token(Place);
+		
+    	Calendar calendar = Calendar.getInstance();
+        java.util.Date date = calendar.getTime();
+        String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+        
+        String[] logArray;      
+        
+        String server = null;
+        String urlStr = null;
+        String actn = null; 
+        
+        int size = 6;
+        
+        if(Server.equals("PRD")) {
+        	server = "prd";
+        } else if (Server.equals("STG")) {
+        	server = "stg";
+        } else if (Server.equals("RTG")) {
+        	server = "rtg";
+        }  
+        
+        System.out.println("오늘날짜 : " + today);
+        System.out.println("대상서버 : " + server);
+    	
+        if(Place.equals("in")) {
+        	//사내망에서는 http://172.27.97.221:7090
+        	urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	System.out.println(urlStr);
+        	
+        } else if (Place.equals("out")) {
+        	//vpn으로는 http://10.40.89.245:8190
+        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	System.out.println(urlStr);
+        }
+
+    	URL url = new URL(urlStr);
+    	
+    	Request request = new Request.Builder()
+        		.url(url) 
+                .addHeader("Authorization", "Bearer " + access_token)
+                .get()
+                .build();
+		
+        Response response = httpClient.newCall(request).execute();
+
+        // Get response body
+		//System.out.println(response.body().string());
+        String api_get_result = response.body().string();
+    	
+    	BufferedReader bf; 
+    	String line = ""; 
+    	
+    	int x = 0;
+    	String[] directive_headers = new String[size];
+    	//String[] tts_strip = new String[size];
+    	
+    	
+    	for (int y=0; y < 1; y++) {	
+    		
+    		Thread.sleep(1500);
+    		
+    		String result=""; 
+    		InputStream is = new ByteArrayInputStream(api_get_result.getBytes());
+			bf = new BufferedReader(new InputStreamReader(is)); 
+        	
+        	while((line=bf.readLine())!=null) { 
+        		result=result.concat(line); 
+        		//System.out.println(result); 
+        	}
+        	
+        	
+        	JSONParser parser = new JSONParser(); 
+        	JSONObject obj = (JSONObject) parser.parse(result);
+        	
+        	JSONArray parse_data_list = (JSONArray) obj.get("data");
+        	//System.out.println("parse_data_list.size() : " + parse_data_list.size()); 
+        	
+        	JSONObject data;
+        	
+        	for(int i = 0 ; i < parse_data_list.size(); i++) { 
+        		data = (JSONObject) parse_data_list.get(i);
+        			
+        		JSONObject parse_source = (JSONObject) data.get("_source");
+        		JSONObject parse_item = (JSONObject) parse_source.get("item");
+        		JSONObject api_event_in = (JSONObject) parse_item.get("api_event_in");
+        		JSONObject event_info = (JSONObject) api_event_in.get("event_info");
+        		
+        		JSONArray parse_headers_list = (JSONArray) event_info.get("headers");
+        		
+        		ArrayList<String> list = new ArrayList<String>();     
+        		JSONArray jsonArray = (JSONArray) parse_headers_list; 
+        		if (jsonArray != null) { 
+        		   int len = jsonArray.size();
+        		   String[] arrayString = new String[len];
+        		   
+        		   for (int j=0; j<len; j++){ 
+        		    list.add(jsonArray.get(j).toString());
+
+        		    arrayString[j] = (String) list.get(j);
+        		    logArray = arrayString;
+                    
+                    String s = Arrays.deepToString(logArray);
+        		    directive_headers[i] = s;
+    
+        		   } 
+        		} 
+        		
+            	x++;
+            	
+            	logArray = directive_headers;
+                String s = Arrays.deepToString(logArray);           
+                actn = s;
+	
+        	}
+    	}
+    	System.out.println(actn);
+    	return actn;
+	}
     
 	public String action_type_JsonParsing(String userID, String deviceID, String Server, String Place ) throws Exception {
     	

@@ -131,6 +131,8 @@ public class data {
 		return result;
 	}
 	
+	
+	
 	public static String 백과도움말 [] = {"구 백과가 궁금하신 정보를 알려드릴게요.", "누구 백과에서 검색하시려면"};
 	public List<String> 백과도움말_list = Arrays.asList(백과도움말);  
 	public Set<String> 백과도움말_set = new HashSet<String>(Arrays.asList(백과도움말));

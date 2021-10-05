@@ -88,6 +88,7 @@ public class Capabilities {
 			 capability.setCapability("appActivity", "com.skt.nugu.sampleapp.activity.LoginActivity");
 			 
 			 capability.setCapability("noReset",true);
+			 capability.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, "600000");
 		       
 			 
 		        

@@ -99,10 +99,10 @@ public class SDK_TestCase {
 	@AfterMethod
 	 public void AfterMethod(ITestResult result) throws Exception {
 		
-		util.context("NATIVE_APP");
 		
 		if (result.getStatus() == ITestResult.FAILURE) { 
-			 String Time = util.getTime();
+			//util.context("NATIVE_APP"); 
+			String Time = util.getTime();
 			 String screenShotPath = util.ErrorScreenshots(util, "screenShotName"+Time);
 			 test.fail("테스트 실패.");
 	         test.log(Status.FAIL, result.getThrowable());
