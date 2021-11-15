@@ -1520,7 +1520,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     
     public void switchContext (String context) throws Exception {
     	
-    	Thread.sleep(6000);
+    	Thread.sleep(7000);
     	
     	Set<String> contextNames = getContextHandles(); 
         for (String contextName : contextNames) {
@@ -1683,6 +1683,95 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     
     @SuppressWarnings("unchecked")
    	public void SWFsendPost(String command, String Server, String Access_Token) throws Exception {
+       	
+       	System.out.println("sendPost 발동 옵션: | 발화문 :  "+ command +" | 서버 : "+ Server +" | Access_Token : "+ Access_Token);
+       	
+       	String CommandText = command;
+       	
+       	JSONObject Main_jsonObject = new JSONObject();
+       	JSONObject clientStatus_data = new JSONObject();
+       	clientStatus_data.put("nugu_sdk_version", "4.5.0");
+       	
+       	Main_jsonObject.put("requestId", "ALDF3NYA6C0D0C654DD2;asr;;210415-220425;43033381;");  
+       	Main_jsonObject.put("requestText", CommandText);
+       	Main_jsonObject.put("accessToken", Access_Token);
+       	Main_jsonObject.put("clientStatus", clientStatus_data);
+       	Main_jsonObject.put("clientVersion", "1.1.0");
+       	Main_jsonObject.put("flowCode", "NLU01");
+       	
+       	System.out.println(Main_jsonObject);
+       	
+       	MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+       	
+       	// form parameters
+       	@SuppressWarnings("deprecation")
+   		RequestBody body = RequestBody.create(JSON, Main_jsonObject.toString());
+       	
+
+       	if (Server.equals("PRD")) {
+       		System.out.println("PRD");
+       		Request request = new Request.Builder()
+                       .url("https://pif.t-aicloud.co.kr/nlp/rest/nlu") //PRD directive URL
+                       .addHeader("Content-Type", "application/json")
+                       .addHeader("cache-control", "no-cache")
+                       .addHeader("X-AI-Access-Token", Access_Token)
+                       .addHeader("Accept", "application/json")
+                       .post(body)
+                       .build();
+       		
+       		try (Response response = httpClient.newCall(request).execute()) {
+
+                   if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+                   // Get response body
+                   System.out.println(response.body().string());
+               }
+       	} else if (Server.equals("RTG")) {
+       		System.out.println("RTG");
+       		Request request = new Request.Builder()
+                       .url("http://rtg-pif-ai.aicloud.kr/nlp/rest/nlu") //PRD directive URL
+                       .addHeader("Content-Type", "application/json")
+                       .addHeader("cache-control", "no-cache")
+                       .addHeader("X-AI-Access-Token", Access_Token)
+                       .addHeader("Accept", "application/json")
+                       .post(body)
+                       .build();
+       		
+       		try (Response response = httpClient.newCall(request).execute()) {
+
+                   if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+                   // Get response body
+                   System.out.println(response.body().string());
+               }
+       	} else if (Server.equals("STG")) {
+       		System.out.println("STG");
+       		Request request = new Request.Builder()
+       				.url("http://stg-pif-ai.aicloud.kr/nlp/rest/nlu") //STG directive URL
+                       .addHeader("Content-Type", "application/json")
+                       .addHeader("cache-control", "no-cache")
+                       .addHeader("X-AI-Access-Token", Access_Token)
+                       .addHeader("Accept", "application/json")
+                       .post(body)
+                       .build();
+       		
+       		try (Response response = httpClient.newCall(request).execute()) {
+
+                   if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+                   // Get response body
+                   System.out.println(response.body().string());
+       		}
+       	} else {
+       		System.out.println("서버 조건 불만족");
+       	}
+       	
+       	Thread.sleep(8000);
+
+       }
+    
+    @SuppressWarnings("unchecked")
+   	public void SWFsendPost_fast(String command, String Server, String Access_Token) throws Exception {
        	
        	System.out.println("sendPost 발동 옵션: | 발화문 :  "+ command +" | 서버 : "+ Server +" | Access_Token : "+ Access_Token);
        	
@@ -1969,7 +2058,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	
     	String access_token = NUGU_Insight_Token(Place);
     	
-    	Thread.sleep(7000);
+    	Thread.sleep(8000);
     	String transaction_id="";
     	
     	Calendar calendar = Calendar.getInstance();
@@ -2190,6 +2279,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     
     public String TTS_JsonParsing_most_recent(String userID, String deviceID, String Server, String Place ) throws Exception {
     	
+    	Thread.sleep(7000);
+    	
     	String access_token = NUGU_Insight_Token(Place);
     	
     	Calendar calendar = Calendar.getInstance();
@@ -2247,7 +2338,6 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String[] tts_strip = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
-    	Thread.sleep(7000);
     	for (int y=0; y < repeat; y++) {
     		
     		String result=""; 
@@ -2469,7 +2559,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String[] domain = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
-    	Thread.sleep(7000);
+    	Thread.sleep(9000);
     	for (int y=0; y < repeat; y++) {
     		
     		String result=""; 
@@ -3364,21 +3454,20 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
             	
             	JSONObject parse_data = (JSONObject) obj.get("data");
             	JSONObject parse_relation= (JSONObject) parse_data.get("relation");
-            	JSONArray parse_rdv_in_list = (JSONArray) parse_relation.get("rdv_in");
+            	JSONArray parse_biz_out_list = (JSONArray) parse_relation.get("biz_out");
             	//System.out.println("parse_data_list.size() : " + parse_data_list.size()); 
             	
-            	JSONObject rdv_in;
+            	JSONObject biz_out;
             	
-            	for(int i = 0 ; i < parse_rdv_in_list.size(); i++) { 
-            		rdv_in = (JSONObject) parse_rdv_in_list.get(i);
+            	for(int i = 0 ; i < parse_biz_out_list.size(); i++) { 
+            		biz_out = (JSONObject) parse_biz_out_list.get(i);
             			
-            		JSONObject parse_value= (JSONObject) rdv_in.get("value");
+            		JSONObject parse_value= (JSONObject) biz_out.get("value");
             		JSONObject parse_body1 = (JSONObject) parse_value.get("body");
-            		JSONObject parse_body2 = (JSONObject) parse_body1.get("body");
-            		JSONObject parse_access_token = (JSONObject) parse_body2.get("access_token");
+            		JSONObject targetDevice = (JSONObject) parse_body1.get("targetDevice");
             		
-            		source_access_token[i] = (String) parse_access_token.get("source_access_token");
-            		source_access_token[x] = (String) parse_access_token.get("source_access_token");
+            		source_access_token[i] = (String) targetDevice.get("authToken");
+            		source_access_token[x] = (String) targetDevice.get("authToken");
             		x++;
             		
             		for(String str:source_access_token) {

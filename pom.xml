@@ -3,7 +3,7 @@
   
   <groupId>com.github.ksszidane</groupId>
   <artifactId>Appium-unit-lib</artifactId>
-  <version>1.0.40</version>
+  <version>1.0.42</version>
   <packaging>jar</packaging>
   
   <name>Appium-unit-lib</name>
@@ -92,6 +92,8 @@
 
   		<github.global.server>github</github.global.server>
   		<github.maven-plugin>0.12</github.maven-plugin>
+  		
+ 
 
   </properties>
   

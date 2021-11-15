@@ -105,6 +105,10 @@ public class data {
 	public List<String> 모레강수확률_list = Arrays.asList(모레강수확률);  
 	public Set<String> 모레강수확률_set = new HashSet<String>(Arrays.asList(모레강수확률));
 	
+	public static String 미등록운세 [] = {"생년월일과 함께  말씀해 보세요.", "생일 정보를 먼저 등록해주시거나,"};
+	public List<String> 미등록운세_list = Arrays.asList(미등록운세);  
+	public Set<String> 미등록운세_set = new HashSet<String>(Arrays.asList(미등록운세));
+	
 	public boolean 습도지수체크(String tts) throws Exception {
 		boolean result = false;
 		String str1 = tts;          
