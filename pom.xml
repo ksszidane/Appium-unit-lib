@@ -3,7 +3,7 @@
   
   <groupId>com.github.ksszidane</groupId>
   <artifactId>Appium-unit-lib</artifactId>
-  <version>1.0.42</version>
+  <version>1.0.43</version>
   <packaging>jar</packaging>
   
   <name>Appium-unit-lib</name>
@@ -107,7 +107,7 @@
 	<dependency>
 		<groupId>org.seleniumhq.selenium</groupId>
 		<artifactId>selenium-java</artifactId>
-		<version>3.14.0</version>
+		<version>3.141.59</version>
 	</dependency>
 	
 	<dependency>

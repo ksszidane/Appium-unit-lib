@@ -1773,7 +1773,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     @SuppressWarnings("unchecked")
    	public void SWFsendPost_fast(String command, String Server, String Access_Token) throws Exception {
        	
-       	System.out.println("sendPost 발동 옵션: | 발화문 :  "+ command +" | 서버 : "+ Server +" | Access_Token : "+ Access_Token);
+    	System.out.println("sendPost 발동 옵션: | 발화문 :  "+ command +" | 서버 : "+ Server +" | Access_Token : "+ Access_Token);
        	
        	String CommandText = command;
        	
@@ -1854,8 +1854,6 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        	} else {
        		System.out.println("서버 조건 불만족");
        	}
-       	
-       	Thread.sleep(8000);
 
        }
     
