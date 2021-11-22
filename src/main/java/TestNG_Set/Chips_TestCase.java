@@ -126,7 +126,7 @@ public class Chips_TestCase {
 	         
 	         System.out.println("테스트 실패.");
 	         try {
-	        	 Exception e = new Exception();
+	        	 Exception e = (Exception) result.getThrowable();
 	        	 e.initCause(new IOException("테스트 실패."));
 	        	 throw e;
         	 } catch(Exception e) {
