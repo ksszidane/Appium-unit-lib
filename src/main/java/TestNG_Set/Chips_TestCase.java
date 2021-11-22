@@ -125,13 +125,8 @@ public class Chips_TestCase {
 	         test.log(Status.FAIL, "Snapshot below: " + test.addScreenCaptureFromPath(screenShotPath));
 	         
 	         System.out.println("테스트 실패.");
-	         try {
-	        	 Exception e = (Exception) result.getThrowable();
-	        	 e.initCause(new IOException("테스트 실패."));
-	        	 throw e;
-        	 } catch(Exception e) {
-        		 e.printStackTrace();
-        	 }
+	         Object e = result.getThrowable();
+	         System.out.println(e);
 	      
 		} else if (result.getStatus() == ITestResult.SUCCESS) {
 			test.pass("테스트 성공.");
