@@ -1,5 +1,6 @@
 package TestNG_Set;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
 
@@ -124,7 +125,13 @@ public class Chips_TestCase {
 	         test.log(Status.FAIL, "Snapshot below: " + test.addScreenCaptureFromPath(screenShotPath));
 	         
 	         System.out.println("테스트 실패.");
-	         System.out.println(result.getThrowable().getMessage());
+	         try {
+	        	 Exception e = new Exception();
+	        	 e.initCause(new IOException("테스트 실패."));
+	        	 throw e;
+        	 } catch(Exception e) {
+        		 e.printStackTrace();
+        	 }
 	      
 		} else if (result.getStatus() == ITestResult.SUCCESS) {
 			test.pass("테스트 성공.");
