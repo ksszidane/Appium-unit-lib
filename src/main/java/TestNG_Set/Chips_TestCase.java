@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.LocalFileDetector;
+import org.testng.ITestListener;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -111,7 +112,7 @@ public class Chips_TestCase {
 	
 	//@AfterMethod (alwaysRun=true && result=failure)
 	@AfterMethod
-	 public void AfterMethod(ITestResult result) throws Exception {
+	 public void AfterMethod(ITestResult result) throws Exception  {
 		
 		util.context("NATIVE_APP");
 		
@@ -123,6 +124,8 @@ public class Chips_TestCase {
 	         test.log(Status.FAIL, "Snapshot below: " + test.addScreenCaptureFromPath(screenShotPath));
 	         
 	         System.out.println("테스트 실패.");
+	         System.out.println(result.getThrowable());
+	      
 		} else if (result.getStatus() == ITestResult.SUCCESS) {
 			test.pass("테스트 성공.");
 			 System.out.println("테스트 성공.");

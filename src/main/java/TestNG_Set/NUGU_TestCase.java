@@ -139,6 +139,7 @@ public class NUGU_TestCase {
 	         test.log(Status.FAIL, "Snapshot below: " + test.addScreenCaptureFromPath(screenShotPath));
 	         
 	         System.out.println("테스트 실패.");
+	         System.out.println(result.getThrowable());
 		} else if (result.getStatus() == ITestResult.SUCCESS) {
 			test.pass("테스트 성공.");
 			 //System.out.println("테스트 성공.");
