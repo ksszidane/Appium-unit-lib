@@ -110,8 +110,7 @@ public class SDK_TestCase {
 	         test.log(Status.FAIL, "Snapshot below: " + test.addScreenCaptureFromPath(screenShotPath));
 	         
 	         System.out.println("테스트 실패.");
-	         Object e = result.getThrowable();
-	         System.out.println(e);
+	         System.out.println(result.getThrowable());
 	         
 		} else if (result.getStatus() == ITestResult.SUCCESS) {
 			test.pass("테스트 성공.");
