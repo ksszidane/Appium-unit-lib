@@ -95,6 +95,7 @@ import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 import com.relevantcodes.extentreports.LogStatus;
 
+import NUGU_data.data;
 import TestNG_Set.Chips_TestCase;
 import TestNG_Set.NUGU_TestCase;
 
@@ -2277,7 +2278,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     
     public String TTS_JsonParsing_most_recent(String userID, String deviceID, String Server, String Place ) throws Exception {
     	
-    	Thread.sleep(12000);
+    	//Thread.sleep(12000);
     	
     	String access_token = NUGU_Insight_Token(Place);
     	
@@ -4056,7 +4057,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String[] action_type = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
-    	Thread.sleep(3000);
+    	//Thread.sleep(3000);
     	for (int y=0; y < repeat; y++) {
     		
     		String result=""; 
@@ -4377,6 +4378,33 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         return stock;
     }
 	
+	public boolean TTS_Assertfunc_Set(String userID, String deviceID, String Server, String Place, Set<String> data_list ) throws Exception {
+		int i = 0;
+		while(i<5) {
+			String tts = this.TTS_JsonParsing_most_recent(userID, deviceID, Server, Place);
+			if (this.dataCheck_Equals(tts, data_list)) { 
+				Assert.assertTrue(this.dataCheck_Equals(tts, data_list));
+				break;
+			}
+			Thread.sleep(3000);
+ 		}
+		
+		return true;
+	}
+	
+	public boolean actionType_Assertfunc(String userID, String deviceID, String Server, String Place, String data) throws Exception {
+		int i = 0;
+		while(i<5) {
+			String usd = this.action_type_JsonParsing(userID, deviceID, Server, Place);
+			if (usd.contains(data)) { 
+				Assert.assertTrue(usd.contains(data));
+				break;
+			}
+			Thread.sleep(3000);
+ 		}
+		
+		return true;
+	}
 
 	
 
