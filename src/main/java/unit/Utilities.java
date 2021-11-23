@@ -2056,7 +2056,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	
     	String access_token = NUGU_Insight_Token(Place);
     	
-    	Thread.sleep(10000);
+    	Thread.sleep(12000);
     	String transaction_id="";
     	
     	Calendar calendar = Calendar.getInstance();
@@ -2277,7 +2277,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     
     public String TTS_JsonParsing_most_recent(String userID, String deviceID, String Server, String Place ) throws Exception {
     	
-    	Thread.sleep(10000);
+    	Thread.sleep(12000);
     	
     	String access_token = NUGU_Insight_Token(Place);
     	
@@ -2447,7 +2447,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String[] tts_strip = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
-    	Thread.sleep(10000);
+    	Thread.sleep(12000);
     	for (int y=0; y < repeat; y++) {
     		Thread.sleep(2000);
     		
@@ -2557,7 +2557,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String[] domain = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
-    	Thread.sleep(10000);
+    	Thread.sleep(12000);
     	for (int y=0; y < repeat; y++) {
     		
     		String result=""; 
@@ -2666,7 +2666,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String[] intent = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
-    	Thread.sleep(10000);
+    	Thread.sleep(12000);
     	for (int y=0; y < repeat; y++) {
     		
     		String result=""; 
@@ -2775,7 +2775,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String[] intent = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
-    	Thread.sleep(10000);
+    	Thread.sleep(12000);
     	for (int y=0; y < repeat; y++) {
     		
     		String result=""; 
@@ -2884,7 +2884,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String[] api_context = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
-    	Thread.sleep(10000);
+    	Thread.sleep(12000);
     	for (int y=0; y < repeat; y++) {
     		Thread.sleep(2000);
     		
@@ -2992,7 +2992,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String[] api_context = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
-    	Thread.sleep(10000);
+    	Thread.sleep(12000);
     	for (int y=0; y < repeat; y++) {
     		Thread.sleep(2000);
     		
@@ -3101,7 +3101,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String[] api_event = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
-    	Thread.sleep(10000);
+    	Thread.sleep(12000);
     	for (int y=0; y < repeat; y++) {
     		Thread.sleep(2000);
     		
