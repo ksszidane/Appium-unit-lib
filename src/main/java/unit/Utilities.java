@@ -2448,9 +2448,9 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String[] tts_strip = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
-    	Thread.sleep(12000);
+    	//Thread.sleep(12000);
     	for (int y=0; y < repeat; y++) {
-    		Thread.sleep(2000);
+    		Thread.sleep(1000);
     		
     		String result=""; 
     		InputStream is = new ByteArrayInputStream(api_get_result.getBytes());
@@ -4431,13 +4431,13 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		boolean result = false;
 		
 		while(i<5) {
-			String tts = this.TTS_JsonParsing_most_recent(userID, deviceID, Server, Place);
+			String tts = this.TTS_JsonParsing(userID, deviceID, Server, Place);
 			if (tts.contains(data)) { 
 				System.out.println("[일치] : " + data);
 				result = true;
 				break;
 			}
-			Thread.sleep(5000);
+			Thread.sleep(3000);
 			i++;
  		}
 		return result;
@@ -4448,13 +4448,13 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		boolean result = false;
 		
 		while(i<5) {
-			String tts = this.TTS_JsonParsing_most_recent(userID, deviceID, Server, Place);
+			String tts = this.TTS_JsonParsing(userID, deviceID, Server, Place);
 			if (this.dataCheck_Equals(tts, data_list)) { 
 				System.out.println("[일치] : " + tts);
 				result = true;
 				break;
 			}
-			Thread.sleep(5000);
+			Thread.sleep(3000);
 			i++;
  		}
 		return result;
@@ -4465,13 +4465,13 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		boolean result = false;
 		
 		while(i<5) {
-			String tts = this.TTS_JsonParsing_most_recent(userID, deviceID, Server, Place);
+			String tts = this.TTS_JsonParsing(userID, deviceID, Server, Place);
 			if (this.dataCheck_Contains(tts, data_list)) { 
 				System.out.println("[일치] : " + tts);
 				result = true;
 				break;
 			}
-			Thread.sleep(5000);
+			Thread.sleep(3000);
 			i++;
  		}
 		return result;
@@ -4488,7 +4488,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 				result = true;
 				break;
 			}
-			Thread.sleep(5000);
+			Thread.sleep(3000);
 			i++;
  		}
 		return result;
@@ -4505,7 +4505,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 				result = true;
 				break;
 			}
-			Thread.sleep(5000);
+			Thread.sleep(3000);
 			i++;
  		}
 		return result;
@@ -4522,7 +4522,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 				result = true;
 				break;
 			}
-			Thread.sleep(5000);
+			Thread.sleep(3000);
 			i++;
  		}
 		return result;
