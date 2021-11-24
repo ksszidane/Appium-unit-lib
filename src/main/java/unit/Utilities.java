@@ -4261,7 +4261,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		System.out.println("text data : " + text);
         for (String dataName : data_list) {
             if(text.contains(dataName)) {
-            	System.out.println(dataName + " 에 매칭된: " + text);
+            	System.out.println(dataName + " : [매칭 완료] : " + text);
             	return true;
             } 
         }
@@ -4447,8 +4447,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		int i = 0;
 		boolean result = false;
 		
-		while(i<5) {
-			String tts = this.TTS_JsonParsing(userID, deviceID, Server, Place);
+		while(i<2) {
+			String tts = this.TTS_JsonParsing_most_recent(userID, deviceID, Server, Place);
 			if (this.dataCheck_Equals(tts, data_list)) { 
 				System.out.println("[일치] : " + tts);
 				result = true;
@@ -4464,7 +4464,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		int i = 0;
 		boolean result = false;
 		
-		while(i<5) {
+		while(i<3) {
 			String tts = this.TTS_JsonParsing(userID, deviceID, Server, Place);
 			if (this.dataCheck_Contains(tts, data_list)) { 
 				System.out.println("[일치] : " + tts);
