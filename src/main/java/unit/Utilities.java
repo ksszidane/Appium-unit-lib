@@ -2558,7 +2558,6 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String[] domain = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
-    	Thread.sleep(12000);
     	for (int y=0; y < repeat; y++) {
     		
     		String result=""; 
@@ -2667,7 +2666,6 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String[] intent = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
-    	Thread.sleep(12000);
     	for (int y=0; y < repeat; y++) {
     		
     		String result=""; 
@@ -4378,38 +4376,156 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         return stock;
     }
 	
-	public boolean TTS_Assertfunc_Set(String userID, String deviceID, String Server, String Place, Set<String> data_list ) throws Exception {
+	public boolean getText_Assertfunc(By locator, String data) throws Exception {
 		int i = 0;
-		while(i<5) {
-			String tts = this.TTS_JsonParsing_most_recent(userID, deviceID, Server, Place);
-			if (this.dataCheck_Equals(tts, data_list)) { 
-				Assert.assertTrue(this.dataCheck_Equals(tts, data_list));
+		boolean result = false;
+		
+		while(i<3) {
+			String text = this.getText(locator);
+			if (text.contains(data)) { 
+				System.out.println("[일치] : " + data);
+				result = true;
 				break;
 			}
 			Thread.sleep(3000);
+			i++;
  		}
+		return result;
+	}
+	
+	public boolean getAttribute_Assertfunc(By locator, String Attribute, String data) throws Exception {
+		int i = 0;
+		boolean result = false;
 		
-		return true;
+		while(i<3) {
+			String text = this.getAttribute(locator, Attribute);
+			if (text.contains(data)) { 
+				System.out.println("[일치] : " + data);
+				result = true;
+				break;
+			}
+			Thread.sleep(3000);
+			i++;
+ 		}
+		return result;
+	}
+	
+	public boolean isElementPresent_Assertfunc(By locator) throws Exception {
+		int i = 0;
+		boolean result = false;
+		
+		while(i<3) {
+			boolean text = this.isElementPresent(locator);
+			if (text == true) { 
+				result = true;
+				break;
+			}
+			Thread.sleep(3000);
+			i++;
+ 		}
+		return result;
+	}
+	
+	public boolean TTS_Assertfunc(String userID, String deviceID, String Server, String Place, String data ) throws Exception {
+		int i = 0;
+		boolean result = false;
+		
+		while(i<5) {
+			String tts = this.TTS_JsonParsing_most_recent(userID, deviceID, Server, Place);
+			if (tts.contains(data)) { 
+				System.out.println("[일치] : " + data);
+				result = true;
+				break;
+			}
+			Thread.sleep(3000);
+			i++;
+ 		}
+		return result;
+	}
+	
+	public boolean TTS_Assertfunc_EqualsSet(String userID, String deviceID, String Server, String Place, Set<String> data_list ) throws Exception {
+		int i = 0;
+		boolean result = false;
+		
+		while(i<5) {
+			String tts = this.TTS_JsonParsing_most_recent(userID, deviceID, Server, Place);
+			if (this.dataCheck_Equals(tts, data_list)) { 
+				System.out.println("[일치] : " + tts);
+				result = true;
+				break;
+			}
+			Thread.sleep(3000);
+			i++;
+ 		}
+		return result;
+	}
+	
+	public boolean TTS_Assertfunc_ContainsSet(String userID, String deviceID, String Server, String Place, Set<String> data_list ) throws Exception {
+		int i = 0;
+		boolean result = false;
+		
+		while(i<5) {
+			String tts = this.TTS_JsonParsing_most_recent(userID, deviceID, Server, Place);
+			if (this.dataCheck_Contains(tts, data_list)) { 
+				System.out.println("[일치] : " + tts);
+				result = true;
+				break;
+			}
+			Thread.sleep(3000);
+			i++;
+ 		}
+		return result;
 	}
 	
 	public boolean actionType_Assertfunc(String userID, String deviceID, String Server, String Place, String data) throws Exception {
 		int i = 0;
+		boolean result = false;
+
 		while(i<5) {
-			String usd = this.action_type_JsonParsing(userID, deviceID, Server, Place);
-			if (usd.contains(data)) { 
-				Assert.assertTrue(usd.contains(data));
+			String action = this.action_type_JsonParsing(userID, deviceID, Server, Place);
+			if (action.contains(data)) { 
+				System.out.println("[일치] : " + data);
+				result = true;
 				break;
 			}
 			Thread.sleep(3000);
+			i++;
  		}
-		
-		return true;
+		return result;
 	}
-
 	
+	public boolean Domain_Assertfunc(String userID, String deviceID, String Server, String Place, String data) throws Exception {
+		int i = 0;
+		boolean result = false;
 
+		while(i<5) {
+			String Domain = this.Domain_JsonParsing_most_recent(userID, deviceID, Server, Place);
+			if (Domain.contains(data)) { 
+				System.out.println("[일치] : " + data);
+				result = true;
+				break;
+			}
+			Thread.sleep(3000);
+			i++;
+ 		}
+		return result;
+	}
 	
+	public boolean intent_Assertfunc(String userID, String deviceID, String Server, String Place, String data) throws Exception {
+		int i = 0;
+		boolean result = false;
 
-		
+		while(i<5) {
+			String intent = this.intent_JsonParsing_most_recent(userID, deviceID, Server, Place);
+			if (intent.contains(data)) { 
+				System.out.println("[일치] : " + data);
+				result = true;
+				break;
+			}
+			Thread.sleep(3000);
+			i++;
+ 		}
+		return result;
+	}
 
 }
