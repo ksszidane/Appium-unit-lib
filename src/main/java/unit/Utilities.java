@@ -4448,7 +4448,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		boolean result = false;
 		
 		while(i<5) {
-			String tts = this.TTS_JsonParsing_most_recent(userID, deviceID, Server, Place);
+			String tts = this.TTS_JsonParsing(userID, deviceID, Server, Place);
 			if (this.dataCheck_Equals(tts, data_list)) { 
 				System.out.println("[일치] : " + tts);
 				result = true;
@@ -4465,7 +4465,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		boolean result = false;
 		
 		while(i<5) {
-			String tts = this.TTS_JsonParsing_most_recent(userID, deviceID, Server, Place);
+			String tts = this.TTS_JsonParsing(userID, deviceID, Server, Place);
 			if (this.dataCheck_Contains(tts, data_list)) { 
 				System.out.println("[일치] : " + tts);
 				result = true;
