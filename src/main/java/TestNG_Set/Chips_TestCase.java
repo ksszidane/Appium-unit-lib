@@ -117,7 +117,7 @@ public class Chips_TestCase {
 	 public void AfterMethod(ITestResult result) throws Exception  {
 		
 		if (result.getStatus() == ITestResult.FAILURE) { 
-			//util.context("NATIVE_APP"); 
+			util.context("NATIVE_APP"); 
 			String Time = util.getTime();
 			String screenShotPath = util.ErrorScreenshots(util, "screenShotName"+Time);
 			test.fail("[Test Result] : [Fail] - 테스트 실패");
