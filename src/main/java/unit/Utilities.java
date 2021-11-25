@@ -1771,7 +1771,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        	} else {
        		System.out.println("서버 조건 불만족");
        	}
-       	Thread.sleep(3000);
+       	Thread.sleep(5000);
     }
     
     @SuppressWarnings("unchecked")
@@ -1953,7 +1953,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        	} else {
        		System.out.println("서버 조건 불만족");
        	}
-       	Thread.sleep(3000);
+       	Thread.sleep(5000);
     }
     
     
