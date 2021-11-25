@@ -131,23 +131,23 @@ public class NUGU_TestCase {
 	@AfterMethod
 	 public void AfterMethod(ITestResult result) throws Exception {
 		
-		
 		if (result.getStatus() == ITestResult.FAILURE) { 
-			 String Time = util.getTime();
+			//util.context("NATIVE_APP"); 
+			String Time = util.getTime();
 			 String screenShotPath = util.ErrorScreenshots(util, "screenShotName"+Time);
-			 test.fail("테스트 실패.");
+			 test.fail("[Test Result] : [Fail] - 테스트 스킵");
 	         test.log(Status.FAIL, result.getThrowable());
 	         test.log(Status.FAIL, "Snapshot below: " + test.addScreenCaptureFromPath(screenShotPath));
 	         
-	         System.out.println("테스트 실패.");
+	         System.out.println("[Test Result] : [Fail] - 테스트 스킵");
 	         System.out.println(result.getThrowable());
-	         
+	      
 		} else if (result.getStatus() == ITestResult.SUCCESS) {
-			test.pass("테스트 성공.");
-			 //System.out.println("테스트 성공.");
+			test.pass("[Test Result] : [Pass] - 테스트 성공");
+			 System.out.println("[Test Result] : [Pass] - 테스트 성공");
 		} else if (result.getStatus() == ITestResult.SKIP) {
-			test.skip("테스트 스킵.");
-			 //System.out.println("테스트 성공.");
+			test.skip("[Test Result] : [Skip] - 테스트 스킵");
+			 System.out.println("[Test Result] : [Skip] - 테스트 스킵");
 		}
 		System.out.println("\n");
 		//util.CaptureScreen(result);
