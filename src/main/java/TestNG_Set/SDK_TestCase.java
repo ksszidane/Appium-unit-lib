@@ -104,11 +104,11 @@ public class SDK_TestCase {
 			//util.context("NATIVE_APP"); 
 			String Time = util.getTime();
 			 String screenShotPath = util.ErrorScreenshots(util, "screenShotName"+Time);
-			 test.fail("[Test Result] : [Fail] - 테스트 스킵");
+			 test.fail("[Test Result] : [Fail] - 테스트 실패");
 	         test.log(Status.FAIL, result.getThrowable());
 	         test.log(Status.FAIL, "Snapshot below: " + test.addScreenCaptureFromPath(screenShotPath));
 	         
-	         System.out.println("[Test Result] : [Fail] - 테스트 스킵");
+	         System.out.println("[Test Result] : [Fail] - 테스트 실패");
 	         System.out.println(result.getThrowable());
 	      
 		} else if (result.getStatus() == ITestResult.SUCCESS) {
