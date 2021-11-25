@@ -2124,7 +2124,6 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	//String[] tts_strip = new String[size];
     	
     	for (int y=0; y < repeat; y++) {
-    		Thread.sleep(2000);
     		
     		String result=""; 
     		InputStream is = new ByteArrayInputStream(api_get_result.getBytes());
@@ -2801,7 +2800,6 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String[] intent = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
-    	Thread.sleep(12000);
     	for (int y=0; y < repeat; y++) {
     		
     		String result=""; 
@@ -2913,10 +2911,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String[] api_context = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
-    	Thread.sleep(12000);
     	for (int y=0; y < repeat; y++) {
-    		Thread.sleep(2000);
-    		
+    
     		String result=""; 
     		InputStream is = new ByteArrayInputStream(api_get_result.getBytes());
 			bf = new BufferedReader(new InputStreamReader(is)); 
@@ -3024,10 +3020,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String[] api_context = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
-    	Thread.sleep(12000);
     	for (int y=0; y < repeat; y++) {
-    		Thread.sleep(2000);
-    		
+ 
     		String result=""; 
     		InputStream is = new ByteArrayInputStream(api_get_result.getBytes());
 			bf = new BufferedReader(new InputStreamReader(is)); 
@@ -3136,9 +3130,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String[] api_event = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
-    	Thread.sleep(12000);
     	for (int y=0; y < repeat; y++) {
-    		Thread.sleep(2000);
     		
     		String result=""; 
     		InputStream is = new ByteArrayInputStream(api_get_result.getBytes());
@@ -3248,9 +3240,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String[] audio_activity = new String[size*repeat];
     	//String[] tts_strip = new String[size];
     	
-    	Thread.sleep(12000);
     	for (int y=0; y < repeat; y++) {
-    		Thread.sleep(2000);
     		
     		String result=""; 
     		InputStream is = new ByteArrayInputStream(api_get_result.getBytes());
@@ -3443,7 +3433,6 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         System.out.println("조회시간 : " + time);
         System.out.println("대상서버 : " + server);
     	
-        Thread.sleep(4000);
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
         	urlStr = "http://172.27.97.221:7090/pulse_n/get_raw_log/v3/?env="+server+"&transaction_id="+tid;
@@ -3478,8 +3467,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	
     	
     	for (int y=0; y < size; y++) {
-    		Thread.sleep(5000);	
-    		
+
     		if (Server.equals("PRD") || Server.equals("STG")) {
     			String result=""; 
     			InputStream is = new ByteArrayInputStream(api_get_result.getBytes());
@@ -3685,8 +3673,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	}
 	
 	public String directive_JsonParsing(String userID, String deviceID, String Server, String Place) throws Exception {
-    	
-		Thread.sleep(12000);
+  
 		
 		String access_token = NUGU_Insight_Token(Place);
 		
@@ -3798,8 +3785,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	}
 	
 	public String directive_info_JsonParsing(String userID, String deviceID, String Server, String Place) throws Exception {
-    	
-		Thread.sleep(12000);
+
 		
 		String access_token = NUGU_Insight_Token(Place);
 		
@@ -3926,9 +3912,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
   
     	
 	public String event_info_JsonParsing(String userID, String deviceID, String Server, String Place) throws Exception {
-    	
-		Thread.sleep(12000);
-		
+    			
 		String access_token = NUGU_Insight_Token(Place);
 		
     	Calendar calendar = Calendar.getInstance();
@@ -4520,7 +4504,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 				result = true;
 				break;
 			}
-			Thread.sleep(3000);
+			Thread.sleep(5000);
 			i++;
  		}
 		return result;
