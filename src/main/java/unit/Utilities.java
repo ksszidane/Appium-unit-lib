@@ -1771,8 +1771,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        	} else {
        		System.out.println("서버 조건 불만족");
        	}
-
-       }
+       	Thread.sleep(3000);
+    }
     
     @SuppressWarnings("unchecked")
    	public void SWFsendPost_fast(String command, String Server, String Access_Token) throws Exception {
@@ -1862,7 +1862,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        		System.out.println("서버 조건 불만족");
        	}
 
-       }
+    }
     
     @SuppressWarnings("unchecked")
    	public void SWFsendPost_playStatus(String command, String Server, String Access_Token, String play_type) throws Exception {
@@ -1953,9 +1953,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        	} else {
        		System.out.println("서버 조건 불만족");
        	}
-       
-
-       }
+       	Thread.sleep(3000);
+    }
     
     
     @SuppressWarnings("unchecked")
