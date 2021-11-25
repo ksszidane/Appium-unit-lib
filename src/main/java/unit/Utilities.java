@@ -4521,6 +4521,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 				result = true;
 				break;
 			}
+			Thread.sleep(3000);
 			i++;
  		}
 		return result;
