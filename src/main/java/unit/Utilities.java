@@ -4389,7 +4389,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		boolean result = false;
 		
 		while(i<3) {
-			System.out.println("getText 실행 횟수 : " + i+1);
+			int j = i+1;
+			System.out.println("getText 실행 횟수 : [" + j+"/3]");
 			String text = this.getText(locator);
 			if (text.contains(data)) { 
 				System.out.println("[일치] : " + data);
@@ -4407,7 +4408,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		boolean result = false;
 		
 		while(i<3) {
-			System.out.println("getAttribute 실행 횟수 : " + i+1);
+			int j = i+1;
+			System.out.println("getAttribute 실행 횟수 : [" + j+"/3]");
 			String text = this.getAttribute(locator, Attribute);
 			if (text.contains(data)) { 
 				System.out.println("[일치] : " + data);
@@ -4425,7 +4427,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		boolean result = false;
 		
 		while(i<3) {
-			System.out.println("isElementPresent 실행 횟수 : " + i+1);
+			int j = i+1;
+			System.out.println("isElementPresent 실행 횟수 : [" + j+"/3]");
 			boolean text = this.isElementPresent(locator);
 			if (text == true) { 
 				result = true;
@@ -4442,7 +4445,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		boolean result = false;
 		
 		while(i<5) {
-			System.out.println("TTS_JsonParsing 실행 횟수 : " + i+1);
+			int j = i+1;
+			System.out.println("TTS_JsonParsing 실행 횟수 : [" + j+"/5]");
 			String tts = this.TTS_JsonParsing(userID, deviceID, Server, Place);
 			if (tts.contains(data)) { 
 				System.out.println("[일치] : " + data);
@@ -4459,7 +4463,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		boolean result = false;
 		
 		while(i<2) {
-			System.out.println("TTS_JsonParsing_most_recent 실행 횟수 : " + i+1);
+			int j = i+1;
+			System.out.println("TTS_JsonParsing_most_recent 실행 횟수 : [" + j+"/2]");
 			String tts = this.TTS_JsonParsing_most_recent(userID, deviceID, Server, Place);
 			if (this.dataCheck_Equals(tts, data_list)) { 
 				System.out.println("[일치] : " + tts);
@@ -4476,7 +4481,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		boolean result = false;
 		
 		while(i<2) {
-			System.out.println("TTS_JsonParsing 실행 횟수 : " + i+1);
+			int j = i+1;
+			System.out.println("TTS_JsonParsing 실행 횟수 : [" + j+"/2]");
 			String tts = this.TTS_JsonParsing(userID, deviceID, Server, Place);
 			if (this.dataCheck_Contains(tts, data_list)) { 
 				System.out.println("[일치] : " + tts);
@@ -4493,7 +4499,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		boolean result = false;
 
 		while(i<5) {
-			System.out.println("action_type_JsonParsing 실행 횟수 : " + i+1);
+			int j = i+1;
+			System.out.println("action_type_JsonParsing 실행 횟수 : [" + j+"/5]");
 			String action = this.action_type_JsonParsing(userID, deviceID, Server, Place);
 			if (action.contains(data)) { 
 				System.out.println("[일치] : " + data);
@@ -4510,7 +4517,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		boolean result = false;
 
 		while(i<5) {
-			System.out.println("Domain_JsonParsing_most_recent 실행 횟수 : " + i+1);
+			int j = i+1;
+			System.out.println("Domain_JsonParsing_most_recent 실행 횟수 : [" + j+"/5]");
 			String Domain = this.Domain_JsonParsing_most_recent(userID, deviceID, Server, Place);
 			if (Domain.contains(data)) { 
 				System.out.println("[일치] : " + data);
@@ -4528,7 +4536,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		boolean result = false;
 
 		while(i<5) {
-			System.out.println("intent_JsonParsing_most_recent 실행 횟수 : " + i+1);
+			int j = i+1;
+			System.out.println("intent_JsonParsing_most_recent 실행 횟수 : [" + j+"/5]");
 			String intent = this.intent_JsonParsing_most_recent(userID, deviceID, Server, Place);
 			if (intent.contains(data)) { 
 				System.out.println("[일치] : " + data);
