@@ -2065,12 +2065,12 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	System.out.println(".");
     	String access_token = NUGU_Insight_Token(Place);
     	
-    	Thread.sleep(12000);
     	String transaction_id="";
     	
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+        String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
         String logArray[];    
         
@@ -2088,6 +2088,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         }
         
         System.out.println("오늘날짜 : " + today);
+        System.out.println("조회시간 : " + time);
         System.out.println("대상서버 : " + server);
     	
         if(Place.equals("in")) {
@@ -2172,17 +2173,18 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 
     }
     
-    public String TTS_JsonParsing_delay(String userID, String deviceID, String Server, String Place, int time) throws Exception {
+    public String TTS_JsonParsing_delay(String userID, String deviceID, String Server, String Place, int delay) throws Exception {
     	
     	System.out.println(".");
     	String access_token = NUGU_Insight_Token(Place);
     	
-    	Thread.sleep(time);
+    	Thread.sleep(delay);
     	String transaction_id="";
     	
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+        String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
         String logArray[];    
         
@@ -2200,6 +2202,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         }
         
         System.out.println("오늘날짜 : " + today);
+        System.out.println("조회시간 : " + time);
         System.out.println("대상서버 : " + server);
     	
         if(Place.equals("in")) {
@@ -2294,6 +2297,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+        String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
         String logArray[];    
         String transaction_id="";
@@ -2312,6 +2316,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         }
         
         System.out.println("오늘날짜 : " + today);
+        System.out.println("조회시간 : " + time);
         System.out.println("대상서버 : " + server);
     	
         if(Place.equals("in")) {
@@ -2406,6 +2411,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+        String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
         String logArray[];    
         String transaction_id="";
@@ -2424,6 +2430,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         }
         
         System.out.println("오늘날짜 : " + today);
+        System.out.println("조회시간 : " + time);
         System.out.println("대상서버 : " + server);
     	
         if(Place.equals("in")) {
@@ -2518,6 +2525,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+        String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
         String logArray[];    
         
@@ -2535,6 +2543,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         }
         
         System.out.println("오늘날짜 : " + today);
+        System.out.println("조회시간 : " + time);
         System.out.println("대상서버 : " + server);
     	
         if(Place.equals("in")) {
@@ -2627,7 +2636,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
-        
+        String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
+
         String logArray[];    
         
         String server = null;
@@ -2644,6 +2654,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         }
         
         System.out.println("오늘날짜 : " + today);
+        System.out.println("조회시간 : " + time);
         System.out.println("대상서버 : " + server);
     	
         if(Place.equals("in")) {
@@ -2737,6 +2748,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+        String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
         String logArray[];    
         
@@ -2754,6 +2766,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         }
         
         System.out.println("오늘날짜 : " + today);
+        System.out.println("조회시간 : " + time);
         System.out.println("대상서버 : " + server);
     	
         if(Place.equals("in")) {
@@ -2847,6 +2860,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+        String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
         String logArray[];    
         
@@ -2864,6 +2878,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         }
         
         System.out.println("오늘날짜 : " + today);
+        System.out.println("조회시간 : " + time);
         System.out.println("대상서버 : " + server);
     	
         if(Place.equals("in")) {
@@ -2957,6 +2972,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+        String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
         String logArray[];    
         
@@ -2973,6 +2989,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         }
         
         System.out.println("오늘날짜 : " + today);
+        System.out.println("조회시간 : " + time);
         System.out.println("대상서버 : " + server);
     	
         if(Place.equals("in")) {
@@ -3066,6 +3083,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+        String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
         String logArray[];    
         
@@ -3083,6 +3101,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         }
         
         System.out.println("오늘날짜 : " + today);
+        System.out.println("조회시간 : " + time);
         System.out.println("대상서버 : " + server);
     	
         if(Place.equals("in")) {
@@ -3176,6 +3195,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+        String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
         String logArray[];    
         
@@ -3193,6 +3213,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         }
         
         System.out.println("오늘날짜 : " + today);
+        System.out.println("조회시간 : " + time);
         System.out.println("대상서버 : " + server);
     	
         if(Place.equals("in")) {
@@ -3288,6 +3309,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+        String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
         String logArray[];    
         
@@ -3306,6 +3328,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         }
         
         System.out.println("오늘날짜 : " + today);
+        System.out.println("조회시간 : " + time);
         System.out.println("대상서버 : " + server);
     	
         if(Place.equals("in")) {
@@ -3398,6 +3421,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+        String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
         String logArray[];    
         
@@ -3416,6 +3440,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         }  
         
         System.out.println("오늘날짜 : " + today);
+        System.out.println("조회시간 : " + time);
         System.out.println("대상서버 : " + server);
     	
         Thread.sleep(4000);
@@ -3556,6 +3581,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+        String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
+
         
         String logArray[];    
         
@@ -3574,6 +3601,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         }  
         
         System.out.println("오늘날짜 : " + today);
+        System.out.println("조회시간 : " + time);
         System.out.println("대상서버 : " + server);
     	
         if(Place.equals("in")) {
@@ -3665,6 +3693,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+        String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
         String[] logArray;      
         
@@ -3683,6 +3712,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         }  
         
         System.out.println("오늘날짜 : " + today);
+        System.out.println("조회시간 : " + time);
         System.out.println("대상서버 : " + server);
     	
         if(Place.equals("in")) {
@@ -3776,6 +3806,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+        String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
         String[] logArray;      
         
@@ -3794,6 +3825,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         }  
         
         System.out.println("오늘날짜 : " + today);
+        System.out.println("조회시간 : " + time);
         System.out.println("대상서버 : " + server);
     	
         if(Place.equals("in")) {
@@ -3902,6 +3934,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+        String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
         String[] logArray;      
         
@@ -3920,6 +3953,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         }  
         
         System.out.println("오늘날짜 : " + today);
+        System.out.println("조회시간 : " + time);
         System.out.println("대상서버 : " + server);
     	
         if(Place.equals("in")) {
@@ -4024,6 +4058,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+        String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
         String logArray[];    
         
@@ -4041,6 +4076,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         }
         
         System.out.println("오늘날짜 : " + today);
+        System.out.println("조회시간 : " + time);
         System.out.println("대상서버 : " + server);
     	
         if(Place.equals("in")) {
