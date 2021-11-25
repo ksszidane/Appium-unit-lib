@@ -9,6 +9,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.LocalFileDetector;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
+import org.testng.Reporter;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -123,8 +124,8 @@ public class Chips_TestCase {
 	        test.log(Status.FAIL, result.getThrowable());
 	        test.log(Status.FAIL, "Snapshot below: " + test.addScreenCaptureFromPath(screenShotPath));
 	         
-	         System.out.println("[Test Result] : [Fail] - 테스트 실패");
-	         System.out.println(result.getThrowable());
+	        System.out.println("[Test Result] : [Fail] - 테스트 실패");
+	        System.out.println(result.getThrowable().getMessage());
 	      
 		} else if (result.getStatus() == ITestResult.SUCCESS) {
 			test.pass("[Test Result] : [Pass] - 테스트 성공");

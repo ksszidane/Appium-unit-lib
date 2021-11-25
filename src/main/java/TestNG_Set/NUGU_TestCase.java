@@ -134,13 +134,13 @@ public class NUGU_TestCase {
 		if (result.getStatus() == ITestResult.FAILURE) { 
 			//util.context("NATIVE_APP"); 
 			String Time = util.getTime();
-			 String screenShotPath = util.ErrorScreenshots(util, "screenShotName"+Time);
-			 test.fail("[Test Result] : [Fail] - 테스트 실패");
-	         test.log(Status.FAIL, result.getThrowable());
-	         test.log(Status.FAIL, "Snapshot below: " + test.addScreenCaptureFromPath(screenShotPath));
+			String screenShotPath = util.ErrorScreenshots(util, "screenShotName"+Time);
+			test.fail("[Test Result] : [Fail] - 테스트 실패");
+	        test.log(Status.FAIL, result.getThrowable());
+	        test.log(Status.FAIL, "Snapshot below: " + test.addScreenCaptureFromPath(screenShotPath));
 	         
-	         System.out.println("[Test Result] : [Fail] - 테스트 실패");
-	         System.out.println(result.getThrowable());
+	        System.out.println("[Test Result] : [Fail] - 테스트 실패");
+	        System.out.println(result.getThrowable().getMessage());
 	      
 		} else if (result.getStatus() == ITestResult.SUCCESS) {
 			test.pass("[Test Result] : [Pass] - 테스트 성공");
