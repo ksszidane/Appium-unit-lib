@@ -2063,6 +2063,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     
     public String TTS_JsonParsing(String userID, String deviceID, String Server, String Place ) throws Exception {
     	
+    	System.out.println("\n");
     	String access_token = NUGU_Insight_Token(Place);
     	
     	Thread.sleep(12000);
@@ -2175,6 +2176,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     
     public String TTS_JsonParsing_delay(String userID, String deviceID, String Server, String Place, int time) throws Exception {
     	
+    	System.out.println("\n");
     	String access_token = NUGU_Insight_Token(Place);
     	
     	Thread.sleep(time);
@@ -2288,7 +2290,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     public String TTS_JsonParsing_most_recent(String userID, String deviceID, String Server, String Place ) throws Exception {
     	
     	//Thread.sleep(12000);
-    	
+    	System.out.println("\n");
     	String access_token = NUGU_Insight_Token(Place);
     	
     	Calendar calendar = Calendar.getInstance();
@@ -2401,6 +2403,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     
     public String TTS_JsonParsing(String userID, String deviceID, String Server, String Place, int size) throws Exception {
     	
+    	System.out.println("\n");
     	String access_token = NUGU_Insight_Token(Place);
     	
     	Calendar calendar = Calendar.getInstance();
@@ -2512,6 +2515,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     
     public String Domain_JsonParsing_most_recent(String userID, String deviceID, String Server, String Place ) throws Exception {
     	
+    	System.out.println("\n");
     	String access_token = NUGU_Insight_Token(Place);
     	
     	Calendar calendar = Calendar.getInstance();
@@ -2621,6 +2625,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     
     public String intent_JsonParsing_most_recent(String userID, String deviceID, String Server, String Place ) throws Exception {
     	
+    	System.out.println("\n");
     	String access_token = NUGU_Insight_Token(Place);
     	
     	Calendar calendar = Calendar.getInstance();
@@ -2731,6 +2736,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     
     public String intent_JsonParsing(String userID, String deviceID, String Server, String Place ) throws Exception {
     	
+    	System.out.println("\n");
     	String access_token = NUGU_Insight_Token(Place);
     	
     	Calendar calendar = Calendar.getInstance();
@@ -2833,6 +2839,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String s = Arrays.deepToString(logArray);
     	String s1 = s.replace("[", "");
     	String intent_String = s1.replace("]", "");
+    	System.out.println("\n");
     	System.out.println(intent_String);
 		return intent_String;
 		
@@ -2840,6 +2847,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     
     public String context_JsonParsing(String userID, String deviceID, String Server, String Place ) throws Exception {
     	
+    	System.out.println("\n");
     	String access_token = NUGU_Insight_Token(Place);
     	
     	Calendar calendar = Calendar.getInstance();
@@ -2942,6 +2950,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	logArray = api_context;
     	
     	String context = Arrays.deepToString(logArray);
+    	System.out.println("\n");
     	System.out.println(context);
 		return context;
 
@@ -2949,6 +2958,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     
     public String context_JsonParsing(String userID, String deviceID, String Server, String Place, int size) throws Exception {
     	
+    	System.out.println("\n");
     	String access_token = NUGU_Insight_Token(Place);
     	
     	Calendar calendar = Calendar.getInstance();
@@ -3050,6 +3060,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	logArray = api_context;
     	
     	String context = Arrays.deepToString(logArray);
+    	System.out.println("\n");
     	System.out.println(context);
 		return context;
 
@@ -3057,6 +3068,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     
     public String event_JsonParsing(String userID, String deviceID, String Server, String Place, int size) throws Exception {
     	
+    	System.out.println("\n");
     	String access_token = NUGU_Insight_Token(Place);
     	
     	Calendar calendar = Calendar.getInstance();
@@ -3159,6 +3171,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	logArray = api_event;
     	
     	String event = Arrays.deepToString(logArray);
+    	System.out.println("\n");
     	System.out.println(event);
 		return event;
 
@@ -3166,6 +3179,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     
 	public String audio_activity_JsonParsing(String userID, String deviceID, String Server, String Place, int size ) throws Exception {
     	
+		System.out.println("\n");
 		String access_token = NUGU_Insight_Token(Place);
 		
     	Calendar calendar = Calendar.getInstance();
@@ -3268,6 +3282,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	logArray = audio_activity;
     	
     	String activity = Arrays.deepToString(logArray);
+    	System.out.println("\n");
     	System.out.println(activity);
 		return activity;
 
@@ -3275,6 +3290,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	
 	public String TransactionID_JsonParsing(String userID, String deviceID, String Server, String Place) throws Exception {
     	
+		System.out.println("\n");
 		String access_token = NUGU_Insight_Token(Place);
 		
 		Thread.sleep(12000);
@@ -3379,6 +3395,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String s = Arrays.deepToString(logArray);
     	String s1 = s.replace("[", "");
     	String tid = s1.replace("]", "");
+    	System.out.println("\n");
     	System.out.println(tid);
 		return tid;
 
@@ -3386,6 +3403,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	
 	public String acceesToken_JsonParsing(String Server, String Place, String tid) throws Exception {
     	
+		System.out.println("\n");
 		String access_token = NUGU_Insight_Token(Place);
 		
     	Calendar calendar = Calendar.getInstance();
@@ -3532,6 +3550,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
                 	String s = Arrays.deepToString(logArray);
                 	String s1 = s.replace("[", "");
                 	actn = s1.replace("]", "");
+                	System.out.println("\n");
                 	System.out.println(actn);
             		
             	}
