@@ -89,8 +89,6 @@ public class Capabilities {
 			 
 			 capability.setCapability("noReset",true);
 			 capability.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, "600000");
-		       
-			 
 		        
 		     ChromeOptions chromeOptions = new ChromeOptions();
 		     chromeOptions.setExperimentalOption("w3c", true);
@@ -117,8 +115,8 @@ public class Capabilities {
 			 capability.setCapability("appPackage", "com.skt.aidev.nugufriends");
 			 capability.setCapability("appActivity", "com.skt.aidev.nugufriends.ui.home.HomeActivity");
 		       
+			 capability.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, "600000");
 			 
-		        
 		     ChromeOptions chromeOptions = new ChromeOptions();
 		     chromeOptions.setExperimentalOption("w3c", true);
 		     capability.setCapability("chromedriverArgs", chromeOptions); 

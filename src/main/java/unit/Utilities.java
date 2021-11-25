@@ -158,6 +158,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
   }
 	
 	
+	
     public WebElement findElementLocated(By locator) throws Exception {
 		   
 	  	WebDriverWait wait = (WebDriverWait) new WebDriverWait(this, TIME_OUT_SEC);
@@ -1378,17 +1379,18 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		waitForPageToLoad();
 		
 		WebElement element = null;
-		element = WaitfindElement (locator);
+		element = findElementLocated(locator);
 		
 		String text = element.getText();
 
 		return text;
 	}
 	
+	
 	public String fast_getText(By locator) throws Exception {
 	
 		WebElement element = null;
-		element = findElement (locator);
+		element = findElement(locator);
 		
 		String text = element.getText();
 
@@ -1693,12 +1695,15 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        	JSONObject clientStatus_data = new JSONObject();
        	clientStatus_data.put("nugu_sdk_version", "4.5.0");
        	
-       	Main_jsonObject.put("requestId", "ALDF3NYA6C0D0C654DD2;asr;;210415-220425;43033381;");  
+       	Main_jsonObject.put("requestId", "ALDFH3D1Q7W6071EFE41;iwf;;211125-013731;123592373;");  
        	Main_jsonObject.put("requestText", CommandText);
        	Main_jsonObject.put("accessToken", Access_Token);
        	Main_jsonObject.put("clientStatus", clientStatus_data);
-       	Main_jsonObject.put("clientVersion", "1.1.0");
+       	Main_jsonObject.put("clientVersion", "1.1.1");
        	Main_jsonObject.put("flowCode", "NLU01");
+       	Main_jsonObject.put("requestType", "S");
+       	Main_jsonObject.put("outputFormat", "simple_nlu");
+       	Main_jsonObject.put("multiModalCount", "1");
        	
        	System.out.println(Main_jsonObject);
        	
@@ -1766,8 +1771,6 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        	} else {
        		System.out.println("서버 조건 불만족");
        	}
-       	
-       	Thread.sleep(8000);
 
        }
     
@@ -1782,12 +1785,15 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        	JSONObject clientStatus_data = new JSONObject();
        	clientStatus_data.put("nugu_sdk_version", "4.5.0");
        	
-       	Main_jsonObject.put("requestId", "ALDF3NYA6C0D0C654DD2;asr;;210415-220425;43033381;");  
+       	Main_jsonObject.put("requestId", "ALDFH3D1Q7W6071EFE41;iwf;;211125-013731;123592373;");  
        	Main_jsonObject.put("requestText", CommandText);
        	Main_jsonObject.put("accessToken", Access_Token);
        	Main_jsonObject.put("clientStatus", clientStatus_data);
-       	Main_jsonObject.put("clientVersion", "1.1.0");
+       	Main_jsonObject.put("clientVersion", "1.1.1");
        	Main_jsonObject.put("flowCode", "NLU01");
+       	Main_jsonObject.put("requestType", "S");
+       	Main_jsonObject.put("outputFormat", "simple_nlu");
+       	Main_jsonObject.put("multiModalCount", "1");
        	
        	System.out.println(Main_jsonObject);
        	
@@ -1871,12 +1877,15 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        	clientStatus_data.put("play_type", play_type);
        	clientStatus_data.put("play_status", "play");
        	
-       	Main_jsonObject.put("requestId", "ALDF3NYA6C0D0C654DD2;asr;;210415-220425;43033381;");  
+       	Main_jsonObject.put("requestId", "ALDFH3D1Q7W6071EFE41;iwf;;211125-013731;123592373;");  
        	Main_jsonObject.put("requestText", CommandText);
        	Main_jsonObject.put("accessToken", Access_Token);
        	Main_jsonObject.put("clientStatus", clientStatus_data);
-       	Main_jsonObject.put("clientVersion", "1.1.0");
+       	Main_jsonObject.put("clientVersion", "1.1.1");
        	Main_jsonObject.put("flowCode", "NLU01");
+       	Main_jsonObject.put("requestType", "S");
+       	Main_jsonObject.put("outputFormat", "simple_nlu");
+       	Main_jsonObject.put("multiModalCount", "1");
        	
        	System.out.println(Main_jsonObject);
        	
@@ -1944,8 +1953,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        	} else {
        		System.out.println("서버 조건 불만족");
        	}
-       	
-       	Thread.sleep(7000);
+       
 
        }
     
@@ -1970,7 +1978,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        	
 
        	if (TestPlace.equals("in")) {
-       		System.out.println("in");
+       		System.out.println("서버접근위치 : " + TestPlace);
        		Request request = new Request.Builder()
                        .url("http://172.27.97.221:7090/auth") 
                        .addHeader("Content-Type", "application/json")
@@ -1986,7 +1994,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
                    s = response.body().string();
                }
        	} else if (TestPlace.equals("out")) {
-       		System.out.println("out");
+       		System.out.println("서버접근위치 : " + TestPlace);
        		Request request = new Request.Builder()
                        .url("http://10.40.89.245:8190/auth") 
                        .post(body)
@@ -4381,6 +4389,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		boolean result = false;
 		
 		while(i<3) {
+			System.out.println("getText 실행 횟수 : " + i+1);
 			String text = this.getText(locator);
 			if (text.contains(data)) { 
 				System.out.println("[일치] : " + data);
@@ -4398,6 +4407,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		boolean result = false;
 		
 		while(i<3) {
+			System.out.println("getAttribute 실행 횟수 : " + i+1);
 			String text = this.getAttribute(locator, Attribute);
 			if (text.contains(data)) { 
 				System.out.println("[일치] : " + data);
@@ -4415,6 +4425,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		boolean result = false;
 		
 		while(i<3) {
+			System.out.println("isElementPresent 실행 횟수 : " + i+1);
 			boolean text = this.isElementPresent(locator);
 			if (text == true) { 
 				result = true;
@@ -4431,13 +4442,13 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		boolean result = false;
 		
 		while(i<5) {
+			System.out.println("TTS_JsonParsing 실행 횟수 : " + i+1);
 			String tts = this.TTS_JsonParsing(userID, deviceID, Server, Place);
 			if (tts.contains(data)) { 
 				System.out.println("[일치] : " + data);
 				result = true;
 				break;
 			}
-			Thread.sleep(3000);
 			i++;
  		}
 		return result;
@@ -4448,13 +4459,13 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		boolean result = false;
 		
 		while(i<2) {
+			System.out.println("TTS_JsonParsing_most_recent 실행 횟수 : " + i+1);
 			String tts = this.TTS_JsonParsing_most_recent(userID, deviceID, Server, Place);
 			if (this.dataCheck_Equals(tts, data_list)) { 
 				System.out.println("[일치] : " + tts);
 				result = true;
 				break;
 			}
-			Thread.sleep(3000);
 			i++;
  		}
 		return result;
@@ -4464,14 +4475,14 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		int i = 0;
 		boolean result = false;
 		
-		while(i<3) {
+		while(i<2) {
+			System.out.println("TTS_JsonParsing 실행 횟수 : " + i+1);
 			String tts = this.TTS_JsonParsing(userID, deviceID, Server, Place);
 			if (this.dataCheck_Contains(tts, data_list)) { 
 				System.out.println("[일치] : " + tts);
 				result = true;
 				break;
 			}
-			Thread.sleep(3000);
 			i++;
  		}
 		return result;
@@ -4482,13 +4493,13 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		boolean result = false;
 
 		while(i<5) {
+			System.out.println("action_type_JsonParsing 실행 횟수 : " + i+1);
 			String action = this.action_type_JsonParsing(userID, deviceID, Server, Place);
 			if (action.contains(data)) { 
 				System.out.println("[일치] : " + data);
 				result = true;
 				break;
 			}
-			Thread.sleep(3000);
 			i++;
  		}
 		return result;
@@ -4499,6 +4510,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		boolean result = false;
 
 		while(i<5) {
+			System.out.println("Domain_JsonParsing_most_recent 실행 횟수 : " + i+1);
 			String Domain = this.Domain_JsonParsing_most_recent(userID, deviceID, Server, Place);
 			if (Domain.contains(data)) { 
 				System.out.println("[일치] : " + data);
@@ -4516,6 +4528,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		boolean result = false;
 
 		while(i<5) {
+			System.out.println("intent_JsonParsing_most_recent 실행 횟수 : " + i+1);
 			String intent = this.intent_JsonParsing_most_recent(userID, deviceID, Server, Place);
 			if (intent.contains(data)) { 
 				System.out.println("[일치] : " + data);
