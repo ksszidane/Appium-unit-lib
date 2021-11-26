@@ -4344,7 +4344,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	public void view_close_btn_check() throws Exception {
 		
 		Thread.sleep(500);
-		if(this.isElementPresent(By.id("close")) == true) {
+		boolean close = this.isElementPresent(By.id("close"));
+		if(close == true) {
 			System.out.println("play 카드 [있음] - 카드 닫기");
 			this.click(By.id("com.skt.aidev.nugufriends:id/close"));
 		} else {
