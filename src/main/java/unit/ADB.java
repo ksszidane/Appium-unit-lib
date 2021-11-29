@@ -80,6 +80,12 @@ public class ADB {
 		System.out.println("adb -s "+Device+" shell pm clear" + PakageName);
 	}
 	
+	public void ADB_forcestop(String Device, String PakageName) throws Exception {
+		
+		runCommand("adb -s "+Device+" shell am force-stop" + PakageName);
+		System.out.println("adb -s "+Device+" shell am force-stop" + PakageName);
+	}
+	
 	public void ADB_WiFi_Off(String Device) throws Exception {
 		
 		runCommand("adb -s "+Device+" shell svc wifi disable");

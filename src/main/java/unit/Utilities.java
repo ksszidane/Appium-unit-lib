@@ -4475,7 +4475,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		
 		while(i<7) {
 			int j = i+1;
-			System.out.println("TTS_JsonParsing 실행 횟수 : [" + j+"/5]");
+			System.out.println("TTS_JsonParsing 실행 횟수 : [" + j+"/7]");
 			String tts = this.TTS_JsonParsing(userID, deviceID, Server, Place);
 			if (tts.contains(data)) { 
 				System.out.println("[일치] : " + data);

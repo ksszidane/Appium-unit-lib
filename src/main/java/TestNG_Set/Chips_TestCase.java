@@ -160,7 +160,9 @@ public class Chips_TestCase {
 		
 		adb.ChipsApp_permission_LOCATION_Off(udid);
 		adb.ChipsApp_permission_MIC_Off(udid);
+		adb.ADB_forcestop(udid, "ADB_forcestop");
 		adb.ADB_AppStop(udid, "com.skt.aidev.nugufriends");
+		
 		adb.ADB_ScreenLock(udid); //빌드할때와 시나리오 테스트 진핸 완료 후에는 주석 풀기
 		
 	}
