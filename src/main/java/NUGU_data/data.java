@@ -145,5 +145,9 @@ public class data {
 	public List<String> 삼성증권도움말_list = Arrays.asList(삼성증권도움말);  
 	public Set<String> 삼성증권도움말_set = new HashSet<String>(Arrays.asList(삼성증권도움말));
 	
+	public static String 한곡재생 [] = {"한곡 재생시에는 지원하지 않는 기능입니다.", "한 곡 재생시에는 지원하지 않는 기능입니다."};
+	public List<String> 한곡재생_list = Arrays.asList(한곡재생);  
+	public Set<String> 한곡재생_set = new HashSet<String>(Arrays.asList(한곡재생));
+	
 	
 }
