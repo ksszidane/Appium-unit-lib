@@ -874,6 +874,12 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 				context(contextName);
 		}
 	}
+	
+	public void switchToContextName(String contextName) throws Exception {
+		
+		Thread.sleep(1500);
+		this.context(contextName);
+	}
 
 	public void refresh() {
 		
@@ -903,7 +909,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	 * @return boolean
 	 * @throws Exception - Selenium Exception
 	 */
-	public boolean isElementPresent(By locator) throws Exception{
+	public boolean isElementPresent(By locator) throws Exception {
 		
 		boolean result = false;
 		manage().timeouts().implicitlyWait(MIN_WAIT_TIME, TimeUnit.SECONDS);
