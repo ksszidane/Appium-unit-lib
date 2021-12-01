@@ -147,6 +147,12 @@ public class NUGU_TestCase {
 		} else if (result.getStatus() == ITestResult.SKIP) {
 			test.skip("[Test Result] : [Skip] - 테스트 스킵");
 			 System.out.println("[Test Result] : [Skip] - 테스트 스킵");
+		} else if (result.getStatus() == ITestResult.SUCCESS_PERCENTAGE_FAILURE) {
+			test.skip("[Test Result] : [OK-Pass] - 테스트 성공");
+			System.out.println("[Test Result] : [OK-Pass] - 테스트 성공");
+		} else { 
+			test.skip("[Test Result] : [N/I] - Not Included");
+			System.out.println("[Test Result] : [N/I] - Not Included");
 		}
 		System.out.println("\n");
 		//util.CaptureScreen(result);
