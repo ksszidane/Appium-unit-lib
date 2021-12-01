@@ -290,7 +290,6 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	 */
 	public void switchToWindwosIndex(int windowIndex) throws Exception {
 		
-		
 		ArrayList<String> AllWindows = new ArrayList<String>(getWindowHandles());
         switchTo().window(AllWindows.get(windowIndex));
 	}
@@ -307,6 +306,43 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		return AllWindows.size();
        
 	}
+	
+	 public void switchContext (String context) throws Exception {
+	    	
+	    	Thread.sleep(2000);
+	    	
+	    	Set<String> contextNames = getContextHandles(); 
+	        for (String contextName : contextNames) {
+	            System.out.println("context 목록  : " + contextName);
+	            if(contextName.contains(context)) {
+	            	System.out.println("적용 될 context 이름은 : " +contextName);
+	            	this.context(contextName);
+	            	break;
+	            }
+	        }
+	        System.out.println("스위칭 완료 context : " + getContext() + "\n");
+	        Thread.sleep(700);
+	 }
+	    
+	 public void switchContextURL(String context, String URL) throws Exception {
+	    	
+	   	Thread.sleep(2000);
+	   	
+	   	Set<String> contextNames = getContextHandles(); 
+	       for (String contextName : contextNames) {
+	           System.out.println("context 목록  : " + contextName);
+	           if(contextName.contains(context)) {
+	           	System.out.println("적용 될 context 이름은 : " +contextName);
+	           	this.context(contextName);
+	           	break;
+	           }
+	       }
+	       System.out.println("스위칭 완료 context : " + getContext() + "\n");
+	       int indexcount = allWindwosIndexCount();
+	       System.out.println("all open windows : " + indexcount);
+	       this.switchToWindwosURL(URL);
+	       Thread.sleep(1000);
+	    }
 	
 	public String getTime() {
 		
@@ -1526,25 +1562,6 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
                      
         return dest;
     }
-    
-    public void switchContext (String context) throws Exception {
-    	
-    	Thread.sleep(2000);
-    	
-    	Set<String> contextNames = getContextHandles(); 
-        for (String contextName : contextNames) {
-            System.out.println("context 목록  : " + contextName);
-            if(contextName.contains(context)) {
-            	System.out.println("적용 될 context 이름은 : " +contextName);
-            	this.context(contextName);
-            	break;
-            }
-        }
-        System.out.println("스위칭 완료 context : " + getContext() + "\n");
-        
-        Thread.sleep(700);
- 	
-    }
    
     
     public void  sendGet() throws Exception {
@@ -1691,7 +1708,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     }
     
     @SuppressWarnings("unchecked")
-   	public void SWFsendPost(String command, String Server, String Access_Token) throws Exception {
+   	public void SWFsendPost(String command, String DeviceID, String Server, String Access_Token) throws Exception {
        	
        	System.out.println("sendPost 발동 옵션: | 발화문 :  "+ command +" | 서버 : "+ Server +" | Access_Token : "+ Access_Token);
        	
@@ -1700,6 +1717,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        	JSONObject Main_jsonObject = new JSONObject();
        	JSONObject clientStatus_data = new JSONObject();
        	clientStatus_data.put("nugu_sdk_version", "4.5.0");
+       	clientStatus_data.put("target_device", DeviceID);
        	
        	Main_jsonObject.put("requestId", "ALDFH3D1Q7W6071EFE41;iwf;;211125-013731;123592373;");  
        	Main_jsonObject.put("requestText", CommandText);
@@ -1709,7 +1727,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        	Main_jsonObject.put("flowCode", "NLU01");
        	Main_jsonObject.put("requestType", "S");
        	Main_jsonObject.put("outputFormat", "simple_nlu");
-       	Main_jsonObject.put("multiModalCount", "1");
+       	Main_jsonObject.put("multiModalCount", "0");
        	
        	System.out.println(Main_jsonObject);
        	
@@ -1780,98 +1798,9 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        	Thread.sleep(5000);
     }
     
-    @SuppressWarnings("unchecked")
-   	public void SWFsendPost_fast(String command, String Server, String Access_Token) throws Exception {
-       	
-    	System.out.println("sendPost 발동 옵션: | 발화문 :  "+ command +" | 서버 : "+ Server +" | Access_Token : "+ Access_Token);
-       	
-       	String CommandText = command;
-       	
-       	JSONObject Main_jsonObject = new JSONObject();
-       	JSONObject clientStatus_data = new JSONObject();
-       	clientStatus_data.put("nugu_sdk_version", "4.5.0");
-       	
-       	Main_jsonObject.put("requestId", "ALDFH3D1Q7W6071EFE41;iwf;;211125-013731;123592373;");  
-       	Main_jsonObject.put("requestText", CommandText);
-       	Main_jsonObject.put("accessToken", Access_Token);
-       	Main_jsonObject.put("clientStatus", clientStatus_data);
-       	Main_jsonObject.put("clientVersion", "1.1.1");
-       	Main_jsonObject.put("flowCode", "NLU01");
-       	Main_jsonObject.put("requestType", "S");
-       	Main_jsonObject.put("outputFormat", "simple_nlu");
-       	Main_jsonObject.put("multiModalCount", "1");
-       	
-       	System.out.println(Main_jsonObject);
-       	
-       	MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-       	
-       	// form parameters
-       	@SuppressWarnings("deprecation")
-   		RequestBody body = RequestBody.create(JSON, Main_jsonObject.toString());
-       	
-
-       	if (Server.equals("PRD")) {
-       		System.out.println("PRD");
-       		Request request = new Request.Builder()
-                       .url("https://pif.t-aicloud.co.kr/nlp/rest/nlu") //PRD directive URL
-                       .addHeader("Content-Type", "application/json")
-                       .addHeader("cache-control", "no-cache")
-                       .addHeader("X-AI-Access-Token", Access_Token)
-                       .addHeader("Accept", "application/json")
-                       .post(body)
-                       .build();
-       		
-       		try (Response response = httpClient.newCall(request).execute()) {
-
-                   if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-
-                   // Get response body
-                   System.out.println(response.body().string());
-               }
-       	} else if (Server.equals("RTG")) {
-       		System.out.println("RTG");
-       		Request request = new Request.Builder()
-                       .url("http://rtg-pif-ai.aicloud.kr/nlp/rest/nlu") //PRD directive URL
-                       .addHeader("Content-Type", "application/json")
-                       .addHeader("cache-control", "no-cache")
-                       .addHeader("X-AI-Access-Token", Access_Token)
-                       .addHeader("Accept", "application/json")
-                       .post(body)
-                       .build();
-       		
-       		try (Response response = httpClient.newCall(request).execute()) {
-
-                   if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-
-                   // Get response body
-                   System.out.println(response.body().string());
-               }
-       	} else if (Server.equals("STG")) {
-       		System.out.println("STG");
-       		Request request = new Request.Builder()
-       				.url("http://stg-pif-ai.aicloud.kr/nlp/rest/nlu") //STG directive URL
-                       .addHeader("Content-Type", "application/json")
-                       .addHeader("cache-control", "no-cache")
-                       .addHeader("X-AI-Access-Token", Access_Token)
-                       .addHeader("Accept", "application/json")
-                       .post(body)
-                       .build();
-       		
-       		try (Response response = httpClient.newCall(request).execute()) {
-
-                   if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-
-                   // Get response body
-                   System.out.println(response.body().string());
-       		}
-       	} else {
-       		System.out.println("서버 조건 불만족");
-       	}
-
-    }
     
     @SuppressWarnings("unchecked")
-   	public void SWFsendPost_playStatus(String command, String Server, String Access_Token, String play_type) throws Exception {
+   	public void SWFsendPost_playStatus(String command, String DeviceID, String Server, String Access_Token, String play_type) throws Exception {
        	
        	System.out.println("sendPost 발동 옵션: | 발화문 :  "+ command +" | 서버 : "+ Server +" | Access_Token : "+ Access_Token +" | play_type : " + play_type);
        	
@@ -1882,6 +1811,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        	clientStatus_data.put("nugu_sdk_version", "4.5.0");
        	clientStatus_data.put("play_type", play_type);
        	clientStatus_data.put("play_status", "play");
+       	clientStatus_data.put("target_device", DeviceID);
        	
        	Main_jsonObject.put("requestId", "ALDFH3D1Q7W6071EFE41;iwf;;211125-013731;123592373;");  
        	Main_jsonObject.put("requestText", CommandText);
@@ -1891,7 +1821,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        	Main_jsonObject.put("flowCode", "NLU01");
        	Main_jsonObject.put("requestType", "S");
        	Main_jsonObject.put("outputFormat", "simple_nlu");
-       	Main_jsonObject.put("multiModalCount", "1");
+       	Main_jsonObject.put("multiModalCount", "0");
        	
        	System.out.println(Main_jsonObject);
        	
