@@ -159,7 +159,7 @@ public class Chips_TestCase {
 			util.quit();
 		}
 		catch (WebDriverException we) {
-			//util.printLog(" ** tearDownClass catch WebDriverException");
+			util.printLog(" ** tearDownClass catch WebDriverException");
 		}
 		System.out.println("\n▒▒ Quit Suite : " + util.printClassName(this)+ " ▒▒\n");
 		
