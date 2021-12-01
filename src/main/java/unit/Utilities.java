@@ -2082,7 +2082,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         
         String server = null;
         String urlStr = null;
-        int size = 3;
+        int size = 4;
         int repeat = 1;
         
         if(Server.equals("PRD")) {
