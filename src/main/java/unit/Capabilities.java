@@ -116,7 +116,7 @@ public class Capabilities {
 			 capability.setCapability("appActivity", "com.skt.aidev.nugufriends.ui.home.HomeActivity");
 		       
 			 capability.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, "600000");
-			 capability.setCapability("ignoreUnimportantViews", true);
+			 capability.setCapability("adbExecTimeout", "50000");
 			 
 		     ChromeOptions chromeOptions = new ChromeOptions();
 		     chromeOptions.setExperimentalOption("w3c", true);
