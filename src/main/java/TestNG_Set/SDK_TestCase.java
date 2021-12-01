@@ -115,10 +115,7 @@ public class SDK_TestCase {
 		} else if (result.getStatus() == ITestResult.SKIP) {
 			test.skip("[Test Result] : [Skip] - 테스트 스킵");
 			 System.out.println("[Test Result] : [Skip] - 테스트 스킵");
-		} else { 
-			test.skip("[Test Result] : [N/I] - Not Included");
-			System.out.println("[Test Result] : [N/I] - Not Included");
-		}
+		} 
 		System.out.println("\n");
 		//util.CaptureScreen(result);
 	    
