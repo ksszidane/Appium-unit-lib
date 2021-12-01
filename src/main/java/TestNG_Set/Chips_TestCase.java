@@ -122,7 +122,7 @@ public class Chips_TestCase {
 			String screenShotPath = util.ErrorScreenshots(util, "screenShotName"+Time);
 			test.fail("[Test Result] : [Fail] - 테스트 실패");
 	        test.log(Status.FAIL, "Snapshot below: " + test.addScreenCaptureFromPath(screenShotPath));
-	         
+	        util.printLog(" ** tearDownClass catch WebDriverException");
 	        System.out.println("[Test Result] : [Fail] - 테스트 실패");
 	      
 		} else if (result.getStatus() == ITestResult.SUCCESS) {
