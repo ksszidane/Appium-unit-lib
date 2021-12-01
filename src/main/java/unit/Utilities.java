@@ -4488,7 +4488,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 				result = true;
 				break;
 			}
-			Thread.sleep(3000);
+			Thread.sleep(4000);
 			i++;
  		}
 		return result;
@@ -4498,16 +4498,16 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		int i = 0;
 		boolean result = false;
 		
-		while(i<5) {
+		while(i<7) {
 			int j = i+1;
-			System.out.println("TTS_JsonParsing_most_recent 실행 횟수 : [" + j+"/5]");
+			System.out.println("TTS_JsonParsing_most_recent 실행 횟수 : [" + j+"/7]");
 			String tts = this.TTS_JsonParsing_most_recent(userID, deviceID, Server, Place);
 			if (this.dataCheck_Equals(tts, data_list)) { 
 				System.out.println("[일치] : " + tts);
 				result = true;
 				break;
 			}
-			Thread.sleep(5000);
+			Thread.sleep(4000);
 			i++;
  		}
 		return result;
@@ -4536,16 +4536,16 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		int i = 0;
 		boolean result = false;
 
-		while(i<5) {
+		while(i<7) {
 			int j = i+1;
-			System.out.println("action_type_JsonParsing 실행 횟수 : [" + j+"/5]");
+			System.out.println("action_type_JsonParsing 실행 횟수 : [" + j+"/7]");
 			String action = this.action_type_JsonParsing(userID, deviceID, Server, Place);
 			if (action.contains(data)) { 
 				System.out.println("[일치] : " + data);
 				result = true;
 				break;
 			}
-			Thread.sleep(3000);
+			Thread.sleep(4000);
 			i++;
  		}
 		return result;
@@ -4555,16 +4555,16 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		int i = 0;
 		boolean result = false;
 
-		while(i<5) {
+		while(i<7) {
 			int j = i+1;
-			System.out.println("Domain_JsonParsing_most_recent 실행 횟수 : [" + j+"/5]");
+			System.out.println("Domain_JsonParsing_most_recent 실행 횟수 : [" + j+"/7]");
 			String Domain = this.Domain_JsonParsing_most_recent(userID, deviceID, Server, Place);
 			if (Domain.contains(data)) { 
 				System.out.println("[일치] : " + data);
 				result = true;
 				break;
 			}
-			Thread.sleep(3000);
+			Thread.sleep(4000);
 			i++;
  		}
 		return result;
@@ -4574,16 +4574,16 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		int i = 0;
 		boolean result = false;
 
-		while(i<5) {
+		while(i<7) {
 			int j = i+1;
-			System.out.println("intent_JsonParsing_most_recent 실행 횟수 : [" + j+"/5]");
+			System.out.println("intent_JsonParsing_most_recent 실행 횟수 : [" + j+"/7]");
 			String intent = this.intent_JsonParsing_most_recent(userID, deviceID, Server, Place);
 			if (intent.contains(data)) { 
 				System.out.println("[일치] : " + data);
 				result = true;
 				break;
 			}
-			Thread.sleep(3000);
+			Thread.sleep(4000);
 			i++;
  		}
 		return result;
