@@ -137,7 +137,7 @@ public class NUGU_TestCase {
 			String screenShotPath = util.ErrorScreenshots(util, "screenShotName"+Time);
 			test.fail("[Test Result] : [Fail] - 테스트 실패");
 	        test.log(Status.FAIL, "Snapshot below: " + test.addScreenCaptureFromPath(screenShotPath));
-	         
+	        test.log(Status.FAIL, result.getThrowable());
 	        System.out.println("[Test Result] : [Fail] - 테스트 실패");
 	      
 		} else if (result.getStatus() == ITestResult.SUCCESS) {
@@ -146,9 +146,6 @@ public class NUGU_TestCase {
 		} else if (result.getStatus() == ITestResult.SKIP) {
 			test.skip("[Test Result] : [Skip] - 테스트 스킵");
 			 System.out.println("[Test Result] : [Skip] - 테스트 스킵");
-		} else if (result.getStatus() == ITestResult.SUCCESS_PERCENTAGE_FAILURE) {
-			test.skip("[Test Result] : [OK-Pass] - 테스트 성공");
-			System.out.println("[Test Result] : [OK-Pass] - 테스트 성공");
 		} else { 
 			test.skip("[Test Result] : [N/I] - Not Included");
 			System.out.println("[Test Result] : [N/I] - Not Included");
