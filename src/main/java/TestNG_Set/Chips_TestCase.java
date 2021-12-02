@@ -122,6 +122,7 @@ public class Chips_TestCase {
 			String screenShotPath = util.ErrorScreenshots(util, "screenShotName"+Time);
 			test.fail("[Test Result] : [Fail] - 테스트 실패");
 			test.log(Status.FAIL, result.getThrowable());
+			test.log(Status.FAIL, new RuntimeException("runtime exception(런타임 예외사항)"));
 	        test.log(Status.FAIL, "Snapshot below: " + test.addScreenCaptureFromPath(screenShotPath));
 	        System.out.println("[Test Result] : [Fail] - 테스트 실패");
 	      

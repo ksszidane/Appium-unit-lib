@@ -31,6 +31,8 @@ public class ExtentManager {
         reporter.config().setDocumentTitle("QA 자동화 테스트 결과");
         reporter.config().setEncoding("UTF-8");
         reporter.config().setOfflineMode(true);
+        reporter.config().setTimelineEnabled(true);
+        reporter.config().setTimeStampFormat("yyyyy.MMM.ddd, HH:mm:ss a");
         extentReports.attachReporter(reporter);
         
         extentReports.setSystemInfo("OS", OS);
