@@ -341,7 +341,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	       int indexcount = allWindwosIndexCount();
 	       System.out.println("all open windows : " + indexcount);
 	       this.switchToWindwosURL(URL);
-	       Thread.sleep(1000);
+	       Thread.sleep(2000);
 	    }
 	
 	public String getTime() {
