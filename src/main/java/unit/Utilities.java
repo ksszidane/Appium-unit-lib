@@ -341,9 +341,46 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	       int indexcount = allWindwosIndexCount();
 	       System.out.println("all open windows : " + indexcount);
 	       this.switchToWindwosURL(URL);
-	       Thread.sleep(2000);
+	       
 	    }
 	
+	 /**
+	  * NATIVE -> WEBVIWE 전환
+	  */
+	public void switchToWeb() {
+		
+		Set<String> contextNames = getContextHandles();
+        
+		for (String contextName : contextNames) {
+			if (contextName.contains("WEBVIEW"))
+				context(contextName);
+		}
+	}
+	
+	/**
+	  * WEBVIWE -> NATIVE 전환
+	  */
+	public void switchToNative() {
+		
+		Set<String> contextNames = getContextHandles();
+        
+		for (String contextName : contextNames) {
+			if (contextName.contains("NATIVE"))
+				context(contextName);
+		}
+	}
+	
+	public void switchToContextName(String contextName) throws Exception {
+		
+		Thread.sleep(1500);
+		this.context(contextName);
+	}
+
+	public void refresh() {
+		
+			this.refresh();
+	}
+	 
 	public String getTime() {
 		
 		Calendar cal = Calendar.getInstance();
@@ -885,42 +922,6 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		udid = (String) this.getCapabilities().getCapability("udid");
 	}
 	
-	/**
-	  * NATIVE -> WEBVIWE 전환
-	  */
-	public void switchToWeb() {
-		
-		Set<String> contextNames = getContextHandles();
-        
-		for (String contextName : contextNames) {
-			if (contextName.contains("WEBVIEW"))
-				context(contextName);
-		}
-	}
-	
-	/**
-	  * WEBVIWE -> NATIVE 전환
-	  */
-	public void switchToNative() {
-		
-		Set<String> contextNames = getContextHandles();
-        
-		for (String contextName : contextNames) {
-			if (contextName.contains("NATIVE"))
-				context(contextName);
-		}
-	}
-	
-	public void switchToContextName(String contextName) throws Exception {
-		
-		Thread.sleep(1500);
-		this.context(contextName);
-	}
-
-	public void refresh() {
-		
-			this.refresh();
-	}
 	
 	/**
 	  * 로그를 출력하는 메소드
