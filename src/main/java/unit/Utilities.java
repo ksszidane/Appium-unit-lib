@@ -2467,7 +2467,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         
         String server = null;
         String urlStr = null;
-        int size = 1;
+        int size = 3;
         int repeat = 1;
         
         if(Server.equals("PRD")) {
@@ -2578,7 +2578,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         
         String server = null;
         String urlStr = null;
-        int size = 1;
+        int size = 3;
         int repeat = 1;
         
         if(Server.equals("PRD")) {
@@ -3985,7 +3985,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         
         String server = null;
         String urlStr = null;
-        int size = 1;
+        int size = 3;
         int repeat = 1;
         
         if(Server.equals("PRD")) {
