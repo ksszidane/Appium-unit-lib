@@ -1719,6 +1719,10 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        	JSONObject clientStatus_data = new JSONObject();
        	clientStatus_data.put("nugu_sdk_version", "4.5.0");
        	clientStatus_data.put("target_device", DeviceID);
+       	clientStatus_data.put("wakeup_word", "\uc544\ub9ac\uc544");
+       	clientStatus_data.put("wakeup_type", "DVC_MIC");
+       	clientStatus_data.put("text_status", "");
+       	
        	
        	Main_jsonObject.put("requestId", "ALDFH3D1Q7W6071EFE41;iwf;;211125-013731;123592373;");  
        	Main_jsonObject.put("requestText", CommandText);
@@ -1729,6 +1733,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        	Main_jsonObject.put("requestType", "S");
        	Main_jsonObject.put("outputFormat", "simple_nlu");
        	Main_jsonObject.put("multiModalCount", "0");
+
        	
        	System.out.println(Main_jsonObject);
        	
@@ -1813,6 +1818,9 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        	clientStatus_data.put("play_type", play_type);
        	clientStatus_data.put("play_status", "play");
        	clientStatus_data.put("target_device", DeviceID);
+       	clientStatus_data.put("wakeup_word", "\uc544\ub9ac\uc544");
+       	clientStatus_data.put("wakeup_type", "DVC_MIC");
+       	clientStatus_data.put("text_status", "");
        	
        	Main_jsonObject.put("requestId", "ALDFH3D1Q7W6071EFE41;iwf;;211125-013731;123592373;");  
        	Main_jsonObject.put("requestText", CommandText);
