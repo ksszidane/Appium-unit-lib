@@ -1724,7 +1724,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        	clientStatus_data.put("text_status", "");
        	
        	
-       	Main_jsonObject.put("requestId", "ALDFH3D1Q7W6071EFE41;iwf;;211125-013731;123592373;");  
+       	Main_jsonObject.put("requestId", "ALDFH3D1Q7W6071EFE41;nlu;;;");  
        	Main_jsonObject.put("requestText", CommandText);
        	Main_jsonObject.put("accessToken", Access_Token);
        	Main_jsonObject.put("clientStatus", clientStatus_data);
@@ -1822,7 +1822,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        	clientStatus_data.put("wakeup_type", "DVC_MIC");
        	clientStatus_data.put("text_status", "");
        	
-       	Main_jsonObject.put("requestId", "ALDFH3D1Q7W6071EFE41;iwf;;211125-013731;123592373;");  
+       	Main_jsonObject.put("requestId", "ALDFH3D1Q7W6071EFE41;nlu;;;");  
        	Main_jsonObject.put("requestText", CommandText);
        	Main_jsonObject.put("accessToken", Access_Token);
        	Main_jsonObject.put("clientStatus", clientStatus_data);
