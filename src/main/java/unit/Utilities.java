@@ -4371,7 +4371,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 				result = true;
 				break;
 			}
-			Thread.sleep(4000);
+			Thread.sleep(5000);
 			i++;
  		}
 		return result;
@@ -4390,7 +4390,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 				result = true;
 				break;
 			}
-			Thread.sleep(4000);
+			Thread.sleep(5000);
 			i++;
  		}
 		return result;
@@ -4408,7 +4408,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 				result = true;
 				break;
 			}
-			Thread.sleep(4000);
+			Thread.sleep(5000);
 			i++;
  		}
 		return result;
@@ -4427,7 +4427,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 				result = true;
 				break;
 			}
-			Thread.sleep(4000);
+			Thread.sleep(5000);
 			i++;
  		}
 		return result;
@@ -4446,7 +4446,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 				result = true;
 				break;
 			}
-			Thread.sleep(4000);
+			Thread.sleep(5000);
 			i++;
  		}
 		return result;
@@ -4465,7 +4465,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 				result = true;
 				break;
 			}
-			Thread.sleep(4000);
+			Thread.sleep(5000);
 			i++;
  		}
 		return result;
@@ -4484,7 +4484,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 				result = true;
 				break;
 			}
-			Thread.sleep(4000);
+			Thread.sleep(5000);
 			i++;
  		}
 		return result;
@@ -4503,7 +4503,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 				result = true;
 				break;
 			}
-			Thread.sleep(4000);
+			Thread.sleep(5000);
 			i++;
  		}
 		return result;
@@ -4522,7 +4522,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 				result = true;
 				break;
 			}
-			Thread.sleep(4000);
+			Thread.sleep(5000);
 			i++;
  		}
 		return result;
