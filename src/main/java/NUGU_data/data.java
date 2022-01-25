@@ -149,5 +149,9 @@ public class data {
 	public List<String> 한곡재생_list = Arrays.asList(한곡재생);  
 	public Set<String> 한곡재생_set = new HashSet<String>(Arrays.asList(한곡재생));
 	
+	public static String 나누기10_3 [] = {"10 나누기 3은, 3.33333 입니다.", "10 ÷ 3 = 3.3333333333"};
+	public List<String> 나누기10_3_list = Arrays.asList(나누기10_3);  
+	public Set<String> 나누기10_3_set = new HashSet<String>(Arrays.asList(나누기10_3));
+	
 	
 }
