@@ -105,13 +105,41 @@ public class Capabilities {
 		        
 		    
 		}
-		 if(AppName.equalsIgnoreCase("APOLLO")) {			
+		 if(AppName.equalsIgnoreCase("APOLLO_PRD")) {			
 			 capability.setCapability("deviceName","Android");
 			 capability.setCapability("automationName", "UIAutomator2");
 		     capability.setCapability("platformName","Android");
 			 capability.setCapability("udid",Device); //여러 디바이스가 설치된 경우, 테스트하고자 하는 디바이스를 선택 
 			 
 			 capability.setCapability("appPackage", "com.skt.nugu.apollo");
+			 capability.setCapability("appActivity", "com.skt.nugu.visual.splash.SplashActivity");
+			 
+			 capability.setCapability("noReset",true);
+			 capability.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 600000);
+		        
+		     ChromeOptions chromeOptions = new ChromeOptions();
+		     chromeOptions.setExperimentalOption("w3c", true);
+		     capability.setCapability("chromedriverArgs", chromeOptions); 
+		     
+		     capability.setCapability("recreateChromeDriverSessions", false); 
+		     capability.setCapability("extractChromeAndroidPackageFromContextName", true); 
+		     
+		     capability.setCapability("focused", true); 
+		     
+		     capability.setCapability("showChromedriverLog", true);
+		     
+		     capability.setCapability("chromedriverExecutable", "C:\\chromedriver_win32\\chromedriver.exe"); 
+		        
+		    
+		}
+		 
+		 if(AppName.equalsIgnoreCase("APOLLO_STG")) {			
+			 capability.setCapability("deviceName","Android");
+			 capability.setCapability("automationName", "UIAutomator2");
+		     capability.setCapability("platformName","Android");
+			 capability.setCapability("udid",Device); //여러 디바이스가 설치된 경우, 테스트하고자 하는 디바이스를 선택 
+			 
+			 capability.setCapability("appPackage", "com.skt.nugu.apollo.stg");
 			 capability.setCapability("appActivity", "com.skt.nugu.visual.splash.SplashActivity");
 			 
 			 capability.setCapability("noReset",true);
