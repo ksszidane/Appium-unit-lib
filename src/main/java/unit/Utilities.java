@@ -1584,6 +1584,97 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     }
     
     @SuppressWarnings("unchecked")
+	public void A_sendPost(String command, String userID, String deviceID, String Server) throws Exception {
+    	
+    	System.out.println("sendPost 발동 옵션: | 발화문 :  "+ command +" | 서버 : "+ Server);
+    	
+    	String CommandText = command;
+    	
+    	JSONObject Main_jsonObject = new JSONObject();
+    	
+    	JSONArray directivesArray = new JSONArray();
+    	
+    	JSONObject payload_data = new JSONObject();
+    	payload_data.put("text", CommandText);
+    	
+    	
+    	JSONObject header_data = new JSONObject();
+    	header_data.put("messageId", "09b809b0e50160f1250e4e4868a78b21");
+    	header_data.put("dialogRequestId", "09b809b0e50160f1250e4e483e5bb9a4");
+    	header_data.put("namespace", "Text");
+    	header_data.put("referrerDialogRequestId", "");
+    	header_data.put("name", "TextSource");
+    	header_data.put("version", "1.0");
+    	
+ 
+    	JSONObject data_jsonObject = new JSONObject();
+    	data_jsonObject.put("payload", payload_data);
+    	data_jsonObject.put("header", header_data);
+    
+    	directivesArray.add(data_jsonObject);
+    	
+    	
+    	@SuppressWarnings("unused")
+		JSONObject directives_jsonObject = new JSONObject();
+    	//directives_jsonObject.put("directives", directivesArray.toString());
+    	
+    	Main_jsonObject.put("directives", directivesArray);
+    	Main_jsonObject.put("deviceId", deviceID);  
+
+    	
+    	System.out.println(Main_jsonObject);
+    	
+    	MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    	
+    	// form parameters
+    	@SuppressWarnings("deprecation")
+		RequestBody body = RequestBody.create(JSON, Main_jsonObject.toString());
+
+    	if (Server.equals("PRD")) {
+    		System.out.println("PRD + in");
+    		Request request = new Request.Builder()
+                    .url("https://api.sktnugu.com/v1/setting/deviceGateway/directive") //PRD directive URL
+                    .addHeader("User-Id", userID)
+                    .addHeader("Target-Device-Id", deviceID)
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("Authorization", "token 14bd0daf-2946-4d42-8f33-5cb59ed38761")
+                    .post(body)
+                    .build();
+    		
+    		try (Response response = httpClient.newCall(request).execute()) {
+
+                if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+                // Get response body
+                System.out.println(response.body().string());
+            }
+    	} else if (Server.equals("STG")) {
+    		System.out.println("STG + in");
+    		Request request = new Request.Builder()
+                    .url("https://stg-api.sktnugu.com/v1/setting/deviceGateway/directive") //STG directive URL
+                    .addHeader("User-Id", userID)
+                    .addHeader("Target-Device-Id", deviceID)
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("Authorization", "token 517aad07-3353-42f7-98a9-52a61db0f359")
+                    .post(body)
+                    .build();
+    		
+    		try (Response response = httpClient.newCall(request).execute()) {
+
+                if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+                // Get response body
+                System.out.println(response.body().string());
+    		}
+    	} else {
+    		System.out.println("서버 조건 불만족");
+    	}
+    	
+    	Thread.sleep(9000);
+
+    }
+    
+    @SuppressWarnings("unchecked")
 	public void sendPost(String command, String userID, String deviceID, String Server, String Place, String oAuth_Token) throws Exception {
     	
     	System.out.println("sendPost 발동 옵션: | 발화문 :  "+ command +" | 서버 : "+ Server +" | Auth_Token : "+ oAuth_Token);
@@ -1924,7 +2015,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        	if (TestPlace.equals("in")) {
        		System.out.println("서버접근위치 : " + TestPlace);
        		Request request = new Request.Builder()
-                       .url("http://172.27.97.221:7090/auth") 
+                       //.url("http://172.27.97.221:7090/auth") 
+                       .url("http://insight-qa.nugu.co.kr/pulse_n/auth") 
                        .addHeader("Content-Type", "application/json")
                        .post(body)
                        .build();
@@ -2005,7 +2097,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	
     }
     
-    public String TTS_JsonParsing(String userID, String deviceID, String Server, String Place ) throws Exception {
+    public String TTS_JsonParsing(String userID, String deviceID, String Server, String Place, String Service) throws Exception {
     	
     	System.out.println(".");
     	String access_token = NUGU_Insight_Token(Place);
@@ -2038,12 +2130,13 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
-        	urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
         	//vpn으로는 http://10.40.89.245:8190
-        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         }
         
@@ -2117,7 +2210,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 
     }
     
-    public String TTS_JsonParsing_delay(String userID, String deviceID, String Server, String Place, int delay) throws Exception {
+    public String TTS_JsonParsing_delay(String userID, String deviceID, String Server, String Place, String Service, int delay) throws Exception {
     	
     	System.out.println(".");
     	String access_token = NUGU_Insight_Token(Place);
@@ -2151,12 +2244,13 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
-        	urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
         	//vpn으로는 http://10.40.89.245:8190
-        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         }
         
@@ -2232,7 +2326,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 
     }
     
-    public String TTS_JsonParsing_most_recent(String userID, String deviceID, String Server, String Place ) throws Exception {
+    public String TTS_JsonParsing_most_recent(String userID, String deviceID, String Server, String Place, String Service ) throws Exception {
     	
     	//Thread.sleep(12000);
     	System.out.println(".");
@@ -2265,12 +2359,13 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
-        	urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
         	//vpn으로는 http://10.40.89.245:8190
-        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         }
         
@@ -2347,7 +2442,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		
     }
     
-    public String TTS_JsonParsing(String userID, String deviceID, String Server, String Place, int size) throws Exception {
+    public String TTS_JsonParsing(String userID, String deviceID, String Server, String Place, String Service, int size) throws Exception {
     	
     	System.out.println(".");
     	String access_token = NUGU_Insight_Token(Place);
@@ -2379,12 +2474,13 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
-        	urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
         	//vpn으로는 http://10.40.89.245:8190
-        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         }
         
@@ -2461,7 +2557,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 
     }
     
-    public String Domain_JsonParsing_most_recent(String userID, String deviceID, String Server, String Place ) throws Exception {
+    public String Domain_JsonParsing_most_recent(String userID, String deviceID, String Server, String Place, String Service ) throws Exception {
     	
     	System.out.println(".");
     	String access_token = NUGU_Insight_Token(Place);
@@ -2492,12 +2588,13 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
-        	urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
         	//vpn으로는 http://10.40.89.245:8190
-        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         }
         
@@ -2572,7 +2669,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		
     }
     
-    public String intent_JsonParsing_most_recent(String userID, String deviceID, String Server, String Place ) throws Exception {
+    public String intent_JsonParsing_most_recent(String userID, String deviceID, String Server, String Place, String Service ) throws Exception {
     	
     	System.out.println(".");
     	String access_token = NUGU_Insight_Token(Place);
@@ -2603,12 +2700,13 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
-        	urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
         	//vpn으로는 http://10.40.89.245:8190
-        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         }
         
@@ -2684,7 +2782,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		
     }
     
-    public String intent_JsonParsing(String userID, String deviceID, String Server, String Place ) throws Exception {
+    public String intent_JsonParsing(String userID, String deviceID, String Server, String Place, String Service ) throws Exception {
     	
     	System.out.println(".");
     	String access_token = NUGU_Insight_Token(Place);
@@ -2715,12 +2813,13 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
-        	urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
         	//vpn으로는 http://10.40.89.245:8190
-        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         }
         
@@ -2795,7 +2894,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		
     }
     
-    public String context_JsonParsing(String userID, String deviceID, String Server, String Place ) throws Exception {
+    public String context_JsonParsing(String userID, String deviceID, String Server, String Place, String Service ) throws Exception {
     	
     	System.out.println(".");
     	String access_token = NUGU_Insight_Token(Place);
@@ -2826,12 +2925,13 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
-        	urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
         	//vpn으로는 http://10.40.89.245:8190
-        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         }
         
@@ -2905,7 +3005,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 
     }
     
-    public String context_JsonParsing(String userID, String deviceID, String Server, String Place, int size) throws Exception {
+    public String context_JsonParsing(String userID, String deviceID, String Server, String Place, String Service, int size) throws Exception {
     	
     	System.out.println(".");
     	String access_token = NUGU_Insight_Token(Place);
@@ -2935,12 +3035,13 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
-        	urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
         	//vpn으로는 http://10.40.89.245:8190
-        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         }
         
@@ -3014,7 +3115,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 
     }
     
-    public String event_JsonParsing(String userID, String deviceID, String Server, String Place, int size) throws Exception {
+    public String event_JsonParsing(String userID, String deviceID, String Server, String Place, String Service, int size) throws Exception {
     	
     	System.out.println(".");
     	String access_token = NUGU_Insight_Token(Place);
@@ -3045,12 +3146,13 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
-        	urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
         	//vpn으로는 http://10.40.89.245:8190
-        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         }
         
@@ -3124,7 +3226,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 
     }
     
-	public String audio_activity_JsonParsing(String userID, String deviceID, String Server, String Place, int size ) throws Exception {
+	public String audio_activity_JsonParsing(String userID, String deviceID, String Server, String Place, String Service, int size ) throws Exception {
     	
 		System.out.println(".");
 		String access_token = NUGU_Insight_Token(Place);
@@ -3155,12 +3257,13 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
-        	urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
         	//vpn으로는 http://10.40.89.245:8190
-        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         }
         
@@ -3234,7 +3337,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 
     }
 	
-	public String TransactionID_JsonParsing(String userID, String deviceID, String Server, String Place) throws Exception {
+	public String TransactionID_JsonParsing(String userID, String deviceID, String Server, String Place, String Service) throws Exception {
     	
 		System.out.println(".");
 		String access_token = NUGU_Insight_Token(Place);
@@ -3268,12 +3371,13 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
-        	urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
         	//vpn으로는 http://10.40.89.245:8190
-        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         }
         
@@ -3505,7 +3609,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	return actn;
 	}
 	
-	public String authToken_JsonParsing(String userID, String deviceID, String Server, String Place) throws Exception {
+	public String authToken_JsonParsing(String userID, String deviceID, String Server, String Place, String Service) throws Exception {
     	
 		Thread.sleep(15000);
 		
@@ -3539,12 +3643,13 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
-        	urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
         	//vpn으로는 http://10.40.89.245:8190
-        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         }
 
@@ -3617,7 +3722,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	return actn;
 	}
 	
-	public String directive_JsonParsing(String userID, String deviceID, String Server, String Place) throws Exception {
+	public String directive_JsonParsing(String userID, String deviceID, String Server, String Place, String Service) throws Exception {
   
 		
 		String access_token = NUGU_Insight_Token(Place);
@@ -3649,12 +3754,13 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
-        	urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
         	//vpn으로는 http://10.40.89.245:8190
-        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         }
 
@@ -3729,7 +3835,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	return actn;
 	}
 	
-	public String directive_info_JsonParsing(String userID, String deviceID, String Server, String Place) throws Exception {
+	public String directive_info_JsonParsing(String userID, String deviceID, String Server, String Place, String Service) throws Exception {
 
 		
 		String access_token = NUGU_Insight_Token(Place);
@@ -3761,12 +3867,13 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
-        	urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
         	//vpn으로는 http://10.40.89.245:8190
-        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         }
 
@@ -3856,7 +3963,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	}
   
     	
-	public String event_info_JsonParsing(String userID, String deviceID, String Server, String Place) throws Exception {
+	public String event_info_JsonParsing(String userID, String deviceID, String Server, String Place, String Service) throws Exception {
     			
 		String access_token = NUGU_Insight_Token(Place);
 		
@@ -3887,12 +3994,13 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
-        	urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
         	//vpn으로는 http://10.40.89.245:8190
-        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         }
 
@@ -3980,7 +4088,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	return actn;
 	}
     
-	public String action_type_JsonParsing(String userID, String deviceID, String Server, String Place ) throws Exception {
+	public String action_type_JsonParsing(String userID, String deviceID, String Server, String Place, String Service ) throws Exception {
     	
 		String access_token = NUGU_Insight_Token(Place);
 		
@@ -4010,12 +4118,13 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
-        	urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
         	//vpn으로는 http://10.40.89.245:8190
-        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         }
         
@@ -4414,14 +4523,14 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		return result;
 	}
 	
-	public boolean TTS_Assertfunc(String userID, String deviceID, String Server, String Place, String data ) throws Exception {
+	public boolean TTS_Assertfunc(String userID, String deviceID, String Server, String Place, String Service, String data ) throws Exception {
 		int i = 0;
 		boolean result = false;
 		
 		while(i<7) {
 			int j = i+1;
 			System.out.println("TTS_JsonParsing 실행 횟수 : [" + j+"/7]");
-			String tts = this.TTS_JsonParsing(userID, deviceID, Server, Place);
+			String tts = this.TTS_JsonParsing(userID, deviceID, Server, Place, Service);
 			if (tts.contains(data)) { 
 				System.out.println("[일치] : " + data);
 				result = true;
@@ -4433,14 +4542,14 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		return result;
 	}
 	
-	public boolean TTS_Assertfunc_EqualsSet(String userID, String deviceID, String Server, String Place, Set<String> data_list ) throws Exception {
+	public boolean TTS_Assertfunc_EqualsSet(String userID, String deviceID, String Server, String Place, String Service, Set<String> data_list ) throws Exception {
 		int i = 0;
 		boolean result = false;
 		
 		while(i<7) {
 			int j = i+1;
 			System.out.println("TTS_JsonParsing_most_recent 실행 횟수 : [" + j+"/7]");
-			String tts = this.TTS_JsonParsing_most_recent(userID, deviceID, Server, Place);
+			String tts = this.TTS_JsonParsing_most_recent(userID, deviceID, Server, Place, Service);
 			if (this.dataCheck_Equals(tts, data_list)) { 
 				System.out.println("[일치] : " + tts);
 				result = true;
@@ -4452,14 +4561,14 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		return result;
 	}
 	
-	public boolean TTS_Assertfunc_ContainsSet(String userID, String deviceID, String Server, String Place, Set<String> data_list ) throws Exception {
+	public boolean TTS_Assertfunc_ContainsSet(String userID, String deviceID, String Server, String Place, String Service, Set<String> data_list ) throws Exception {
 		int i = 0;
 		boolean result = false;
 		
 		while(i<7) {
 			int j = i+1;
 			System.out.println("TTS_JsonParsing 실행 횟수 : [" + j+"/7]");
-			String tts = this.TTS_JsonParsing(userID, deviceID, Server, Place);
+			String tts = this.TTS_JsonParsing(userID, deviceID, Server, Place, Service);
 			if (this.dataCheck_Contains(tts, data_list)) { 
 				System.out.println("[일치] : " + tts);
 				result = true;
@@ -4471,14 +4580,14 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		return result;
 	}
 	
-	public boolean actionType_Assertfunc(String userID, String deviceID, String Server, String Place, String data) throws Exception {
+	public boolean actionType_Assertfunc(String userID, String deviceID, String Server, String Place, String Service, String data) throws Exception {
 		int i = 0;
 		boolean result = false;
 
 		while(i<7) {
 			int j = i+1;
 			System.out.println("action_type_JsonParsing 실행 횟수 : [" + j+"/7]");
-			String action = this.action_type_JsonParsing(userID, deviceID, Server, Place);
+			String action = this.action_type_JsonParsing(userID, deviceID, Server, Place, Service);
 			if (action.contains(data)) { 
 				System.out.println("[일치] : " + data);
 				result = true;
@@ -4490,14 +4599,14 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		return result;
 	}
 	
-	public boolean Domain_Assertfunc(String userID, String deviceID, String Server, String Place, String data) throws Exception {
+	public boolean Domain_Assertfunc(String userID, String deviceID, String Server, String Place, String Service, String data) throws Exception {
 		int i = 0;
 		boolean result = false;
 
 		while(i<7) {
 			int j = i+1;
 			System.out.println("Domain_JsonParsing_most_recent 실행 횟수 : [" + j+"/7]");
-			String Domain = this.Domain_JsonParsing_most_recent(userID, deviceID, Server, Place);
+			String Domain = this.Domain_JsonParsing_most_recent(userID, deviceID, Server, Place, Service);
 			if (Domain.contains(data)) { 
 				System.out.println("[일치] : " + data);
 				result = true;
@@ -4509,14 +4618,14 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		return result;
 	}
 	
-	public boolean intent_Assertfunc(String userID, String deviceID, String Server, String Place, String data) throws Exception {
+	public boolean intent_Assertfunc(String userID, String deviceID, String Server, String Place, String Service, String data) throws Exception {
 		int i = 0;
 		boolean result = false;
 
 		while(i<7) {
 			int j = i+1;
 			System.out.println("intent_JsonParsing_most_recent 실행 횟수 : [" + j+"/7]");
-			String intent = this.intent_JsonParsing_most_recent(userID, deviceID, Server, Place);
+			String intent = this.intent_JsonParsing_most_recent(userID, deviceID, Server, Place, Service );
 			if (intent.contains(data)) { 
 				System.out.println("[일치] : " + data);
 				result = true;

@@ -45,6 +45,7 @@ public class APOLLO_TestCase {
 	public String Place;
 	public String udid;
 	public String App;
+	public String Service;
 	
 	public String SampleApp_token;
 	public String SampleApp_did;
@@ -52,11 +53,11 @@ public class APOLLO_TestCase {
 	public String uID;
 	
 
-	@Parameters({"OS", "AppName", "hubAddress", "Server", "Project", "TestPlace", "MobileDevice", 
+	@Parameters({"OS", "AppName", "hubAddress", "Server", "Project", "TestPlace", "MobileDevice", "ServiceName",
 		"userID", "deviceID_SampleApp" })
 	@BeforeClass
 	public void setupClass (String OS, String AppName, String hubAddress, String Server, String Project, String TestPlace, String MobileDevice, 
-			String userID, String deviceID_SampleApp) throws Exception {
+			String ServiceName, String userID, String deviceID_SampleApp) throws Exception {
 		
 		OS_ClassName = OS;
 		//Server = "Server : "+ Server;
@@ -65,6 +66,7 @@ public class APOLLO_TestCase {
 		udid = MobileDevice;
 		Place = TestPlace;
 		App = AppName;
+		Service = ServiceName;
 		
 		SampleApp_did = deviceID_SampleApp;
 		uID = userID;
@@ -121,9 +123,9 @@ public class APOLLO_TestCase {
 	    
 	} 
 	
-	@Parameters({"Server", "AppName", "TestPlace", "MobileDevice", "userID", "deviceID_SampleApp"})
+	@Parameters({"Server", "AppName", "TestPlace", "MobileDevice", "ServiceName", "userID", "deviceID_SampleApp"})
 	@AfterClass
-	public void tearDownClass(String Server, String AppName, String TestPlace, String MobileDevice, String userID, String deviceID_SampleApp) throws Exception {
+	public void tearDownClass(String Server, String AppName, String TestPlace, String MobileDevice, String ServiceName, String userID, String deviceID_SampleApp) throws Exception {
 		
 		//util.sendPost("그만", userID_nuguqa001, deviceID_SampleApp, Server, Place, Auth_Token_SampleApp);
 		System.out.println("\n");

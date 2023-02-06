@@ -47,6 +47,7 @@ public class Chips_TestCase {
 	public String Place;
 	public String udid;
 	public String App;
+	public String Service;
 	
 	public String Chips_did;
 	public String Chips10_did;
@@ -60,10 +61,10 @@ public class Chips_TestCase {
 	public String nuguqa002;
 	
 
-	@Parameters({"OS", "AppName", "hubAddress", "Server", "Project", "TestPlace", "MobileDevice", 
+	@Parameters({"OS", "AppName", "hubAddress", "Server", "Project", "TestPlace", "MobileDevice", "ServiceName",
 		"userID_ksszidane", "userID_ksszidane10","userID_nuguqa001", "userID_nuguqa002", "deviceID_Chips", "deviceID_Chips10", "deviceID_Chips_001", "deviceID_Chips_002"})
 	@BeforeClass
-	public void setupClass (String OS, String AppName, String hubAddress, String Server, String Project, String TestPlace, String MobileDevice, 
+	public void setupClass (String OS, String AppName, String hubAddress, String Server, String Project, String TestPlace, String MobileDevice, String ServiceName,
 			String userID_ksszidane, String userID_ksszidane10, String userID_nuguqa001, String userID_nuguqa002, String deviceID_Chips, String deviceID_Chips10, 
 			String deviceID_Chips_001, String deviceID_Chips_002) throws Exception {
 		
@@ -74,6 +75,7 @@ public class Chips_TestCase {
 		udid = MobileDevice;
 		Place = TestPlace;
 		App = AppName;
+		Service = ServiceName;
 		
 		Chips_did = deviceID_Chips;
 		Chips10_did = deviceID_Chips10;
@@ -137,10 +139,10 @@ public class Chips_TestCase {
 	    
 	} 
 	
-	@Parameters({"Server", "AppName", "TestPlace", "MobileDevice", "userID_ksszidane", "userID_ksszidane10", "userID_nuguqa001", "userID_nuguqa002", 
+	@Parameters({"Server", "AppName", "TestPlace", "MobileDevice", "ServiceName", "userID_ksszidane", "userID_ksszidane10", "userID_nuguqa001", "userID_nuguqa002", 
 		"deviceID_Chips", "deviceID_Chips10", "deviceID_Chips_001", "deviceID_Chips_002"})
 	@AfterClass
-	public void tearDownClass(String Server, String AppName, String TestPlace, String MobileDevice,
+	public void tearDownClass(String Server, String AppName, String TestPlace, String MobileDevice, String ServiceName,
 			String userID_ksszidane, String userID_ksszidane10, String userID_nuguqa001, String userID_nuguqa002, String deviceID_Chips, String deviceID_Chips10, 
 			String deviceID_Chips_001, String deviceID_Chips_002) throws Exception {
 		
