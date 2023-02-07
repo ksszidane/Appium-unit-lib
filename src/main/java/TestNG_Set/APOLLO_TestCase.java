@@ -47,17 +47,15 @@ public class APOLLO_TestCase {
 	public String App;
 	public String Service;
 	
-	public String SampleApp_token;
-	public String SampleApp_did;
-	
+	public String dID;
 	public String uID;
 	
 
 	@Parameters({"OS", "AppName", "hubAddress", "Server", "Project", "TestPlace", "MobileDevice", "ServiceName",
-		"userID", "deviceID_SampleApp" })
+		"userID", "deviceID" })
 	@BeforeClass
 	public void setupClass (String OS, String AppName, String hubAddress, String Server, String Project, String TestPlace, String MobileDevice, 
-			String ServiceName, String userID, String deviceID_SampleApp) throws Exception {
+			String ServiceName, String userID, String deviceID) throws Exception {
 		
 		OS_ClassName = OS;
 		//Server = "Server : "+ Server;
@@ -68,7 +66,7 @@ public class APOLLO_TestCase {
 		App = AppName;
 		Service = ServiceName;
 		
-		SampleApp_did = deviceID_SampleApp;
+		dID = deviceID;
 		uID = userID;
 		
 		adb = new ADB();
