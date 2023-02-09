@@ -121,7 +121,7 @@ public class APOLLO_TestCase {
 	    
 	} 
 	
-	@Parameters({"Server", "AppName", "TestPlace", "MobileDevice", "ServiceName", "userID", "deviceID_SampleApp"})
+	@Parameters({"Server", "AppName", "TestPlace", "MobileDevice", "ServiceName", "userID", "deviceID"})
 	@AfterClass
 	public void tearDownClass(String Server, String AppName, String TestPlace, String MobileDevice, String ServiceName, String userID, String deviceID_SampleApp) throws Exception {
 		
