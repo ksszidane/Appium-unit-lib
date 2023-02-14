@@ -129,7 +129,7 @@ public class Capabilities {
 		     capability.setCapability("showChromedriverLog", true);
 		     
 		     //capability.setCapability("chromedriverExecutable", "C:\\chromedriver_win32\\chromedriver.exe"); //win
-		     capability.setCapability("chromedriverExecutable", "/Library/chromedriver_mac64/chromedriver"); //mac
+		     capability.setCapability("chromedriverExecutable", "~/Library/chromedriver_mac64/chromedriver"); //mac
 		        
 		    
 		}
@@ -158,7 +158,7 @@ public class Capabilities {
 		     capability.setCapability("showChromedriverLog", true);
 		     
 		   //capability.setCapability("chromedriverExecutable", "C:\\chromedriver_win32\\chromedriver.exe"); //win
-		     capability.setCapability("chromedriverExecutable", "/Library/chromedriver_mac64/chromedriver"); //mac
+		     capability.setCapability("chromedriverExecutable", "~/Library/chromedriver_mac64/chromedriver"); //mac
 		        
 		    
 		}

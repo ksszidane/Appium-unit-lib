@@ -85,6 +85,7 @@ public class APOLLO_TestCase {
 	
 		
 		System.out.println("\n▒▒ Start Suite : " + util.printClassName(this)+ " ▒▒ ("+ OS + " | "+ Server + " | "+ App +")\n");
+	
 			
 	}
 	

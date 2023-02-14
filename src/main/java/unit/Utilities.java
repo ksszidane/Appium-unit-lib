@@ -2041,7 +2041,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
                    if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
                    // Get response body
-                   //System.out.println(response.body().string());
+                   System.out.println(response.body().string());
                    s = response.body().string();
                }
        	} else {
@@ -2051,6 +2051,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        	JSONParser parser = new JSONParser(); 
     	JSONObject obj = (JSONObject) parser.parse(s);
         String access_token = (String) obj.get("access_token");
+        System.out.println(access_token);
     
 		return access_token;
        	
@@ -4325,6 +4326,10 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		
 		pressKey(new KeyEvent(AndroidKey.J));
 		}
+	public void Android_HomeKey() throws Exception {
+		
+		pressKey(new KeyEvent(AndroidKey.HOME));
+	}
 	
 	
 
