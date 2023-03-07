@@ -19,7 +19,7 @@ import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 
-import NUGU_data.data;
+import A._Data.data;
 import unit.Capabilities;
 import unit.ExtentManager;
 import unit.Utilities;

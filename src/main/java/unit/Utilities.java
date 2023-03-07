@@ -10,6 +10,7 @@ import io.appium.java_client.android.nativekey.AndroidKey;
 import io.appium.java_client.android.nativekey.KeyEvent;
 import io.appium.java_client.touch.LongPressOptions;
 import io.appium.java_client.touch.WaitOptions;
+import io.appium.java_client.touch.offset.ElementOption;
 import io.appium.java_client.touch.offset.PointOption;
 import junit.framework.Assert;
 import io.appium.java_client.android.nativekey.AndroidKey;
@@ -105,7 +106,6 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	public RemoteTouchScreen Screentouch;
 	public TouchActions actions;
 	public TouchAction action;
-	
 	
     public WebDriverWait Wait;
 	
@@ -741,6 +741,78 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	}
 	
 	
+	/**
+	 * Performs swipe from the center of screen
+	 *
+	 * @param dir the direction of swipe
+	 * @version java-client: 7.3.0
+	 **/
+	public void swipeScreen(Direction dir) {
+	    System.out.println("swipeScreen(): dir: '" + dir + "'"); // always log your actions
+
+	    // Animation default time:
+	    //  - Android: 300 ms
+	    //  - iOS: 200 ms
+	    // final value depends on your app and could be greater
+	    final int ANIMATION_TIME = 200; // ms
+
+	    final int PRESS_TIME = 200; // ms
+
+	    int edgeBorder = 10; // better avoid edges
+	    PointOption pointOptionStart, pointOptionEnd;
+
+	    // init screen variables
+	    Dimension dims = this.manage().window().getSize();
+
+	    // init start point = center of screen
+	    pointOptionStart = PointOption.point(dims.width / 2, dims.height / 2);
+
+	    switch (dir) {
+	        case DOWN: // center of footer
+	            pointOptionEnd = PointOption.point(dims.width / 2, dims.height - edgeBorder);
+	            break;
+	        case UP: // center of header
+	            pointOptionEnd = PointOption.point(dims.width / 2, edgeBorder);
+	            break;
+	        case LEFT: // center of left side
+	            pointOptionEnd = PointOption.point(edgeBorder, dims.height / 2);
+	            break;
+	        case RIGHT: // center of right side
+	            pointOptionEnd = PointOption.point(dims.width - edgeBorder, dims.height / 2);
+	            break;
+	        default:
+	            throw new IllegalArgumentException("swipeScreen(): dir: '" + dir + "' NOT supported");
+	    }
+
+	    // execute swipe using TouchAction
+	    try {
+	        new TouchAction(this)
+	                .press(pointOptionStart)
+	                // a bit more reliable when we add small wait
+	                .waitAction(WaitOptions.waitOptions(Duration.ofMillis(PRESS_TIME)))
+	                .moveTo(pointOptionEnd)
+	                .release().perform();
+	    } catch (Exception e) {
+	        System.err.println("swipeScreen(): TouchAction FAILED\n" + e.getMessage());
+	        return;
+	    }
+
+	    // always allow swipe action to complete
+	    try {
+	        Thread.sleep(ANIMATION_TIME);
+	    } catch (InterruptedException e) {
+	        // ignore
+	    }
+	}
+
+	public enum Direction {
+	    UP,
+	    DOWN,
+	    LEFT,
+	    RIGHT;
+	}
+	
+	
 	/** 
 	 * @param int startx - the starting x position
 	 * @param int starty - the starting y position
@@ -753,11 +825,11 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		
 		Thread.sleep(1500);
 	    TouchAction touchAction = new TouchAction(this);
-	    
+	    final int PRESS_TIME = 2500; // ms
 
 	    touchAction.press(PointOption.point(startx, starty))
 	    		   //.waitAction(WaitOptions.waitOptions(Duration.ofSeconds(1)))
-	    		   .waitAction()
+	    	.waitAction(WaitOptions.waitOptions(Duration.ofMillis(PRESS_TIME)))
 	               .moveTo(PointOption.point(endx, endy))
 	               .release()
 	               .perform();
@@ -810,6 +882,17 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	    touchAction.press(PointOption.point(x, y)).release().perform();
 	    Thread.sleep(2000);
 
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public void longPress(By locator) throws Exception {
+		
+		WebElement element = waitForIsElementPresent (locator);
+		TouchAction touchAction = new TouchAction(this);
+		touchAction.longPress(LongPressOptions.longPressOptions()
+				.withElement(ElementOption.element(element)).withDuration(Duration.ofMillis(3000))).release().perform();
+	    
+	Thread.sleep(2000);
 	}
 	
 	/**
@@ -1544,9 +1627,18 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     
     public String ErrorScreenshots(WebElement webElement,String screenShotName) throws IOException
     {
-        TakesScreenshot ts = (TakesScreenshot)webElement;
+    	
+    	String systemOS = System.getProperty("os.name").toLowerCase();
+    	String dest = null;
+    	
+    	
+    	TakesScreenshot ts = (TakesScreenshot)webElement;
         File source = ts.getScreenshotAs(OutputType.FILE);
-        String dest = ".\\ErrorScreenshots\\"+screenShotName+".png";
+        if (systemOS.contains("win")) {
+    		dest = ".\\ErrorScreenshots\\"+screenShotName+".png";
+	     } else if (systemOS.contains("mac")) {
+	    	 dest = "./ErrorScreenshots"+screenShotName+".png";
+	     }
         File destination = new File(dest);
         FileUtils.copyFile(source, destination);        
                      
@@ -1555,9 +1647,17 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     
     public String ErrorScreenshots(WebDriver driver,String screenShotName) throws IOException
     {
-        TakesScreenshot ts = (TakesScreenshot)driver;
+    	String systemOS = System.getProperty("os.name").toLowerCase();
+    	String dest = null;
+    	
+    	
+    	TakesScreenshot ts = (TakesScreenshot)driver;
         File source = ts.getScreenshotAs(OutputType.FILE);
-        String dest = ".\\ErrorScreenshots\\"+screenShotName+".png";
+        if (systemOS.contains("win")) {
+    		dest = ".\\ErrorScreenshots\\"+screenShotName+".png";
+	     } else if (systemOS.contains("mac")) {
+	    	 dest = "./ErrorScreenshots/"+screenShotName+".png";
+	     }
         File destination = new File(dest);
         FileUtils.copyFile(source, destination);        
                      
@@ -4516,7 +4616,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		
 		while(i<3) {
 			int j = i+1;
-			System.out.println("isElementPresent 실행 횟수 : [" + j+"/3]");
+			System.out.println(locator + " : isElementPresent 실행 횟수 : [" + j+"/3]");
 			boolean text = this.isElementPresent(locator);
 			if (text == true) { 
 				result = true;

@@ -106,6 +106,9 @@ public class Capabilities {
 		    
 		}
 		 if(AppName.equalsIgnoreCase("APOLLO_PRD")) {			
+			 
+			 String systemOS = System.getProperty("os.name").toLowerCase();
+			 
 			 capability.setCapability("deviceName","Android");
 			 capability.setCapability("automationName", "UIAutomator2");
 		     capability.setCapability("platformName","Android");
@@ -128,13 +131,20 @@ public class Capabilities {
 		     
 		     capability.setCapability("showChromedriverLog", true);
 		     
-		     //capability.setCapability("chromedriverExecutable", "C:\\chromedriver_win32\\chromedriver.exe"); //win
-		     capability.setCapability("chromedriverExecutable", "~/Library/chromedriver_mac64/chromedriver"); //mac
-		        
+		     
+		     if (systemOS.contains("win")) {
+		    	 capability.setCapability("chromedriverExecutable", "C:\\chromedriver_win32\\chromedriver.exe"); //win
+		     } else if (systemOS.contains("mac")) {
+		    	 capability.setCapability("chromedriverExecutable", "~/Library/chromedriver_mac64/chromedriver");
+		     }
+
 		    
 		}
 		 
 		 if(AppName.equalsIgnoreCase("APOLLO_STG")) {			
+			
+			 String systemOS = System.getProperty("os.name").toLowerCase();
+			 
 			 capability.setCapability("deviceName","Android");
 			 capability.setCapability("automationName", "UIAutomator2");
 		     capability.setCapability("platformName","Android");
@@ -157,8 +167,11 @@ public class Capabilities {
 		     
 		     capability.setCapability("showChromedriverLog", true);
 		     
-		   //capability.setCapability("chromedriverExecutable", "C:\\chromedriver_win32\\chromedriver.exe"); //win
-		     capability.setCapability("chromedriverExecutable", "~/Library/chromedriver_mac64/chromedriver"); //mac
+		     if (systemOS.contains("win")) {
+		    	 capability.setCapability("chromedriverExecutable", "C:\\chromedriver_win32\\chromedriver.exe"); //win
+		     } else if (systemOS.contains("mac")) {
+		    	 capability.setCapability("chromedriverExecutable", "~/Library/chromedriver_mac64/chromedriver");
+		     }
 		        
 		    
 		}
