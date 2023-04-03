@@ -3,6 +3,7 @@ package unit;
 import java.io.IOException;
 
 import java.net.MalformedURLException;
+import java.util.HashMap;
 
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -127,7 +128,8 @@ public class Capabilities {
 		     capability.setCapability("recreateChromeDriverSessions", false); 
 		     capability.setCapability("extractChromeAndroidPackageFromContextName", true); 
 		     
-		     capability.setCapability("autoGrantPermissions",true);
+		     HashMap<String, Object> browserstackOptions = new HashMap<String, Object>();
+		     browserstackOptions.put("autoGrantPermissions", "true");
 		     
 		     capability.setCapability("focused", true); 
 		     
@@ -165,7 +167,8 @@ public class Capabilities {
 		     capability.setCapability("recreateChromeDriverSessions", false); 
 		     capability.setCapability("extractChromeAndroidPackageFromContextName", true); 
 		     
-		     capability.setCapability("autoGrantPermissions",true);
+		     HashMap<String, Object> browserstackOptions = new HashMap<String, Object>();
+		     browserstackOptions.put("autoGrantPermissions", "true");
 		     
 		     capability.setCapability("focused", true); 
 		     
