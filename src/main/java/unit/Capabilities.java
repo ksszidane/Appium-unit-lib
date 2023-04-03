@@ -127,6 +127,8 @@ public class Capabilities {
 		     capability.setCapability("recreateChromeDriverSessions", false); 
 		     capability.setCapability("extractChromeAndroidPackageFromContextName", true); 
 		     
+		     capability.setCapability("autoGrantPermissions","true");
+		     
 		     capability.setCapability("focused", true); 
 		     
 		     capability.setCapability("showChromedriverLog", true);
@@ -135,7 +137,7 @@ public class Capabilities {
 		     if (systemOS.contains("win")) {
 		    	 capability.setCapability("chromedriverExecutable", "C:\\chromedriver_win32\\chromedriver.exe"); //win
 		     } else if (systemOS.contains("mac")) {
-		    	 capability.setCapability("chromedriverExecutable", "~/Library/chromedriver_mac64/chromedriver");
+		    	 capability.setCapability("chromedriverExecutable", "/opt/homebrew/bin/chromedriver");
 		     }
 
 		    
@@ -163,6 +165,8 @@ public class Capabilities {
 		     capability.setCapability("recreateChromeDriverSessions", false); 
 		     capability.setCapability("extractChromeAndroidPackageFromContextName", true); 
 		     
+		     capability.setCapability("autoGrantPermissions","true");
+		     
 		     capability.setCapability("focused", true); 
 		     
 		     capability.setCapability("showChromedriverLog", true);
@@ -170,7 +174,7 @@ public class Capabilities {
 		     if (systemOS.contains("win")) {
 		    	 capability.setCapability("chromedriverExecutable", "C:\\chromedriver_win32\\chromedriver.exe"); //win
 		     } else if (systemOS.contains("mac")) {
-		    	 capability.setCapability("chromedriverExecutable", "~/Library/chromedriver_mac64/chromedriver");
+		    	 capability.setCapability("chromedriverExecutable", "/opt/homebrew/bin/chromedriver");
 		     }
 		        
 		    

@@ -2116,7 +2116,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
        		System.out.println("서버접근위치 : " + TestPlace);
        		Request request = new Request.Builder()
                        //.url("http://172.27.97.221:7090/auth") 
-                       .url("http://insight-qa.nugu.co.kr/pulse_n/auth") 
+                       .url("http://qa.ai-insight.co.kr/pulse_n/auth") 
                        .addHeader("Content-Type", "application/json")
                        .post(body)
                        .build();
@@ -2232,7 +2232,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
         	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
-        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://qa.ai-insight.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
@@ -2346,7 +2346,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
         	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
-        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://qa.ai-insight.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
@@ -2461,7 +2461,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
         	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
-        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://qa.ai-insight.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
@@ -2576,7 +2576,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
         	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
-        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://qa.ai-insight.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
@@ -2690,7 +2690,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
         	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
-        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://qa.ai-insight.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
@@ -2802,7 +2802,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
         	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
-        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://qa.ai-insight.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
@@ -2915,7 +2915,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
         	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
-        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://qa.ai-insight.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
@@ -3027,7 +3027,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
         	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
-        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://qa.ai-insight.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
@@ -3137,7 +3137,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
         	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
-        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://qa.ai-insight.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
@@ -3248,7 +3248,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
         	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
-        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://qa.ai-insight.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
@@ -3359,7 +3359,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
         	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
-        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://qa.ai-insight.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
@@ -3473,7 +3473,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
         	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
-        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://qa.ai-insight.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
@@ -3745,7 +3745,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
         	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
-        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://qa.ai-insight.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
@@ -3856,7 +3856,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
         	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
-        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://qa.ai-insight.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
@@ -3969,7 +3969,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
         	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
-        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://qa.ai-insight.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
@@ -4096,7 +4096,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
         	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
-        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://qa.ai-insight.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
@@ -4220,7 +4220,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         if(Place.equals("in")) {
         	//사내망에서는 http://172.27.97.221:7090
         	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
-        	urlStr = "http://insight-qa.nugu.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+        	urlStr = "http://qa.ai-insight.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
         	System.out.println(urlStr);
         	
         } else if (Place.equals("out")) {
