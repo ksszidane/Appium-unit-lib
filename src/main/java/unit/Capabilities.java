@@ -127,7 +127,7 @@ public class Capabilities {
 		     capability.setCapability("recreateChromeDriverSessions", false); 
 		     capability.setCapability("extractChromeAndroidPackageFromContextName", true); 
 		     
-		     capability.setCapability("autoGrantPermissions","true");
+		     capability.setCapability("autoGrantPermissions",true);
 		     
 		     capability.setCapability("focused", true); 
 		     
@@ -165,7 +165,7 @@ public class Capabilities {
 		     capability.setCapability("recreateChromeDriverSessions", false); 
 		     capability.setCapability("extractChromeAndroidPackageFromContextName", true); 
 		     
-		     capability.setCapability("autoGrantPermissions","true");
+		     capability.setCapability("autoGrantPermissions",true);
 		     
 		     capability.setCapability("focused", true); 
 		     
