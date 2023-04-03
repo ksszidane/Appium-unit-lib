@@ -128,8 +128,8 @@ public class Capabilities {
 		     capability.setCapability("recreateChromeDriverSessions", false); 
 		     capability.setCapability("extractChromeAndroidPackageFromContextName", true); 
 		     
-		     HashMap<String, Object> browserstackOptions = new HashMap<String, Object>();
-		     browserstackOptions.put("autoGrantPermissions", "true");
+		     //noReset이 true로 처리되어 있으면 아래 명령어가 동작하지 않는다. 
+		     capability.setCapability("autoGrantPermissions", "true");
 		     
 		     capability.setCapability("focused", true); 
 		     
@@ -167,8 +167,8 @@ public class Capabilities {
 		     capability.setCapability("recreateChromeDriverSessions", false); 
 		     capability.setCapability("extractChromeAndroidPackageFromContextName", true); 
 		     
-		     HashMap<String, Object> browserstackOptions = new HashMap<String, Object>();
-		     browserstackOptions.put("autoGrantPermissions", "true");
+		   //noReset이 true로 처리되어 있으면 아래 명령어가 동작하지 않는다. 
+		     capability.setCapability("autoGrantPermissions", "true");
 		     
 		     capability.setCapability("focused", true); 
 		     
