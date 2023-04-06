@@ -112,13 +112,13 @@ public class ADB {
 	public void ADB_AppStop(String Device, String PakageName) throws Exception {
 		
 		if (os.contains("win")) {
-			runCommand("adb -s "+Device+" shell pm clear" + PakageName);
+			runCommand("adb -s "+Device+" shell pm clear " + PakageName);
 
         } else if (os.contains("mac")) {
-        	runCommand("/opt/homebrew/bin/adb -s "+Device+" shell pm clear" + PakageName);
+        	runCommand("/opt/homebrew/bin/adb -s "+Device+" shell pm clear " + PakageName);
         }
 		
-		System.out.println("adb -s "+Device+" shell pm clear" + PakageName);
+		System.out.println("adb -s "+Device+" shell pm clear " + PakageName);
 	}
 	
 	public void ADB_forcestop(String Device, String PakageName) throws Exception {
@@ -317,6 +317,34 @@ public class ADB {
 		
 		//System.out.println("adb -s "+Device+" shell pm revoke com.skt.aladdin android.permission.ACCESS_FINE_LOCATION"); //사용하는 동안
 		System.out.println("adb -s "+Device+" shell pm revoke com.skt.aidev.nugufriends android.permission.RECORD_AUDIO"); //항상
+		Thread.sleep(1000);
+	}
+	
+	public void permission_draw_over_other_apps_Off(String Device, String AppPackage) throws Exception {
+		
+		if (os.contains("win")) {
+			runCommand("adb -s "+Device+" shell pm revoke " + AppPackage + " android.permission.SYSTEM_ALERT_WINDOW");
+
+        } else if (os.contains("mac")) {
+        	runCommand("/opt/homebrew/bin/adb -s "+Device+" shell pm revoke " + AppPackage + " android.permission.SYSTEM_ALERT_WINDOW");
+        }
+		
+		//System.out.println("adb -s "+Device+" shell pm revoke com.skt.aladdin android.permission.ACCESS_FINE_LOCATION"); //사용하는 동안
+		System.out.println("adb -s "+Device+" shell pm revoke " + AppPackage + " android.permission.SYSTEM_ALERT_WINDOW"); //항상
+		Thread.sleep(1000);
+	}
+	
+	public void permission_draw_over_other_apps_On(String Device, String AppPackage) throws Exception {
+		
+		if (os.contains("win")) {
+			runCommand("adb -s "+Device+" shell pm grant --user 0 " + AppPackage + " android.permission.SYSTEM_ALERT_WINDOW");
+
+        } else if (os.contains("mac")) {
+        	runCommand("/opt/homebrew/bin/adb -s "+Device+" shell pm grant --user 0 " + AppPackage + " android.permission.SYSTEM_ALERT_WINDOW");
+        }
+		
+		//System.out.println("adb -s "+Device+" shell pm revoke com.skt.aladdin android.permission.ACCESS_FINE_LOCATION"); //사용하는 동안
+		System.out.println("adb -s "+Device+" shell pm grant --user 0 " + AppPackage + " android.permission.SYSTEM_ALERT_WINDOW"); //항상
 		Thread.sleep(1000);
 	}
 

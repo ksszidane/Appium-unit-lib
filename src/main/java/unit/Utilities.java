@@ -1617,6 +1617,17 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		}
 	}
 	
+	public void tap(int xPoint, int yPoint) throws Exception {
+			
+		Thread.sleep(1000);
+		PointOption point = new PointOption();
+		TouchAction t =new TouchAction(this).tap(PointOption.point(xPoint,yPoint)).release().perform(); 
+		t.perform();
+
+	   
+	}
+	
+	
 	
 	
 	
@@ -1692,6 +1703,50 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	
     	JSONObject Main_jsonObject = new JSONObject();
     	
+    	JSONArray usersArray = new JSONArray();
+    	
+    	JSONObject users_data_jsonObject = new JSONObject();
+    	users_data_jsonObject.put("userId", userID);
+    	
+    	JSONArray deviceIdsArray = new JSONArray();
+    	deviceIdsArray.add(deviceID);
+    	
+    	JSONArray pocIdsArray = new JSONArray();
+    	pocIdsArray.add("app.apollo.agent");
+    	
+    	JSONArray osTypesArray = new JSONArray();
+    	osTypesArray.add("");
+    	
+    	usersArray.add(users_data_jsonObject);
+   
+    	Main_jsonObject.put("users", usersArray);
+    	
+    	users_data_jsonObject.put("deviceIds", deviceIdsArray);
+    	users_data_jsonObject.put("pocIds", pocIdsArray);
+    	users_data_jsonObject.put("osTypes", osTypesArray);
+    	
+    	Main_jsonObject.put("playServiceId", "nugu.builtin.apolloprototype");
+    	Main_jsonObject.put("pushServiceType", "QA");
+    	
+    	
+    	JSONArray directivesArray = new JSONArray();
+    	
+    	JSONObject directives_data_jsonObject = new JSONObject();
+    	directives_data_jsonObject.put("type", "Text.TextSource");
+    	directives_data_jsonObject.put("version", "1.7");
+    	directives_data_jsonObject.put("text", CommandText);
+    	directives_data_jsonObject.put("token", "test");
+    	directives_data_jsonObject.put("playServiceId", "");
+    	directivesArray.add(directives_data_jsonObject);
+    	Main_jsonObject.put("directives", directivesArray);
+    	
+    	JSONObject notificationRequest_data_jsonObject = new JSONObject();
+    	notificationRequest_data_jsonObject.put("shouldSendPush", false);
+    	notificationRequest_data_jsonObject.put("shouldSave", false);
+    	notificationRequest_data_jsonObject.put("shouldSendDirective", true);
+    	Main_jsonObject.put("notificationRequest", notificationRequest_data_jsonObject);
+    	
+    	/*
     	JSONArray directivesArray = new JSONArray();
     	
     	JSONObject payload_data = new JSONObject();
@@ -1720,7 +1775,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	
     	Main_jsonObject.put("directives", directivesArray);
     	Main_jsonObject.put("deviceId", deviceID);  
-
+		*/
     	
     	System.out.println(Main_jsonObject);
     	
@@ -1729,7 +1784,45 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	// form parameters
     	@SuppressWarnings("deprecation")
 		RequestBody body = RequestBody.create(JSON, Main_jsonObject.toString());
+    	
+    	
+    	
+    	if (Server.equals("PRD")) {
+    		System.out.println("PRD + in");
+    		Request request = new Request.Builder()
+                    .url("https://eg.sktapollo.com/api/v1/push") //PRD directive URL
+                    .addHeader("Auth-Token", "xZRypHEPM8RLl5KaPJnwtQ==")
+                    .post(body)
+                    .build();
+    		
+    		try (Response response = httpClient.newCall(request).execute()) {
 
+                if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+                // Get response body
+                System.out.println(response.body().string());
+            }
+    	} else if (Server.equals("STG")) {
+    		System.out.println("STG + in");
+    		Request request = new Request.Builder()
+                    .url("https://stg-eg.sktapollo.com/api/v1/push") //STG directive URL
+                    .addHeader("Auth-Token", "xZRypHEPM8RLl5KaPJnwtQ==")
+                    .post(body)
+                    .build();
+    		
+    		try (Response response = httpClient.newCall(request).execute()) {
+
+                if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+                // Get response body
+                System.out.println(response.body().string());
+    		}
+    	} else {
+    		System.out.println("서버 조건 불만족");
+    	}
+    	
+    	
+    	/*
     	if (Server.equals("PRD")) {
     		System.out.println("PRD + in");
     		Request request = new Request.Builder()
@@ -1769,8 +1862,9 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	} else {
     		System.out.println("서버 조건 불만족");
     	}
+    	*/
     	
-    	Thread.sleep(9000);
+    	Thread.sleep(7000);
 
     }
     
@@ -4614,15 +4708,15 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		int i = 0;
 		boolean result = false;
 		
-		while(i<3) {
+		while(i<2) {
 			int j = i+1;
-			System.out.println(locator + " : isElementPresent 실행 횟수 : [" + j+"/3]");
+			System.out.println(locator + " : isElementPresent 실행 횟수 : [" + j+"/2]");
 			boolean text = this.isElementPresent(locator);
 			if (text == true) { 
 				result = true;
 				break;
 			}
-			Thread.sleep(5000);
+			Thread.sleep(3000);
 			i++;
  		}
 		return result;
@@ -4633,6 +4727,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		boolean result = false;
 		
 		while(i<7) {
+			Thread.sleep(5000);
 			int j = i+1;
 			System.out.println("TTS_JsonParsing 실행 횟수 : [" + j+"/7]");
 			String tts = this.TTS_JsonParsing(userID, deviceID, Server, Place, Service);
@@ -4641,7 +4736,6 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 				result = true;
 				break;
 			}
-			Thread.sleep(5000);
 			i++;
  		}
 		return result;
@@ -4652,6 +4746,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		boolean result = false;
 		
 		while(i<7) {
+			Thread.sleep(5000);
 			int j = i+1;
 			System.out.println("TTS_JsonParsing_most_recent 실행 횟수 : [" + j+"/7]");
 			String tts = this.TTS_JsonParsing_most_recent(userID, deviceID, Server, Place, Service);
@@ -4660,7 +4755,6 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 				result = true;
 				break;
 			}
-			Thread.sleep(5000);
 			i++;
  		}
 		return result;
@@ -4671,6 +4765,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		boolean result = false;
 		
 		while(i<7) {
+			Thread.sleep(5000);
 			int j = i+1;
 			System.out.println("TTS_JsonParsing 실행 횟수 : [" + j+"/7]");
 			String tts = this.TTS_JsonParsing(userID, deviceID, Server, Place, Service);
@@ -4679,7 +4774,6 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 				result = true;
 				break;
 			}
-			Thread.sleep(5000);
 			i++;
  		}
 		return result;
@@ -4690,6 +4784,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		boolean result = false;
 
 		while(i<7) {
+			Thread.sleep(5000);
 			int j = i+1;
 			System.out.println("action_type_JsonParsing 실행 횟수 : [" + j+"/7]");
 			String action = this.action_type_JsonParsing(userID, deviceID, Server, Place, Service);
@@ -4698,7 +4793,6 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 				result = true;
 				break;
 			}
-			Thread.sleep(5000);
 			i++;
  		}
 		return result;
@@ -4709,6 +4803,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		boolean result = false;
 
 		while(i<7) {
+			Thread.sleep(5000);
 			int j = i+1;
 			System.out.println("Domain_JsonParsing_most_recent 실행 횟수 : [" + j+"/7]");
 			String Domain = this.Domain_JsonParsing_most_recent(userID, deviceID, Server, Place, Service);
@@ -4717,7 +4812,6 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 				result = true;
 				break;
 			}
-			Thread.sleep(5000);
 			i++;
  		}
 		return result;
@@ -4728,6 +4822,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		boolean result = false;
 
 		while(i<7) {
+			Thread.sleep(5000);
 			int j = i+1;
 			System.out.println("intent_JsonParsing_most_recent 실행 횟수 : [" + j+"/7]");
 			String intent = this.intent_JsonParsing_most_recent(userID, deviceID, Server, Place, Service );
@@ -4736,7 +4831,6 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 				result = true;
 				break;
 			}
-			Thread.sleep(5000);
 			i++;
  		}
 		return result;
