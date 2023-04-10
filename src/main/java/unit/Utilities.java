@@ -48,6 +48,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
+import java.util.jar.JarException;
 
 import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONArray;
@@ -2752,6 +2753,219 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 
     }
     
+    
+    public String Motion_JsonParsing(String userID, String deviceID, String Server, String Service) throws Exception {
+    	
+    	Thread.sleep(20000);
+    	System.out.println(".");
+    	String access_token = NUGU_Insight_Token("in");
+    	
+    	String transaction_id="";
+    	String Motion_id="";
+    	
+    	Calendar calendar = Calendar.getInstance();
+        java.util.Date date = calendar.getTime();
+        String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+        String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
+        
+        String logArray[];    
+     
+        String urlStr = null;
+        String server = null;
+        int size = 3;
+        int repeat = 1;
+        
+        if(Server.equals("PRD")) {
+        	server = "prd";
+        } else if (Server.equals("STG")) {
+        	server = "stg";
+        } else if (Server.equals("RTG")) {
+        	server = "rtg";
+        }
+        
+        System.out.println("오늘날짜 : " + today);
+        System.out.println("조회시간 : " + time);
+        System.out.println("대상서버 : " + server);
+    	
+  
+    	//사내망에서는 http://172.27.97.221:7090
+    	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+    	urlStr = "http://qa.ai-insight.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+    	System.out.println(urlStr);
+    	
+    	URL url = new URL(urlStr);
+    	Request request = new Request.Builder()
+        		.url(url) 
+                .addHeader("Authorization", "Bearer " + access_token)
+                .get()
+                .build();
+		
+        Response response = httpClient.newCall(request).execute();
+
+        // Get response body
+		//System.out.println(response.body().string());
+        String api_get_result = response.body().string();
+    	
+    	BufferedReader bf; 
+    	String line = ""; 
+    	
+    	int x = 0;
+    	String[] tid_strip = new String[size*repeat];
+    	//String[] tts_strip = new String[size];
+    	
+    	for (int y=0; y < repeat; y++) {
+    		
+    		String result=""; 
+    		InputStream is = new ByteArrayInputStream(api_get_result.getBytes());
+			bf = new BufferedReader(new InputStreamReader(is)); 
+        	
+        	while((line=bf.readLine())!=null) { 
+        		result=result.concat(line); 
+        		System.out.println(result); 
+        	}
+        	
+        	JSONParser parser = new JSONParser(); 
+        	JSONObject obj = (JSONObject) parser.parse(result);
+        	
+        	JSONArray parse_data_list = (JSONArray) obj.get("data");
+        	//System.out.println("parse_data_list.size() : " + parse_data_list.size()); 
+        	
+        	JSONObject data;
+        	
+        	for(int i = 0 ; i < parse_data_list.size(); i++) { 
+        		data = (JSONObject) parse_data_list.get(i);
+        			
+        		JSONObject parse_source = (JSONObject) data.get("_source");
+        		JSONObject parse_item = (JSONObject) parse_source.get("item");
+        		
+        		transaction_id = (String) parse_item.get("transaction_id");
+        		System.out.println("transaction_id ["+i+"]: " + transaction_id);
+        		tid_strip[i] = transaction_id;
+        		x++;
+        	}
+    	}
+    	System.out.println(Arrays.toString(tid_strip));
+    	String[] Motion_id_array = new String[tid_strip.length];
+    	
+    	for (int n=0; n < size; n++) {
+    	Motion_id = this.motion_tid_JsonParsing(Server, Service, tid_strip[n]);
+    	
+    	Motion_id_array[n] = Motion_id;
+    	n++;
+    	}
+   
+    	Motion_id = Arrays.toString(Motion_id_array);
+    	System.out.println("Motion : " + Arrays.toString(Motion_id_array));
+		return Motion_id;
+
+    }
+    
+    public String TemplateType_JsonParsing(String userID, String deviceID, String Server, String Service) throws Exception {
+    	
+    	Thread.sleep(20000);
+    	System.out.println(".");
+    	String access_token = NUGU_Insight_Token("in");
+    	
+    	String transaction_id="";
+    	String templatesType="";
+    	
+    	Calendar calendar = Calendar.getInstance();
+        java.util.Date date = calendar.getTime();
+        String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+        String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
+        
+        String logArray[];    
+     
+        String urlStr = null;
+        String server = null;
+        int size = 3;
+        int repeat = 1;
+        
+        if(Server.equals("PRD")) {
+        	server = "prd";
+        } else if (Server.equals("STG")) {
+        	server = "stg";
+        } else if (Server.equals("RTG")) {
+        	server = "rtg";
+        }
+        
+        System.out.println("오늘날짜 : " + today);
+        System.out.println("조회시간 : " + time);
+        System.out.println("대상서버 : " + server);
+    	
+  
+    	//사내망에서는 http://172.27.97.221:7090
+    	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+    	urlStr = "http://qa.ai-insight.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+    	System.out.println(urlStr);
+    	
+    	URL url = new URL(urlStr);
+    	Request request = new Request.Builder()
+        		.url(url) 
+                .addHeader("Authorization", "Bearer " + access_token)
+                .get()
+                .build();
+		
+        Response response = httpClient.newCall(request).execute();
+
+        // Get response body
+		//System.out.println(response.body().string());
+        String api_get_result = response.body().string();
+    	
+    	BufferedReader bf; 
+    	String line = ""; 
+    	
+    	int x = 0;
+    	String[] tid_strip = new String[size*repeat];
+    	//String[] tts_strip = new String[size];
+    	
+    	for (int y=0; y < repeat; y++) {
+    		
+    		String result=""; 
+    		InputStream is = new ByteArrayInputStream(api_get_result.getBytes());
+			bf = new BufferedReader(new InputStreamReader(is)); 
+        	
+        	while((line=bf.readLine())!=null) { 
+        		result=result.concat(line); 
+        		System.out.println(result); 
+        	}
+        	
+        	JSONParser parser = new JSONParser(); 
+        	JSONObject obj = (JSONObject) parser.parse(result);
+        	
+        	JSONArray parse_data_list = (JSONArray) obj.get("data");
+        	//System.out.println("parse_data_list.size() : " + parse_data_list.size()); 
+        	
+        	JSONObject data;
+        	
+        	for(int i = 0 ; i < parse_data_list.size(); i++) { 
+        		data = (JSONObject) parse_data_list.get(i);
+        			
+        		JSONObject parse_source = (JSONObject) data.get("_source");
+        		JSONObject parse_item = (JSONObject) parse_source.get("item");
+        		
+        		transaction_id = (String) parse_item.get("transaction_id");
+        		System.out.println("transaction_id ["+i+"]: " + transaction_id);
+        		tid_strip[i] = transaction_id;
+        		x++;
+        	}
+    	}
+    	System.out.println(Arrays.toString(tid_strip));
+    	String[] templatesType_array = new String[tid_strip.length];
+    	
+    	for (int n=0; n < size; n++) {
+    		templatesType = this.templatesType_tid_JsonParsing(Server, Service, tid_strip[n]);
+    	
+    	templatesType_array[n] = templatesType;
+    	n++;
+    	}
+   
+    	templatesType = Arrays.toString(templatesType_array);
+    	System.out.println("Motion : " + Arrays.toString(templatesType_array));
+		return templatesType;
+
+    }
+    
     public String Domain_JsonParsing_most_recent(String userID, String deviceID, String Server, String Place, String Service ) throws Exception {
     	
     	System.out.println(".");
@@ -3917,6 +4131,308 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	return actn;
 	}
 	
+	public String motion_tid_JsonParsing(String Server, String service, String tid) throws Exception {
+    	
+		System.out.println(".");
+		String access_token = NUGU_Insight_Token("in");
+		
+    	Calendar calendar = Calendar.getInstance();
+        java.util.Date date = calendar.getTime();
+        String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+        String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
+        
+        String logArray[];    
+        
+        String server = null;
+        String urlStr = null;
+        String actn = null; 
+        
+        int size = 1;
+        
+        if(Server.equals("PRD")) {
+        	server = "prd";
+        } else if (Server.equals("STG")) {
+        	server = "stg";
+        } else if (Server.equals("RTG")) {
+        	server = "rtg";
+        }  
+        
+        System.out.println("오늘날짜 : " + today);
+        System.out.println("조회시간 : " + time);
+        System.out.println("대상서버 : " + server);
+    	
+
+    	//사내망에서는 http://172.27.97.221:7090
+    	urlStr = "http://qa.ai-insight.co.kr/pulse_n/get_raw_log/?env="+server+"&transaction_id="+tid+"&service="+service;
+    	System.out.println(urlStr);
+        	
+ 
+
+    	URL url = new URL(urlStr);
+    	
+    	Request request = new Request.Builder()
+        		.url(url) 
+                .addHeader("Authorization", "Bearer " + access_token)
+                .get()
+                .build();
+		
+        Response response = httpClient.newCall(request).execute();
+
+        // Get response body
+		//System.out.println(response.body().string());
+        String api_get_result = response.body().string();
+    	
+    	BufferedReader bf; 
+    	String line = ""; 
+    	
+    	int x = 0;
+    	String[] source_values = new String[size];
+    	//String[] tts_strip = new String[size];
+    	
+    	
+
+		if (Server.equals("PRD") || Server.equals("STG")) {
+			String result=""; 
+			InputStream is = new ByteArrayInputStream(api_get_result.getBytes());
+			bf = new BufferedReader(new InputStreamReader(is)); 
+        	
+        	while((line=bf.readLine())!=null) { 
+        		result=result.concat(line); 
+        		System.out.println(result); 
+        	}
+        	
+        	
+        	JSONParser parser = new JSONParser(); 
+        	JSONObject obj = (JSONObject) parser.parse(result);
+        	
+        	JSONObject parse_data = (JSONObject) obj.get("data");
+        	JSONObject parse_relation= (JSONObject) parse_data.get("relation");
+        	JSONArray parse_play_in_list = (JSONArray) parse_relation.get("play_in");
+        	JSONObject play_in;
+        	
+        	for(int i = 0 ; i < parse_play_in_list.size(); i++) { 
+        		play_in = (JSONObject) parse_play_in_list.get(i);
+        			
+        		JSONObject parse_value = (JSONObject) play_in.get("value");
+        		JSONObject parse_body1 = (JSONObject) parse_value.get("body");
+        		JSONObject parse_body2 = (JSONObject) parse_body1.get("body");
+        		JSONObject parse_previousResponse = (JSONObject) parse_body2.get("previousResponse");
+        		if(parse_body2.get("previousResponse") == null){
+					source_values[i] = "null";
+    				source_values[x] = "null";
+				} else {
+					JSONArray parse_directives_list = (JSONArray) parse_previousResponse.get("directives");
+					JSONObject directives;
+        		
+					if (parse_directives_list.size() == 2 ) {
+						System.out.println("directives "+parse_directives_list.size()+"개");
+						directives = (JSONObject) parse_directives_list.get(1);
+        			
+	        			JSONArray parse_templates_list = (JSONArray) directives.get("templates");
+	        			JSONObject templates;
+	        			
+	    				templates = (JSONObject) parse_templates_list.get(0);
+	        			
+	    				JSONObject parse_character = (JSONObject) templates.get("character");
+	    				if(parse_character.get("motion") == null){
+	    					source_values[i] = "null";
+	        				source_values[x] = "null";
+	    				} else {
+	    					JSONObject parse_motion = (JSONObject) parse_character.get("motion");
+	        				JSONObject parse_code = (JSONObject) parse_motion.get("code");
+	        				JSONArray parse_values_list = (JSONArray) parse_code.get("values");
+	        				
+	        				source_values[i] = (String) parse_values_list.toJSONString();
+	        				source_values[x] = (String) parse_values_list.toJSONString();
+	    				}
+    
+	    				x++;
+    				
+					} else {
+		    			System.out.println("directives "+parse_directives_list.size()+"개");
+		    			directives = (JSONObject) parse_directives_list.get(0);
+		    			
+		    			JSONArray parse_templates_list = (JSONArray) directives.get("templates");
+		    			JSONObject templates;
+		    			
+						templates = (JSONObject) parse_templates_list.get(0);
+		    			
+						JSONObject parse_character = (JSONObject) templates.get("character");
+    				
+	    				if((JSONObject) parse_character.get("ttsMotion") == null){
+	    					source_values[i] = "null";
+	        				source_values[x] = "null";
+	    				} else {
+	    					JSONObject parse_motion = (JSONObject) parse_character.get("ttsMotion");
+	        				JSONObject parse_code = (JSONObject) parse_motion.get("code");
+	        				JSONArray parse_values_list = (JSONArray) parse_code.get("values");
+	        				
+	        				source_values[i] = (String) parse_values_list.toJSONString();
+	        				source_values[x] = (String) parse_values_list.toJSONString();
+	    				}
+	    				
+	    				x++;
+					}
+        			
+				}	
+        	}
+    		
+    		for(String str:source_values) {
+        		System.out.println(str); 
+        	}
+        
+        	logArray = source_values;
+        	
+        	String s = Arrays.deepToString(logArray);
+        	String s1 = s.replace("[", "");
+        	actn = s1.replace("]", "");
+        	System.out.println(actn);
+        }
+    	return actn;
+	}
+	
+	public String templatesType_tid_JsonParsing(String Server, String service, String tid) throws Exception {
+    	
+		System.out.println(".");
+		String access_token = NUGU_Insight_Token("in");
+		
+    	Calendar calendar = Calendar.getInstance();
+        java.util.Date date = calendar.getTime();
+        String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+        String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
+        
+        String logArray[];    
+        
+        String server = null;
+        String urlStr = null;
+        String actn = null; 
+        
+        int size = 1;
+        
+        if(Server.equals("PRD")) {
+        	server = "prd";
+        } else if (Server.equals("STG")) {
+        	server = "stg";
+        } else if (Server.equals("RTG")) {
+        	server = "rtg";
+        }  
+        
+        System.out.println("오늘날짜 : " + today);
+        System.out.println("조회시간 : " + time);
+        System.out.println("대상서버 : " + server);
+    	
+
+    	//사내망에서는 http://172.27.97.221:7090
+    	urlStr = "http://qa.ai-insight.co.kr/pulse_n/get_raw_log/?env="+server+"&transaction_id="+tid+"&service="+service;
+    	System.out.println(urlStr);
+        	
+ 
+
+    	URL url = new URL(urlStr);
+    	
+    	Request request = new Request.Builder()
+        		.url(url) 
+                .addHeader("Authorization", "Bearer " + access_token)
+                .get()
+                .build();
+		
+        Response response = httpClient.newCall(request).execute();
+
+        // Get response body
+		//System.out.println(response.body().string());
+        String api_get_result = response.body().string();
+    	
+    	BufferedReader bf; 
+    	String line = ""; 
+    	
+    	int x = 0;
+    	String[] source_values = new String[size];
+    	//String[] tts_strip = new String[size];
+    	
+    	
+
+		if (Server.equals("PRD") || Server.equals("STG")) {
+			String result=""; 
+			InputStream is = new ByteArrayInputStream(api_get_result.getBytes());
+			bf = new BufferedReader(new InputStreamReader(is)); 
+        	
+        	while((line=bf.readLine())!=null) { 
+        		result=result.concat(line); 
+        		System.out.println(result); 
+        	}
+        	
+        	
+        	JSONParser parser = new JSONParser(); 
+        	JSONObject obj = (JSONObject) parser.parse(result);
+        	
+        	JSONObject parse_data = (JSONObject) obj.get("data");
+        	JSONObject parse_relation= (JSONObject) parse_data.get("relation");
+        	JSONArray parse_play_in_list = (JSONArray) parse_relation.get("play_in");
+        	JSONObject play_in;
+        	
+        	for(int i = 0 ; i < parse_play_in_list.size(); i++) { 
+        		play_in = (JSONObject) parse_play_in_list.get(i);
+        			
+        		JSONObject parse_value = (JSONObject) play_in.get("value");
+        		JSONObject parse_body1 = (JSONObject) parse_value.get("body");
+        		JSONObject parse_body2 = (JSONObject) parse_body1.get("body");
+        		JSONObject parse_previousResponse = (JSONObject) parse_body2.get("previousResponse");
+        		if(parse_body2.get("previousResponse") == null){
+					source_values[i] = "null";
+    				source_values[x] = "null";
+				} else {
+					JSONArray parse_directives_list = (JSONArray) parse_previousResponse.get("directives");
+					JSONObject directives;
+        		
+					if (parse_directives_list.size() == 2 ) {
+						System.out.println("directives "+parse_directives_list.size()+"개");
+						directives = (JSONObject) parse_directives_list.get(1);
+        			
+	        			JSONArray parse_templates_list = (JSONArray) directives.get("templates");
+	        			JSONObject templates;
+	        			
+	    				templates = (JSONObject) parse_templates_list.get(0);
+	    			
+        				source_values[i] = (String) templates.get("type");
+        				source_values[x] = (String) templates.get("type");
+	    				
+    
+	    				x++;
+    				
+					} else {
+		    			System.out.println("directives "+parse_directives_list.size()+"개");
+		    			directives = (JSONObject) parse_directives_list.get(0);
+		    			
+		    			JSONArray parse_templates_list = (JSONArray) directives.get("templates");
+		    			JSONObject templates;
+		    			
+						templates = (JSONObject) parse_templates_list.get(0);
+    				
+						source_values[i] = (String) templates.get("type");
+        				source_values[x] = (String) templates.get("type");
+	    				
+	    				
+	    				x++;
+					}
+        			
+				}	
+        	}
+    		
+    		for(String str:source_values) {
+        		System.out.println(str); 
+        	}
+        
+        	logArray = source_values;
+        	
+        	String s = Arrays.deepToString(logArray);
+        	String s1 = s.replace("[", "");
+        	actn = s1.replace("]", "");
+        	System.out.println(actn);
+        }
+    	return actn;
+	}
+	
+	
 	public String directive_JsonParsing(String userID, String deviceID, String Server, String Place, String Service) throws Exception {
   
 		
@@ -4833,6 +5349,18 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 			}
 			i++;
  		}
+		return result;
+	}
+	
+	public String ramdomCommand (String[] array) throws Exception {
+		
+		String result = null;
+		
+		Random rand = new Random();
+		int arrayLaength = array.length;
+		
+		result = array[rand.nextInt(arrayLaength)];
+		
 		return result;
 	}
 

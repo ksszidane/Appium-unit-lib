@@ -347,5 +347,33 @@ public class ADB {
 		System.out.println("adb -s "+Device+" shell pm grant --user 0 " + AppPackage + " android.permission.SYSTEM_ALERT_WINDOW"); //항상
 		Thread.sleep(1000);
 	}
+	
+public void permission_BATTERY_OPTIMIZATIONS_Off(String Device, String AppPackage) throws Exception {
+		
+		if (os.contains("win")) {
+			runCommand("adb -s "+Device+" shell pm revoke " + AppPackage + " android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS");
+
+        } else if (os.contains("mac")) {
+        	runCommand("/opt/homebrew/bin/adb -s "+Device+" shell pm revoke " + AppPackage + " android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS");
+        }
+		
+		//System.out.println("adb -s "+Device+" shell pm revoke com.skt.aladdin android.permission.ACCESS_FINE_LOCATION"); //사용하는 동안
+		System.out.println("adb -s "+Device+" shell pm revoke " + AppPackage + " android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"); //항상
+		Thread.sleep(1000);
+	}
+	
+	public void permission_BATTERY_OPTIMIZATIONS_On(String Device, String AppPackage) throws Exception {
+		
+		if (os.contains("win")) {
+			runCommand("adb -s "+Device+" shell pm grant --user 0 " + AppPackage + " android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS");
+
+        } else if (os.contains("mac")) {
+        	runCommand("/opt/homebrew/bin/adb -s "+Device+" shell pm grant --user 0 " + AppPackage + " android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS");
+        }
+		
+		//System.out.println("adb -s "+Device+" shell pm revoke com.skt.aladdin android.permission.ACCESS_FINE_LOCATION"); //사용하는 동안
+		System.out.println("adb -s "+Device+" shell pm grant --user 0 " + AppPackage + " android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"); //항상
+		Thread.sleep(1000);
+	}
 
 }

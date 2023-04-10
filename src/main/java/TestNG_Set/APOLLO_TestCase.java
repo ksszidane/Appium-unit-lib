@@ -19,7 +19,6 @@ import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 
-import A._Data.data;
 import unit.Capabilities;
 import unit.ExtentManager;
 import unit.Utilities;
@@ -34,7 +33,6 @@ public class APOLLO_TestCase {
 	public DesiredCapabilities capability;
 	public ADB adb;
 	
-	public static final data data = new data();
 	
 	public String OS_ClassName;
 	public String OS;
@@ -71,7 +69,7 @@ public class APOLLO_TestCase {
 		
 		adb = new ADB();
 		
-		adb.ADB_SetCommand(udid);
+		adb.ADB_SetCommand(udid); 
 		
 		extent = ExtentManager.getExtentReports(OS, AppName, Server, Project, TestPlace);
 		
@@ -85,6 +83,12 @@ public class APOLLO_TestCase {
 	
 		
 		System.out.println("\n▒▒ Start Suite : " + util.printClassName(this)+ " ▒▒ ("+ OS + " | "+ Server + " | "+ App +")\n");
+		
+		if(Server.contains("STG")) {
+			adb.permission_BATTERY_OPTIMIZATIONS_On(udid, "com.skt.nugu.apollo.stg");
+		} else {
+			adb.permission_BATTERY_OPTIMIZATIONS_On(udid, "com.skt.nugu.apollo");
+		}
 	
 			
 	}
