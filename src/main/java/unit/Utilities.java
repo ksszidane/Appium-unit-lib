@@ -2904,7 +2904,6 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	Motion_id = this.motion_tid_JsonParsing(Server, Service, tid_strip[n]);
     	
     	Motion_id_array[n] = Motion_id;
-    	n++;
     	}
    
     	Motion_id = Arrays.toString(Motion_id_array);
@@ -3046,7 +3045,6 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     		templatesType = this.templatesType_tid_JsonParsing(Server, Service, tid_strip[n]);
     	
     	templatesType_array[n] = templatesType;
-    	n++;
     	}
    
     	templatesType = Arrays.toString(templatesType_array);
@@ -4500,8 +4498,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 					} else {
 		    			System.out.println("directives "+parse_directives_list.size()+"개");
 		    			directives = (JSONObject) parse_directives_list.get(0);
-		    			
-		    			
+
 		    			if(directives.get("templates") == null){
 	        				source_values[x] = "null";
 	    				} else {
