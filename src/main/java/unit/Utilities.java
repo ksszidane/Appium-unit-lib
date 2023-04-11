@@ -2311,7 +2311,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         
         String server = null;
         String urlStr = null;
-        int size = 4;
+        int size = 6;
         int repeat = 1;
         
         if(Server.equals("PRD")) {
@@ -4985,6 +4985,11 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		
 		pressKey(new KeyEvent(AndroidKey.BACK));
 	}
+	public void Android_downKey() throws Exception {
+		
+		pressKey(new KeyEvent(AndroidKey.KEY_11));
+	}
+	
 	public void AndroidKey_Num1() throws Exception {
 		
 		pressKey(new KeyEvent(AndroidKey.NUMPAD_1));
