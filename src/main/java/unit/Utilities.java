@@ -2648,7 +2648,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String access_token = NUGU_Insight_Token(Place);
     	
     	Calendar calendar = Calendar.getInstance();
-    	calendar.add(Calendar.MINUTE, -2);
+    	calendar.add(Calendar.MINUTE, -4);
         java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
         String time = (new SimpleDateFormat("yyyyMMddHHmmss").format(date));
@@ -2781,7 +2781,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String Motion_id="";
     	
     	Calendar calendar = Calendar.getInstance();
-    	calendar.add(Calendar.MINUTE, -2);
+    	calendar.add(Calendar.MINUTE, -4);
         java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
         String time = (new SimpleDateFormat("yyyyMMddHHmmss").format(date));
@@ -2921,7 +2921,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String templatesType="";
     	
     	Calendar calendar = Calendar.getInstance();
-    	calendar.add(Calendar.MINUTE, -2);
+    	calendar.add(Calendar.MINUTE, -4);
         java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
         String time = (new SimpleDateFormat("yyyyMMddHHmmss").format(date));
