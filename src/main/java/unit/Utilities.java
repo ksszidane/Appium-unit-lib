@@ -2710,7 +2710,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		    	break;
 		    } 
 		    
-		    if (j==15) {
+		    if (j==20) {
 		    	break;
 		    }
 		    Thread.sleep(5000);
