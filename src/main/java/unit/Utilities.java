@@ -2641,16 +2641,17 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		
     }
     
-    public String TTS_JsonParsing(String userID, String deviceID, String Server, String Place, String Service, int size) throws Exception {
+    public String TTS_JsonParsing_retry(String userID, String deviceID, String Server, String Service, String CommandText) throws Exception {
     	
-    	Thread.sleep(40000);
+    	String Place = "in";
     	System.out.println(".");
     	String access_token = NUGU_Insight_Token(Place);
     	
     	Calendar calendar = Calendar.getInstance();
+    	calendar.add(Calendar.MINUTE, -2);
         java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
-        String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
+        String time = (new SimpleDateFormat("yyyyMMddHHmmss").format(date));
         
         String logArray[];    
         String transaction_id="";
@@ -2658,7 +2659,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         String server = null;
         String urlStr = null;
         
-        int repeat = 3;
+        int size = 2;
         
         if(Server.equals("PRD")) {
         	server = "prd";
@@ -2672,74 +2673,87 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         System.out.println("조회시간 : " + time);
         System.out.println("대상서버 : " + server);
     	
-        if(Place.equals("in")) {
-        	//사내망에서는 http://172.27.97.221:7090
-        	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
-        	urlStr = "http://qa.ai-insight.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
-        	System.out.println(urlStr);
-        	
-        } else if (Place.equals("out")) {
-        	//vpn으로는 http://10.40.89.245:8190
-        	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
-        	System.out.println(urlStr);
+        String api_get_result = null;
+        String rerty_api_get_result = null;
+        int j=1;
+        
+    	
+        
+	    if(Place.equals("in")) {
+	    	//사내망에서는 http://172.27.97.221:7090
+	    	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+	    	urlStr = "http://qa.ai-insight.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+time+"&unique_id="+userID+deviceID+"&command_text="+CommandText;
+	    	System.out.println(urlStr);
+	    	
+	    } else if (Place.equals("out")) {
+	    	//vpn으로는 http://10.40.89.245:8190
+	    	urlStr = "http://10.40.89.245:8190/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+time+"&unique_id="+userID+deviceID+"&command_text="+CommandText;
+	    	System.out.println(urlStr);
+	    }
+	    while(rerty_api_get_result==null || !rerty_api_get_result.contains("_index")) {   
+			URL url = new URL(urlStr);
+			
+			Request request = new Request.Builder()
+		    		.url(url) 
+		            .addHeader("Authorization", "Bearer " + access_token)
+		            .get()
+		            .build();
+			
+		    Response response = httpClient.newCall(request).execute();
+		
+		    // Get response body
+			//System.out.println(response.body().string());
+		    api_get_result = response.body().string();
+		    System.out.println("rerty "+ j +" : "+api_get_result); 
+		    rerty_api_get_result = api_get_result;
+		    if (api_get_result.contains("_index")) {
+		    	break;
+		    } 
+		    
+		    if (j==15) {
+		    	break;
+		    }
+		    Thread.sleep(5000);
+		    j++;
         }
         
-    	URL url = new URL(urlStr);
-    	
-    	Request request = new Request.Builder()
-        		.url(url) 
-                .addHeader("Authorization", "Bearer " + access_token)
-                .get()
-                .build();
-		
-        Response response = httpClient.newCall(request).execute();
-
-        // Get response body
-		//System.out.println(response.body().string());
-        String api_get_result = response.body().string();
-    	
     	BufferedReader bf; 
     	String line = ""; 
     	
     	int x = 0;
-    	String[] tts_strip = new String[size*repeat];
+    	String[] tts_strip = new String[size];
     	//String[] tts_strip = new String[size];
     	
-    	//Thread.sleep(12000);
-    	for (int y=0; y < repeat; y++) {
-    		Thread.sleep(1000);
+    	String result=""; 
+		InputStream is = new ByteArrayInputStream(api_get_result.getBytes());
+		bf = new BufferedReader(new InputStreamReader(is)); 
+    	
+        	
+		while((line=bf.readLine())!=null) {
+    		result=result.concat(line); 
+    		System.out.println(result); 
+		}
+		
+    	JSONParser parser = new JSONParser(); 
+    	JSONObject obj = (JSONObject) parser.parse(result);
+    	
+    	JSONArray parse_data_list = (JSONArray) obj.get("data");
+    	//System.out.println("parse_data_list.size() : " + parse_data_list.size()); 
+    	
+    	JSONObject data;
+    	
+    	for(int i = 0 ; i < parse_data_list.size(); i++) { 
+    		data = (JSONObject) parse_data_list.get(i);
+    			
+    		JSONObject parse_source = (JSONObject) data.get("_source");
+    		JSONObject parse_item = (JSONObject) parse_source.get("item");
     		
-    		String result=""; 
-    		InputStream is = new ByteArrayInputStream(api_get_result.getBytes());
-			bf = new BufferedReader(new InputStreamReader(is)); 
-        	
-        	while((line=bf.readLine())!=null) { 
-        		result=result.concat(line); 
-        		//System.out.println(result); 
-        	}
-        	
-        	
-        	JSONParser parser = new JSONParser(); 
-        	JSONObject obj = (JSONObject) parser.parse(result);
-        	
-        	JSONArray parse_data_list = (JSONArray) obj.get("data");
-        	//System.out.println("parse_data_list.size() : " + parse_data_list.size()); 
-        	
-        	JSONObject data;
-        	
-        	for(int i = 0 ; i < parse_data_list.size(); i++) { 
-        		data = (JSONObject) parse_data_list.get(i);
-        			
-        		JSONObject parse_source = (JSONObject) data.get("_source");
-        		JSONObject parse_item = (JSONObject) parse_source.get("item");
-        		
-        		tts_strip[i] = (String) parse_item.get("tts_strip");
-        		tts_strip[x] = (String) parse_item.get("tts_strip");
-        		transaction_id = (String) parse_item.get("transaction_id");
-        		System.out.println("transaction_id : " + transaction_id);
-        		x++;
+    		tts_strip[i] = (String) parse_item.get("tts_strip");
+    		tts_strip[x] = (String) parse_item.get("tts_strip");
+    		transaction_id = (String) parse_item.get("transaction_id");
+    		System.out.println("transaction_id : " + transaction_id);
+    		x++;
 
-        	}
     	}
     	
     	
@@ -2758,9 +2772,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     }
     
     
-    public String Motion_JsonParsing(String userID, String deviceID, String Server, String Service) throws Exception {
+    public String Motion_JsonParsing(String userID, String deviceID, String Server, String Service, String CommandText) throws Exception {
     	
-    	Thread.sleep(40000);
     	System.out.println(".");
     	String access_token = NUGU_Insight_Token("in");
     	
@@ -2768,15 +2781,16 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String Motion_id="";
     	
     	Calendar calendar = Calendar.getInstance();
+    	calendar.add(Calendar.MINUTE, -2);
         java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
-        String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
+        String time = (new SimpleDateFormat("yyyyMMddHHmmss").format(date));
         
         String logArray[];    
      
         String urlStr = null;
         String server = null;
-        int size = 4;
+        int size = 2;
         int repeat = 1;
         
         if(Server.equals("PRD")) {
@@ -2791,30 +2805,65 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         System.out.println("조회시간 : " + time);
         System.out.println("대상서버 : " + server);
     	
+        String api_get_result = null;
+        String rerty_api_get_result = null;
+        int j=1;
+
   
     	//사내망에서는 http://172.27.97.221:7090
     	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
-    	urlStr = "http://qa.ai-insight.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+    	urlStr = "http://qa.ai-insight.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+time+"&unique_id="+userID+deviceID+"&command_text="+CommandText;
     	System.out.println(urlStr);
     	
-    	URL url = new URL(urlStr);
-    	Request request = new Request.Builder()
-        		.url(url) 
-                .addHeader("Authorization", "Bearer " + access_token)
-                .get()
-                .build();
+    	while(rerty_api_get_result==null || !rerty_api_get_result.contains("_index")) {   
+			URL url = new URL(urlStr);
+			
+			Request request = new Request.Builder()
+		    		.url(url) 
+		            .addHeader("Authorization", "Bearer " + access_token)
+		            .get()
+		            .build();
+			
+		    Response response = httpClient.newCall(request).execute();
 		
-        Response response = httpClient.newCall(request).execute();
-
-        // Get response body
+		    // Get response body
+			//System.out.println(response.body().string());
+		    api_get_result = response.body().string();
+		    System.out.println("rerty "+ j +" : "+api_get_result); 
+		    rerty_api_get_result = api_get_result;
+		    if (api_get_result.contains("_index")) {
+		    	break;
+		    } 
+		    
+		    if (j==20) {
+		    	break;
+		    }
+		    Thread.sleep(5000);
+		    j++;
+        }
+    	Thread.sleep(5000);
+    	size = 4;
+    	urlStr = "http://qa.ai-insight.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+time+"&unique_id="+userID+deviceID;
+    	
+    	URL url = new URL(urlStr);
+		
+		Request request = new Request.Builder()
+	    		.url(url) 
+	            .addHeader("Authorization", "Bearer " + access_token)
+	            .get()
+	            .build();
+		
+	    Response response = httpClient.newCall(request).execute();
+	
+	    // Get response body
 		//System.out.println(response.body().string());
-        String api_get_result = response.body().string();
+	    api_get_result = response.body().string();
     	
     	BufferedReader bf; 
     	String line = ""; 
     	
     	int x = 0;
-    	String[] tid_strip = new String[size*repeat];
+    	String[] tid_strip = new String[size];
     	//String[] tts_strip = new String[size];
     	
     	for (int y=0; y < repeat; y++) {
@@ -2864,9 +2913,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 
     }
     
-    public String TemplateType_JsonParsing(String userID, String deviceID, String Server, String Service) throws Exception {
+    public String TemplateType_JsonParsing(String userID, String deviceID, String Server, String Service, String CommandText) throws Exception {
     	
-    	Thread.sleep(40000);
     	System.out.println(".");
     	String access_token = NUGU_Insight_Token("in");
     	
@@ -2874,15 +2922,18 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String templatesType="";
     	
     	Calendar calendar = Calendar.getInstance();
+    	calendar.add(Calendar.MINUTE, -2);
         java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
-        String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
+        String time = (new SimpleDateFormat("yyyyMMddHHmmss").format(date));
+        
+        
         
         String logArray[];    
      
         String urlStr = null;
         String server = null;
-        int size = 4;
+        int size = 2;
         int repeat = 1;
         
         if(Server.equals("PRD")) {
@@ -2897,30 +2948,64 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         System.out.println("조회시간 : " + time);
         System.out.println("대상서버 : " + server);
     	
+        String api_get_result = null;
+        String rerty_api_get_result = null;
+        int j=1;
   
     	//사내망에서는 http://172.27.97.221:7090
     	//urlStr = "http://172.27.97.221:7090/pulse_n/get_log/?size="+size+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
-    	urlStr = "http://qa.ai-insight.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+today+"000000&unique_id="+userID+deviceID;
+    	urlStr = "http://qa.ai-insight.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+time+"&unique_id="+userID+deviceID+"&command_text="+CommandText;
     	System.out.println(urlStr);
+
+    	while(rerty_api_get_result==null || !rerty_api_get_result.contains("_index")) {   
+			URL url = new URL(urlStr);
+			
+			Request request = new Request.Builder()
+		    		.url(url) 
+		            .addHeader("Authorization", "Bearer " + access_token)
+		            .get()
+		            .build();
+			
+		    Response response = httpClient.newCall(request).execute();
+		
+		    // Get response body
+			//System.out.println(response.body().string());
+		    api_get_result = response.body().string();
+		    System.out.println("rerty "+ j +" : "+api_get_result); 
+		    rerty_api_get_result = api_get_result;
+		    if (api_get_result.contains("_index")) {
+		    	break;
+		    } 
+		    
+		    if (j==20) {
+		    	break;
+		    }
+		    Thread.sleep(5000);
+		    j++;
+        }
+    	Thread.sleep(5000);
+    	size = 4;
+    	urlStr = "http://qa.ai-insight.co.kr/pulse_n/get_log/?size="+size+"&service="+Service+"&env="+server+"&start_date="+time+"&unique_id="+userID+deviceID;
     	
     	URL url = new URL(urlStr);
-    	Request request = new Request.Builder()
-        		.url(url) 
-                .addHeader("Authorization", "Bearer " + access_token)
-                .get()
-                .build();
 		
-        Response response = httpClient.newCall(request).execute();
-
-        // Get response body
+		Request request = new Request.Builder()
+	    		.url(url) 
+	            .addHeader("Authorization", "Bearer " + access_token)
+	            .get()
+	            .build();
+		
+	    Response response = httpClient.newCall(request).execute();
+	
+	    // Get response body
 		//System.out.println(response.body().string());
-        String api_get_result = response.body().string();
+	    api_get_result = response.body().string();
     	
     	BufferedReader bf; 
     	String line = ""; 
     	
     	int x = 0;
-    	String[] tid_strip = new String[size*repeat];
+    	String[] tid_strip = new String[size];
     	//String[] tts_strip = new String[size];
     	
     	for (int y=0; y < repeat; y++) {
@@ -4419,10 +4504,14 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		    			JSONArray parse_templates_list = (JSONArray) directives.get("templates");
 		    			JSONObject templates;
 		    			
-						templates = (JSONObject) parse_templates_list.get(0);
-    				
-        				source_values[x] = (String) templates.get("type");
-	    				
+		    			if((JSONObject) directives.get("templates") == null){
+	        				source_values[x] = "null";
+	    				} else {
+	    					templates = (JSONObject) parse_templates_list.get(0);
+	        				
+	        				source_values[x] = (String) templates.get("type");
+	    				}
+				
 	    				
 	    				x++;
 					}
