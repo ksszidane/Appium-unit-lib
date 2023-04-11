@@ -4501,12 +4501,12 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		    			System.out.println("directives "+parse_directives_list.size()+"개");
 		    			directives = (JSONObject) parse_directives_list.get(0);
 		    			
-		    			JSONArray parse_templates_list = (JSONArray) directives.get("templates");
-		    			JSONObject templates;
 		    			
-		    			if((JSONObject) directives.get("templates") == null){
+		    			if(directives.get("templates") == null){
 	        				source_values[x] = "null";
 	    				} else {
+	    					JSONArray parse_templates_list = (JSONArray) directives.get("templates");
+			    			JSONObject templates;
 	    					templates = (JSONObject) parse_templates_list.get(0);
 	        				
 	        				source_values[x] = (String) templates.get("type");
