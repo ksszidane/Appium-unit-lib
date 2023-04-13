@@ -322,7 +322,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	            }
 	        }
 	        System.out.println("스위칭 완료 context : " + getContext() + "\n");
-	        Thread.sleep(1700);
+	        Thread.sleep(2000);
 	 }
 	    
 	 public void switchContextURL(String context, String URL) throws Exception {
@@ -2659,7 +2659,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         String server = null;
         String urlStr = null;
         
-        int size = 2;
+        int size = 3;
         
         if(Server.equals("PRD")) {
         	server = "prd";
@@ -2911,6 +2911,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		return Motion_id;
 
     }
+    
     
     public String TemplateType_JsonParsing(String userID, String deviceID, String Server, String Service, String CommandText) throws Exception {
     	
@@ -5143,6 +5144,13 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	public void Android_HomeKey() throws Exception {
 		
 		pressKey(new KeyEvent(AndroidKey.HOME));
+	}
+	public void Android_EnterKey() throws Exception {
+		
+		pressKey(new KeyEvent(AndroidKey.ENTER));
+	}public void Android_TabKey() throws Exception {
+		
+		pressKey(new KeyEvent(AndroidKey.TAB));
 	}
 	
 	
