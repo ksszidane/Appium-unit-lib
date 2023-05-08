@@ -11,6 +11,31 @@ public class ADB {
 	
 	Process p; 
 	
+	//adb shell dumpsys window | grep -E 'mCurrentFocus'
+	
+	public String OS_ver(String Device) throws InterruptedException, IOException {
+        
+		Process p = null;
+		
+		if (os.contains("win")) {
+			p = Runtime.getRuntime().exec("adb -s "+Device+" shell getprop ro.build.version.release");
+		} else if (os.contains("mac")) {
+			p = Runtime.getRuntime().exec("/opt/homebrew/bin/adb -s "+Device+" shell getprop ro.build.version.release");
+		}
+		
+		
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        String line = reader.readLine();
+
+        System.out.println("Android OS Version: " + line);
+
+        p.destroy();
+        
+        return line;
+	}
+	
+	
 	public String runCommand(String command) throws InterruptedException, IOException {
 		 
 		p = Runtime.getRuntime().exec(command);
@@ -33,34 +58,71 @@ public class ADB {
 	public void ADB_SetCommand(String Device) throws Exception {
 		ADB_stopADB();
 		ADB_startADB();
+		ADB_connect(Device);
 		ADB_devices();
+		
+	}
+	
+	public void ADB_connect(String Device) throws Exception {
+		
+		if (os.contains("win")) {
+			String outputCMD = runCommand("adb connect "+Device);
+			String[] lines = outputCMD.split("\n");
+			System.out.println("adb connect "+Device);
+			for(String str:lines) {
+	    		System.out.println(str); 
+	    	}
+
+        } else if (os.contains("mac")) {
+        	String outputCMD = runCommand("/opt/homebrew/bin/adb connect "+Device);
+        	String[] lines = outputCMD.split("\n");
+        	System.out.println("adb connect "+Device);
+        	for(String str:lines) {
+        		System.out.println(str); 
+        	}
+        }
 		
 	}
 	
 	public void ADB_stopADB() throws Exception {
 		
-		
 		if (os.contains("win")) {
-			runCommand("adb kill-server");
+			String outputCMD = runCommand("adb kill-server");
+			String[] lines = outputCMD.split("\n");
+			System.out.println("adb kill-server");
+			for(String str:lines) {
+	    		System.out.println(str); 
+	    	}
 
         } else if (os.contains("mac")) {
-        	runCommand("/opt/homebrew/bin/adb kill-server");
+        	String outputCMD = runCommand("/opt/homebrew/bin/adb kill-server");
+        	String[] lines = outputCMD.split("\n");
+        	System.out.println("adb kill-server");
+        	for(String str:lines) {
+        		System.out.println(str); 
+        	}
         }
-		
-		System.out.println("adb kill-server");
 		
 	}
 	
 	public void ADB_startADB() throws Exception {
 		
 		if (os.contains("win")) {
-			runCommand("adb start-server");
+			String outputCMD = runCommand("adb start-server");
+			String[] lines = outputCMD.split("\n");
+			System.out.println("adb start-server");
+			for(String str:lines) {
+	    		System.out.println(str); 
+	    	}
 
         } else if (os.contains("mac")) {
-        	runCommand("/opt/homebrew/bin/adb start-server");
+        	String outputCMD = runCommand("/opt/homebrew/bin/adb start-server");
+        	String[] lines = outputCMD.split("\n");
+        	System.out.println("adb start-server");
+        	for(String str:lines) {
+        		System.out.println(str); 
+        	}
         }
-		
-		System.out.println("adb start-server");
 		
 	}
 	public void ADB_devices() throws Exception {
@@ -322,58 +384,125 @@ public class ADB {
 	
 	public void permission_draw_over_other_apps_Off(String Device, String AppPackage) throws Exception {
 		
+		String ver = this.OS_ver(Device);
+		
 		if (os.contains("win")) {
-			runCommand("adb -s "+Device+" shell pm revoke " + AppPackage + " android.permission.SYSTEM_ALERT_WINDOW");
+			if(ver.contains("13")) {
+				runCommand("adb -s "+Device+" shell appops set " + AppPackage + " SYSTEM_ALERT_WINDOW ignore");
+				System.out.println("adb -s "+Device+" shell appops set " + AppPackage + " SYSTEM_ALERT_WINDOW ignore");
+			} else {
+				runCommand("adb -s "+Device+" shell pm revoke " + AppPackage + " android.permission.SYSTEM_ALERT_WINDOW");
+				System.out.println("adb -s "+Device+" shell pm revoke " + AppPackage + " android.permission.SYSTEM_ALERT_WINDOW");
+			}
 
         } else if (os.contains("mac")) {
-        	runCommand("/opt/homebrew/bin/adb -s "+Device+" shell pm revoke " + AppPackage + " android.permission.SYSTEM_ALERT_WINDOW");
+        	if(ver.contains("13")) {
+        		runCommand("/opt/homebrew/bin/adb -s "+Device+" shell appops set " + AppPackage + " SYSTEM_ALERT_WINDOW ignore");
+				System.out.println("/opt/homebrew/bin/adb -s "+Device+" shell appops set " + AppPackage + " SYSTEM_ALERT_WINDOW ignore");
+        	} else {
+        		runCommand("/opt/homebrew/bin/adb -s "+Device+" shell pm revoke " + AppPackage + " android.permission.SYSTEM_ALERT_WINDOW");
+        		System.out.println("/opt/homebrew/bin/adb -s "+Device+" shell pm revoke " + AppPackage + " android.permission.SYSTEM_ALERT_WINDOW");
+        	}
+        	
         }
-		
-		//System.out.println("adb -s "+Device+" shell pm revoke com.skt.aladdin android.permission.ACCESS_FINE_LOCATION"); //사용하는 동안
-		System.out.println("adb -s "+Device+" shell pm revoke " + AppPackage + " android.permission.SYSTEM_ALERT_WINDOW"); //항상
 		Thread.sleep(1000);
 	}
 	
 	public void permission_draw_over_other_apps_On(String Device, String AppPackage) throws Exception {
 		
+		String ver = this.OS_ver(Device);
+		
 		if (os.contains("win")) {
-			runCommand("adb -s "+Device+" shell pm grant --user 0 " + AppPackage + " android.permission.SYSTEM_ALERT_WINDOW");
+			if(ver.contains("13")) {
+				System.out.println("구동 OS : " + os);
+				runCommand("adb -s "+Device+" shell appops set " + AppPackage + " SYSTEM_ALERT_WINDOW allow");
+				System.out.println("adb -s "+Device+" shell appops set " + AppPackage + " SYSTEM_ALERT_WINDOW allow");
+			} else {
+				System.out.println("구동 OS : " + os);
+				runCommand("adb -s "+Device+" shell pm grant --user 0 " + AppPackage + " android.permission.SYSTEM_ALERT_WINDOW");
+				System.out.println("adb -s "+Device+" shell pm grant --user 0 " + AppPackage + " android.permission.SYSTEM_ALERT_WINDOW");
+			}
+			
 
         } else if (os.contains("mac")) {
-        	runCommand("/opt/homebrew/bin/adb -s "+Device+" shell pm grant --user 0 " + AppPackage + " android.permission.SYSTEM_ALERT_WINDOW");
+        	
+        	if(ver.contains("13")) {
+        		System.out.println("구동 OS : " + os);
+        		runCommand("/opt/homebrew/bin/adb -s "+Device+" shell appops set " + AppPackage + " SYSTEM_ALERT_WINDOW allow");
+				System.out.println("/opt/homebrew/bin/adb -s "+Device+" shell appops set " + AppPackage + " SYSTEM_ALERT_WINDOW allow");
+			} else {
+				System.out.println("구동 OS : " + os);
+				runCommand("/opt/homebrew/bin/adb -s "+Device+" shell pm grant --user 0 " + AppPackage + " android.permission.SYSTEM_ALERT_WINDOW");
+				System.out.println("/opt/homebrew/bin/adb  -s "+Device+" shell pm grant --user 0 " + AppPackage + " android.permission.SYSTEM_ALERT_WINDOW");
+			}
         }
-		
-		//System.out.println("adb -s "+Device+" shell pm revoke com.skt.aladdin android.permission.ACCESS_FINE_LOCATION"); //사용하는 동안
-		System.out.println("adb -s "+Device+" shell pm grant --user 0 " + AppPackage + " android.permission.SYSTEM_ALERT_WINDOW"); //항상
+
 		Thread.sleep(1000);
 	}
 	
-public void permission_BATTERY_OPTIMIZATIONS_Off(String Device, String AppPackage) throws Exception {
+	public void permission_BATTERY_OPTIMIZATIONS_Off(String Device, String AppPackage) throws Exception {
+		
+		String ver = this.OS_ver(Device);
 		
 		if (os.contains("win")) {
-			runCommand("adb -s "+Device+" shell pm revoke " + AppPackage + " android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS");
+			if(ver.contains("13")) {
+				System.out.println("구동 OS : " + os);
+				runCommand("adb -s "+Device+" shell appops set " + AppPackage + " REQUEST_IGNORE_BATTERY_OPTIMIZATIONS ignore");
+				System.out.println("adb -s "+Device+" shell appops set " + AppPackage + " REQUEST_IGNORE_BATTERY_OPTIMIZATIONS ignore");
+			} else {
+				System.out.println("구동 OS : " + os);
+				runCommand("adb -s "+Device+" shell pm revoke " + AppPackage + " android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS");
+				System.out.println("adb -s "+Device+" shell pm revoke " + AppPackage + " android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS");
+			}
+
 
         } else if (os.contains("mac")) {
-        	runCommand("/opt/homebrew/bin/adb -s "+Device+" shell pm revoke " + AppPackage + " android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS");
+        	if(ver.contains("13")) {
+        		System.out.println("구동 OS : " + os);
+        		runCommand("/opt/homebrew/bin/adb -s "+Device+" shell appops set " + AppPackage + " REQUEST_IGNORE_BATTERY_OPTIMIZATIONS ignore");
+				System.out.println("/opt/homebrew/bin/adb -s "+Device+" shell appops set " + AppPackage + " REQUEST_IGNORE_BATTERY_OPTIMIZATIONS ignore");
+			} else {
+				System.out.println("구동 OS : " + os);
+				runCommand("/opt/homebrew/bin/adb -s "+Device+" shell pm revoke " + AppPackage + " android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS");
+	        	System.out.println("/opt/homebrew/bin/adb -s "+Device+" shell pm revoke " + AppPackage + " android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS");
+			}
+        	
         }
 		
-		//System.out.println("adb -s "+Device+" shell pm revoke com.skt.aladdin android.permission.ACCESS_FINE_LOCATION"); //사용하는 동안
-		System.out.println("adb -s "+Device+" shell pm revoke " + AppPackage + " android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"); //항상
 		Thread.sleep(1000);
 	}
 	
 	public void permission_BATTERY_OPTIMIZATIONS_On(String Device, String AppPackage) throws Exception {
 		
+		String ver = this.OS_ver(Device);
+		
 		if (os.contains("win")) {
-			runCommand("adb -s "+Device+" shell pm grant --user 0 " + AppPackage + " android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS");
-
+			if(ver.contains("13")) {
+				System.out.println("구동 OS : " + os);
+				runCommand("adb -s "+Device+" shell appops set " + AppPackage + " REQUEST_IGNORE_BATTERY_OPTIMIZATIONS allow");
+				System.out.println("adb -s "+Device+" shell appops set " + AppPackage + " REQUEST_IGNORE_BATTERY_OPTIMIZATIONS allow");
+			} else {
+				System.out.println("구동 OS : " + os);
+				runCommand("adb -s "+Device+" shell pm grant --user 0 " + AppPackage + " android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS");
+				System.out.println("adb -s "+Device+" shell pm grant --user 0 " + AppPackage + " android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"); //항상
+				
+			}
+			
+	
         } else if (os.contains("mac")) {
-        	runCommand("/opt/homebrew/bin/adb -s "+Device+" shell pm grant --user 0 " + AppPackage + " android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS");
+        	if(ver.contains("13")) {
+				runCommand("/opt/homebrew/bin/adb -s "+Device+" shell appops set " + AppPackage + " REQUEST_IGNORE_BATTERY_OPTIMIZATIONS allow");
+				System.out.println("구동 OS : " + os);
+				System.out.println("/opt/homebrew/bin/adb -s "+Device+" shell appops set " + AppPackage + " REQUEST_IGNORE_BATTERY_OPTIMIZATIONS allow" );
+			} else {
+				System.out.println("구동 OS : " + os);
+				runCommand("/opt/homebrew/bin/adb -s "+Device+" shell pm grant --user 0 " + AppPackage + " android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS");
+	        	System.out.println("/opt/homebrew/bin/adb -s "+Device+" shell pm grant --user 0 " + AppPackage + " android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"); //항상
+			}
+        	
+    		
         }
 		
-		//System.out.println("adb -s "+Device+" shell pm revoke com.skt.aladdin android.permission.ACCESS_FINE_LOCATION"); //사용하는 동안
-		System.out.println("adb -s "+Device+" shell pm grant --user 0 " + AppPackage + " android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"); //항상
-		Thread.sleep(1000);
 	}
 
 }

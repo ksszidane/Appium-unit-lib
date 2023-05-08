@@ -28,7 +28,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ByteArrayInputStream;
 import java.io.BufferedReader;
-
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
@@ -1319,6 +1319,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		for (int second = 0; second <= TIME_OUT_SEC; second += WAIT_SEC) {
 			
 			String currentActivity = currentActivity();
+			//System.out.println(currentActivity);
 			
 			if (currentActivity.contains(expectedActivity)) {
 				//printLog (expectedActivity + " : 해당 Activity 전환");
@@ -1389,15 +1390,27 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	 * @throws Exception - Selenium Exception
 	 */
 	public void click(By locator) throws Exception {
-	
-		waitForPageToLoad();
 		
 		WebElement element = null;
 		//waitForIsElementPresent (locator);
 		
-		element = WaitfindElement(locator);
-		element.click();
-		//waitProgressCompleted();
+		int i = 0;
+		while(i<2) {
+			int j = i+1;
+			System.out.println(locator + " : isElement click 실행 횟수 : [" + j+"/2]");
+			boolean text = this.isElementPresent(locator);
+			if (text == true) {
+				waitForPageToLoad();
+				
+				element = WaitfindElement(locator);
+				element.click();
+				//waitProgressCompleted();
+				break;
+			}
+			Thread.sleep(1500);
+			i++;
+		}
+
 	}
 	
 	// to do : 앞 머리에 공백인 경우 전체 선택 안됨 -> 무한루프
@@ -1865,7 +1878,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	}
     	*/
     	
-    	Thread.sleep(5000);
+    	Thread.sleep(7000);
 
     }
     
@@ -3049,7 +3062,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	}
    
     	templatesType = Arrays.toString(templatesType_array);
-    	System.out.println("Motion : " + Arrays.toString(templatesType_array));
+    	System.out.println("Templates : " + Arrays.toString(templatesType_array));
 		return templatesType;
 
     }
@@ -4297,85 +4310,87 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         	JSONObject obj = (JSONObject) parser.parse(result);
         	
         	JSONObject parse_data = (JSONObject) obj.get("data");
-        	JSONObject parse_relation= (JSONObject) parse_data.get("relation");
-        	JSONArray parse_play_in_list = (JSONArray) parse_relation.get("play_in");
-        	JSONObject play_in;
-        	
-        	for(int i = 0 ; i < parse_play_in_list.size(); i++) { 
-        		play_in = (JSONObject) parse_play_in_list.get(i);
-        			
-        		JSONObject parse_value = (JSONObject) play_in.get("value");
-        		JSONObject parse_body1 = (JSONObject) parse_value.get("body");
-        		JSONObject parse_body2 = (JSONObject) parse_body1.get("body");
-        		JSONObject parse_previousResponse = (JSONObject) parse_body2.get("previousResponse");
-        		if(parse_body2.get("previousResponse") == null){
-    				source_values[x] = "null";
-				} else {
-					JSONArray parse_directives_list = (JSONArray) parse_previousResponse.get("directives");
-					JSONObject directives;
+        	if(obj.get("data") == null) {
+        		source_values[x] = "null";
+        	} else {
         		
-					if (parse_directives_list.size() == 2 ) {
-						System.out.println("directives "+parse_directives_list.size()+"개");
-						directives = (JSONObject) parse_directives_list.get(1);
-						JSONArray parse_templates_list;
-						
-						if(directives.get("templates") == null) {
-							directives = (JSONObject) parse_directives_list.get(0);
-							parse_templates_list = (JSONArray) directives.get("templates");
-						} else {
-							directives = (JSONObject) parse_directives_list.get(1);
-							parse_templates_list = (JSONArray) directives.get("templates");
-						}
-						
-						JSONObject templates;
-	        			templates = (JSONObject) parse_templates_list.get(0);
+	        	JSONObject parse_relation= (JSONObject) parse_data.get("relation");
+	        	JSONArray parse_play_in_list = (JSONArray) parse_relation.get("play_in");
+	        	JSONObject play_in;
+	        	
+	        	for(int i = 0 ; i < parse_play_in_list.size(); i++) { 
+	        		play_in = (JSONObject) parse_play_in_list.get(i);
 	        			
-	        			
-	    				JSONObject parse_character = (JSONObject) templates.get("character");
-	    				if(parse_character.get("motion") == null){
-	        				source_values[x] = "null";
-	    				} else {
-	    					JSONObject parse_motion = (JSONObject) parse_character.get("motion");
-	        				JSONObject parse_code = (JSONObject) parse_motion.get("code");
-	        				JSONArray parse_values_list = (JSONArray) parse_code.get("values");
-	        				
-	        				source_values[x] = (String) parse_values_list.toJSONString();
-	    				}
-    
-	    				x++;
-    				
+	        		JSONObject parse_value = (JSONObject) play_in.get("value");
+	        		JSONObject parse_body1 = (JSONObject) parse_value.get("body");
+	        		JSONObject parse_body2 = (JSONObject) parse_body1.get("body");
+	        		JSONObject parse_previousResponse = (JSONObject) parse_body2.get("previousResponse");
+	        		if(parse_body2.get("previousResponse") == null){
+	    				source_values[x] = "null";
 					} else {
-		    			System.out.println("directives "+parse_directives_list.size()+"개");
-		    			directives = (JSONObject) parse_directives_list.get(0);
-		    			
-		    			if(directives.get("templates") == null) {
-	        				source_values[x] = "null";
-						} else {
-							JSONArray parse_templates_list = (JSONArray) directives.get("templates");
-			    			JSONObject templates;
-			    			
-							templates = (JSONObject) parse_templates_list.get(0);
-			    			
-							JSONObject parse_character = (JSONObject) templates.get("character");
-	    				
-		    				if((JSONObject) parse_character.get("ttsMotion") == null){
+						JSONArray parse_directives_list = (JSONArray) parse_previousResponse.get("directives");
+						JSONObject directives;
+	        		
+						if (parse_directives_list.size() == 2 ) {
+							System.out.println("directives "+parse_directives_list.size()+"개");
+							directives = (JSONObject) parse_directives_list.get(1);
+							JSONArray parse_templates_list;
+							
+							if(directives.get("templates") == null) {
+								directives = (JSONObject) parse_directives_list.get(0);
+								parse_templates_list = (JSONArray) directives.get("templates");
+							} else {
+								directives = (JSONObject) parse_directives_list.get(1);
+								parse_templates_list = (JSONArray) directives.get("templates");
+							}
+							
+							JSONObject templates;
+		        			templates = (JSONObject) parse_templates_list.get(0);
+		        			
+		        			
+		    				JSONObject parse_character = (JSONObject) templates.get("character");
+		    				if(parse_character.get("motion") == null){
 		        				source_values[x] = "null";
 		    				} else {
-		    					JSONObject parse_motion = (JSONObject) parse_character.get("ttsMotion");
+		    					JSONObject parse_motion = (JSONObject) parse_character.get("motion");
 		        				JSONObject parse_code = (JSONObject) parse_motion.get("code");
 		        				JSONArray parse_values_list = (JSONArray) parse_code.get("values");
 		        				
-		        				source_values[i] = (String) parse_values_list.toJSONString();
 		        				source_values[x] = (String) parse_values_list.toJSONString();
 		    				}
-						}
+	    
+		    				x++;
 	    				
-	    				x++;
-					}
-        			
-				}	
+						} else {
+			    			System.out.println("directives "+parse_directives_list.size()+"개");
+			    			directives = (JSONObject) parse_directives_list.get(0);
+			    			
+			    			if(directives.get("templates") == null) {
+		        				source_values[x] = "null";
+							} else {
+								JSONArray parse_templates_list = (JSONArray) directives.get("templates");
+				    			JSONObject templates;
+				    			
+								templates = (JSONObject) parse_templates_list.get(0);
+				    			
+								JSONObject parse_character = (JSONObject) templates.get("character");
+		    				
+			    				if((JSONObject) parse_character.get("ttsMotion") == null){
+			        				source_values[x] = "null";
+			    				} else {
+			    					JSONObject parse_motion = (JSONObject) parse_character.get("ttsMotion");
+			        				JSONObject parse_code = (JSONObject) parse_motion.get("code");
+			        				JSONArray parse_values_list = (JSONArray) parse_code.get("values");
+			        				
+			        				source_values[i] = (String) parse_values_list.toJSONString();
+			        				source_values[x] = (String) parse_values_list.toJSONString();
+			    				}
+							}
+		    				x++;
+						}
+					}	
+	        	}
         	}
-    		
     		for(String str:source_values) {
         		System.out.println(str); 
         	}
@@ -4400,7 +4415,8 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
         String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
-        String logArray[];    
+        String logArray1[]; 
+        String logArray2[]; 
         
         String server = null;
         String urlStr = null;
@@ -4444,8 +4460,9 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	BufferedReader bf; 
     	String line = ""; 
     	
-    	int x = 0;
-    	String[] source_values = new String[size];
+    	int x = 0; 
+    	String[] source_values1 = new String[size];
+    	String[] source_values2 = new String[size];
     	//String[] tts_strip = new String[size];
     	
     	
@@ -4465,68 +4482,108 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
         	JSONObject obj = (JSONObject) parser.parse(result);
         	
         	JSONObject parse_data = (JSONObject) obj.get("data");
-        	JSONObject parse_relation= (JSONObject) parse_data.get("relation");
-        	JSONArray parse_play_in_list = (JSONArray) parse_relation.get("play_in");
-        	JSONObject play_in;
-        	
-        	for(int i = 0 ; i < parse_play_in_list.size(); i++) { 
-        		play_in = (JSONObject) parse_play_in_list.get(i);
-        			
-        		JSONObject parse_value = (JSONObject) play_in.get("value");
-        		JSONObject parse_body1 = (JSONObject) parse_value.get("body");
-        		JSONObject parse_body2 = (JSONObject) parse_body1.get("body");
-        		JSONObject parse_previousResponse = (JSONObject) parse_body2.get("previousResponse");
-        		if(parse_body2.get("previousResponse") == null){
-    				source_values[x] = "null";
-				} else {
-					JSONArray parse_directives_list = (JSONArray) parse_previousResponse.get("directives");
-					JSONObject directives;
-        		
-					if (parse_directives_list.size() == 2 ) {
-						System.out.println("directives "+parse_directives_list.size()+"개");
-						directives = (JSONObject) parse_directives_list.get(1);
-        			
-	        			JSONArray parse_templates_list = (JSONArray) directives.get("templates");
-	        			JSONObject templates;
+        	if(obj.get("data") == null) {
+        		source_values1[x] = "null";
+        		source_values2[x] = "null";
+        	} else {
+	        	JSONObject parse_relation= (JSONObject) parse_data.get("relation");
+	        	JSONArray parse_play_in_list = (JSONArray) parse_relation.get("play_in");
+	        	JSONObject play_in;
+	        	
+	        	for(int i = 0 ; i < parse_play_in_list.size(); i++) { 
+	        		play_in = (JSONObject) parse_play_in_list.get(i);
 	        			
-	    				templates = (JSONObject) parse_templates_list.get(0);
-	    			
-        				source_values[x] = (String) templates.get("type");
-	    				
-    
-	    				x++;
-    				
+	        		JSONObject parse_value = (JSONObject) play_in.get("value");
+	        		JSONObject parse_body1 = (JSONObject) parse_value.get("body");
+	        		JSONObject parse_body2 = (JSONObject) parse_body1.get("body");
+	        		JSONObject parse_previousResponse = (JSONObject) parse_body2.get("previousResponse");
+	        		if(parse_body2.get("previousResponse") == null){
+	    				source_values1[x] = "null";
+	    				source_values2[x] = "null";
 					} else {
-		    			System.out.println("directives "+parse_directives_list.size()+"개");
-		    			directives = (JSONObject) parse_directives_list.get(0);
-
-		    			if(directives.get("templates") == null){
-	        				source_values[x] = "null";
-	    				} else {
-	    					JSONArray parse_templates_list = (JSONArray) directives.get("templates");
-			    			JSONObject templates;
-	    					templates = (JSONObject) parse_templates_list.get(0);
-	        				
-	        				source_values[x] = (String) templates.get("type");
-	    				}
-				
+						JSONArray parse_directives_list = (JSONArray) parse_previousResponse.get("directives");
+						JSONObject directives;
+	        		
+						if (parse_directives_list.size() == 2 ) {
+							System.out.println("directives "+parse_directives_list.size()+"개");
+							directives = (JSONObject) parse_directives_list.get(1);
+	        			
+		        			JSONArray parse_templates_list = (JSONArray) directives.get("templates");
+		        			JSONObject templates;
+		        			if (directives.get("templates") == null) {
+		        				directives = (JSONObject) parse_directives_list.get(0);
+		        				parse_templates_list = (JSONArray) directives.get("templates");
+		        				
+		        				templates = (JSONObject) parse_templates_list.get(0);
+			    				JSONObject component = (JSONObject) templates.get("component");
+			    				if(templates.get("component") == null){
+			    					source_values1[x] = (String) templates.get("type");
+			    					source_values2[x] = "null";
+		    					} else {
+		    						source_values1[x] = (String) templates.get("type");
+			        				source_values2[x] = (String) component.get("type");
+		    					}
+			        		
+		        				
+		        			} else {
+		        				templates = (JSONObject) parse_templates_list.get(0);
+			    				JSONObject component = (JSONObject) templates.get("component");
+			    				if(templates.get("component") == null){
+			    					source_values1[x] = (String) templates.get("type");
+			    					source_values2[x] = "null";
+		    					} else {
+		    						source_values1[x] = (String) templates.get("type");
+			        				source_values2[x] = (String) component.get("type");
+		    					}
+		        			}
+		        			
+		    			
+		    				
+	    
+		    				x++;
 	    				
-	    				x++;
-					}
-        			
-				}	
+						} else {
+			    			System.out.println("directives "+parse_directives_list.size()+"개");
+			    			directives = (JSONObject) parse_directives_list.get(0);
+	
+			    			if(directives.get("templates") == null){
+			    				source_values1[x] = "null";
+			    				source_values2[x] = "null";
+		    				} else {
+		    					JSONArray parse_templates_list = (JSONArray) directives.get("templates");
+				    			JSONObject templates;
+		    					templates = (JSONObject) parse_templates_list.get(0);
+		    					JSONObject component = (JSONObject) templates.get("component");
+		    					if(templates.get("component") == null){
+		    						source_values1[x] = (String) templates.get("type");
+		    						source_values2[x] = "null"; 
+		    					} else {
+		    						source_values1[x] = (String) templates.get("type");
+			        				source_values2[x] = (String) component.get("type");  
+		    					}
+		    				}
+					
+		    				
+		    				x++;
+						}
+	        			
+					}	
+	        	}
         	}
-    		
-    		for(String str:source_values) {
-        		System.out.println(str); 
+    		for(String str1:source_values1) {
+        		System.out.println(str1); 
+        	}
+    		for(String str2:source_values2) {
+        		System.out.println(str2); 
         	}
         
-        	logArray = source_values;
+        	logArray1 = source_values1;
+        	logArray2 = source_values2;
         	
-        	String s = Arrays.deepToString(logArray);
+        	String s = Arrays.deepToString(logArray1) +" / "+ Arrays.deepToString(logArray2);
         	String s1 = s.replace("[", "");
         	actn = s1.replace("]", "");
-        	System.out.println(actn);
+        	System.out.println("actn : " + actn);
         }
     	return actn;
 	}
@@ -5072,6 +5129,10 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		
 		pressKey(new KeyEvent(AndroidKey.BACK));
 	}
+	public void Android_APP_SWITCH() throws Exception {
+		
+		pressKey(new KeyEvent(AndroidKey.APP_SWITCH));
+	}
 	public void Android_downKey() throws Exception {
 		
 		pressKey(new KeyEvent(AndroidKey.KEY_11));
@@ -5151,6 +5212,30 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	}public void Android_TabKey() throws Exception {
 		
 		pressKey(new KeyEvent(AndroidKey.TAB));
+	}
+	
+	public String OS_ver(String Device) throws InterruptedException, IOException {
+        
+		String os = System.getProperty("os.name").toLowerCase();
+		
+		Process p = null;
+		
+		if (os.contains("win")) {
+			p = Runtime.getRuntime().exec("adb -s "+Device+" shell getprop ro.build.version.release");
+		} else if (os.contains("mac")) {
+			p = Runtime.getRuntime().exec("/opt/homebrew/bin/adb -s "+Device+" shell getprop ro.build.version.release");
+		}
+		
+		
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        String line = reader.readLine();
+
+        System.out.println("Android OS Version: " + line);
+
+        p.destroy();
+        
+        return line;
 	}
 	
 	
@@ -5260,7 +5345,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		
 		String URL = "";
 		String stock = "";
-		
+	
 		 if(sise.equals("상승")) {
 			 URL = "https://finance.naver.com/sise/sise_rise.nhn";
 			 System.out.println(URL);	
@@ -5285,6 +5370,34 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
                 System.out.println(sise+" 종목 : "+ text );
                 stock = text;
                 if (sum == 1) {
+                	 break;  
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return stock;
+    }
+	
+	public String ariranFMradio_Crawler_rise() throws Exception {
+		
+		String URL = "https://www.cbs.co.kr/radio/";
+		String stock = "";
+	
+        try {
+        	int sum = 0;
+            Connection conn = Jsoup.connect(URL);
+            Document html = conn.get(); // conn.post();
+ 
+            Elements fileblocks = html.getElementsByClass("text");
+            for( Element fileblock : fileblocks ) {
+            	sum += 1;
+            	Elements files = fileblock.getElementsByTag("div");
+                String text = files.text();
+                
+                System.out.println("방송명 : "+ text );
+                stock = text;
+                if (sum == 100) {
                 	 break;  
                 }
             }

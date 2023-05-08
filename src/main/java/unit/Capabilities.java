@@ -119,7 +119,7 @@ public class Capabilities {
 			 capability.setCapability("appActivity", "com.skt.nugu.visual.splash.SplashActivity");
 			 
 			 capability.setCapability("noReset",true);
-			 capability.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 600000);
+			 capability.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 6000);
 		        
 		     ChromeOptions chromeOptions = new ChromeOptions();
 		     chromeOptions.setExperimentalOption("w3c", true);
@@ -158,7 +158,7 @@ public class Capabilities {
 			 capability.setCapability("appActivity", "com.skt.nugu.visual.splash.SplashActivity");
 			 
 			 capability.setCapability("noReset",true);
-			 //capability.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 6000000);
+			 capability.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 6000);
 		        
 		     ChromeOptions chromeOptions = new ChromeOptions();
 		     chromeOptions.setExperimentalOption("w3c", true);
@@ -177,7 +177,8 @@ public class Capabilities {
 		     if (systemOS.contains("win")) {
 		    	 capability.setCapability("chromedriverExecutable", "C:\\chromedriver_win32\\chromedriver.exe"); //win
 		     } else if (systemOS.contains("mac")) {
-		    	 capability.setCapability("chromedriverExecutable", "/opt/homebrew/bin/chromedriver");
+		    	 //capability.setCapability("chromedriverExecutable", "/opt/homebrew/bin/chromedriver");
+		    	 capability.setCapability("chromedriverExecutable", "/Users/1112049/chromedriver_mac_arm64/chromedriver");
 		     }
 		        
 		    
@@ -213,5 +214,5 @@ public class Capabilities {
 		
 		
 		return capability;		
-	}	
+	}		
 }
