@@ -3,7 +3,7 @@
   
   <groupId>com.github.ksszidane</groupId>
   <artifactId>Appium-unit-lib</artifactId>
-  <version>1.0.45</version>
+  <version>1.0.47</version>
   <packaging>jar</packaging>
   
   <name>Appium-unit-lib</name>
@@ -190,7 +190,12 @@
 		<artifactId>org.eclipse.egit.github.core</artifactId>
 		<version>2.0.3</version>
 	</dependency>
-	
+	<dependency>
+    	<groupId>org.projectlombok</groupId>
+    	<artifactId>lombok</artifactId>
+    	<version>1.18.26</version>
+    	<scope>provided</scope>
+	</dependency>
 
 	
   </dependencies>
