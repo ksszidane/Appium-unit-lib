@@ -1500,6 +1500,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		element.sendKeys(text);
 	}
 	
+	
 	public void sendImeKeys(int keyValue) throws Exception {
 		
 		HashMap<String, Integer> keycode = new HashMap<String, Integer>();
@@ -1641,6 +1642,18 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	   
 	}
 	
+	public void tapType(By locator, String Text) throws Exception {
+		WebDriverWait wait = new WebDriverWait(this, PAGE_LOAD_TIME_OUT);
+		wait.until(ExpectedConditions.elementToBeClickable(locator));    
+		WebElement superElement = findElement(locator);
+		
+		if (wait instanceof HasTouchScreen) {
+			TouchActions tap = new TouchActions((WebDriver) wait);
+			tap.sendKeys(Text).perform();
+		} else {
+			superElement.click();
+		}
+	}
 	
 	
 	
@@ -5587,6 +5600,17 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		result = array[rand.nextInt(arrayLaength)];
 		
 		return result;
+	}
+	
+	public void LLM_func(String LLM, String Message) throws Exception {
+		
+		this.findElement(By.xpath("//android.widget.EditText")).sendKeys(LLM);
+		this.click(By.xpath("//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.view.View[2]/android.widget.Button[3]"));
+		
+		String resultMessage = this.getText(By.xpath("//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.widget.TextView[1]"));
+		
+		Assert.assertTrue(resultMessage.contains(Message));
+		
 	}
 
 }
