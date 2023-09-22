@@ -127,6 +127,10 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	public String beforeFilePath = null;
 	public String beforeFilePath2 = null;
 	
+	String timestamp = "";
+	String last_json;
+	String userString;
+	String result;
 
 	
 	private final OkHttpClient httpClient = new OkHttpClient();
@@ -5612,5 +5616,291 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		Assert.assertTrue(resultMessage.contains(Message));
 		
 	}
+	
+	public static String Random() {
+        int min = 1; 
+        int max = 999999999; 
 
+        Random random = new Random();
+        int randomNumber = random.nextInt(max - min + 1) + min;
+
+        System.out.println("Random Number: " + randomNumber);
+        String Number = Integer.toString(randomNumber);
+        return Number;
+    }
+	
+	public String timestamp_date() {
+		
+		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"),Locale.KOREA);
+		SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd");
+		return form.format(cal.getTime());	
+	}
+	
+	public String timestamp_time() {
+		
+		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"),Locale.KOREA);
+		SimpleDateFormat form = new SimpleDateFormat("HH:mm:ss");
+		return form.format(cal.getTime());	
+	}
+	
+	void friends_sendPost(String command, String Server, String bot) throws Exception {
+    	
+		JSONArray historyMessagesArray = new JSONArray();
+		
+		System.out.println(historyMessagesArray);
+		String sessionId;
+		sessionId = this.Random();
+		
+		System.out.println("sendPost 발동 옵션: | 발화문 :  "+ command +" | 서버 : "+ Server);
+    	
+    	String CommandText = command;
+    	
+    	JSONObject Main_jsonObject = new JSONObject();
+    	
+    	Main_jsonObject.put("sessionId", sessionId);
+    	
+    	JSONArray messagesArray = new JSONArray();
+    	
+    	JSONObject messages_data_jsonObject = new JSONObject();
+    	messages_data_jsonObject.put("speaker", "USER");
+    	timestamp = this.timestamp_date()+"T"+this.timestamp_time();
+    	messages_data_jsonObject.put("timestamp", timestamp);
+    	messages_data_jsonObject.put("type", "TEXT");
+    	messages_data_jsonObject.put("text", CommandText);
+    	historyMessagesArray.add(messages_data_jsonObject);
+    	Main_jsonObject.put("messages", historyMessagesArray);
+    	
+    	JSONObject config_data_jsonObject = new JSONObject();
+    	config_data_jsonObject.put("allowDelay", true);
+    	config_data_jsonObject.put("n", 1);
+    	Main_jsonObject.put("config", config_data_jsonObject);
+    	
+    	JSONObject user_data_jsonObject = new JSONObject();
+    	user_data_jsonObject.put("name", "홍길동");
+    	user_data_jsonObject.put("gender", "MALE");
+    	user_data_jsonObject.put("age", "10");
+    	user_data_jsonObject.put("emotion", "happy");
+    	
+    	JSONObject speakers_jsonObject = new JSONObject();
+    	speakers_jsonObject.put("USER", user_data_jsonObject);
+    	Main_jsonObject.put("speakers", speakers_jsonObject);
+    	
+    	
+    	System.out.println(Main_jsonObject);
+    	last_json = Main_jsonObject.toJSONString();
+    	
+    	
+    	
+    	/*
+    	JSONObject Main_jsonObject = new JSONObject();
+    	
+    	JSONArray directivesArray = new JSONArray();
+    	
+    	JSONObject payload_data = new JSONObject();
+    	payload_data.put("text", CommandText);
+    	
+    	
+    	JSONObject header_data = new JSONObject();
+    	header_data.put("messageId", "");
+    	header_data.put("dialogRequestId", "");
+    	header_data.put("namespace", "Text");
+    	header_data.put("referrerDialogRequestId", "");
+    	header_data.put("name", "TextSource");
+    	header_data.put("version", "1.7");
+    	
+ 
+    	JSONObject data_jsonObject = new JSONObject();
+    	data_jsonObject.put("payload", payload_data);
+    	data_jsonObject.put("header", header_data);
+    
+    	directivesArray.add(data_jsonObject);
+    	
+    	
+    	@SuppressWarnings("unused")
+		JSONObject directives_jsonObject = new JSONObject();
+    	//directives_jsonObject.put("directives", directivesArray.toString());
+    	
+    	Main_jsonObject.put("directives", directivesArray);
+    	Main_jsonObject.put("deviceId", deviceID);  
+    	*/
+    	
+    	//System.out.println(Main_jsonObject);
+    	
+    	MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    	
+    	// form parameters
+    	@SuppressWarnings("deprecation")
+		RequestBody body = RequestBody.create(JSON, Main_jsonObject.toString());
+    	
+    	if (Server.equals("제이")) {
+    		Request request = new Request.Builder()
+                    .url("https://suzume.pingpong.us/chat")
+                    .addHeader("Authorization", "Bearer 485752A1-7433-42C9-AD93-ED53B96DCF78")
+                    .post(body)
+                    .build();
+    		
+	    	Response response = httpClient.newCall(request).execute();
+	    	userString = response.body().string();
+	    	System.out.println(userString);
+	    	
+	    	JSONParser parser = new JSONParser(); 
+	    	JSONObject obj = (JSONObject) parser.parse(userString);
+	    	
+	    	JSONArray choices_in_list = (JSONArray) obj.get("choices");
+        	JSONObject choices;
+	    	
+	    	if(obj.get("choices") == null) {
+	    		result = userString;
+        	} else {
+            	
+            	for(int i = 0 ; i < choices_in_list.size(); i++) { 
+            		choices = (JSONObject) choices_in_list.get(i);
+            		JSONArray messages_in_list = (JSONArray) choices.get("messages");
+            		JSONObject messages;
+            		for(int j = 0 ; j < messages_in_list.size(); j++) { 
+            			messages = (JSONObject) messages_in_list.get(j);
+            			String text = (String) messages.get("text");
+            			String timestamp = (String) messages.get("timestamp");
+            			System.out.println("▷ 제이(bot) 수신문 : ["+text+"]");
+            			
+            			JSONObject botmessages_data_jsonObject = new JSONObject();
+            			botmessages_data_jsonObject.put("speaker", "BOT");
+            			botmessages_data_jsonObject.put("timestamp", timestamp);
+            			botmessages_data_jsonObject.put("type", "TEXT");
+            			botmessages_data_jsonObject.put("text", text);
+                    	historyMessagesArray.add(botmessages_data_jsonObject);
+            		}
+            		JSONObject parse_metadata = (JSONObject) choices.get("metadata");
+            		JSONObject parse_scenario = (JSONObject) parse_metadata.get("scenario");
+            		String abusing = (String) parse_scenario.get("abusing");
+            		String queryType = (String) parse_scenario.get("queryType");
+            		String queryPool = (String) parse_scenario.get("queryPool");
+            		System.out.println("▷ bot metadata : [abusing : "+abusing+", queryType : "+queryType+", queryPool : "+queryPool+"]");
+            		
+            		JSONObject parse_metadata2 = (JSONObject) obj.get("metadata");
+            		JSONObject parse_abusing = (JSONObject) parse_metadata2.get("abusing");
+            		boolean sexual = (boolean) parse_abusing.get("sexual");
+            		boolean offensive = (boolean) parse_abusing.get("offensive");
+            		boolean bias = (boolean) parse_abusing.get("bias");
+            		boolean opinion = (boolean) parse_abusing.get("opinion");
+            		System.out.println("▷ bot metadata : [sexual : "+sexual+"/ offensive : "+offensive+"/ bias : "+bias+"/ opinion : " + opinion +"]");
+
+            	}
+        		
+        	}
+           
+    	} else if (Server.equals("빛나")) {
+    		Request request = new Request.Builder()
+    				.url("https://suzume.pingpong.us/chat")
+                    .addHeader("Authorization", "Bearer 81A7AE15-CF25-41B1-8DE7-AF0CA6FE71FB")
+                    .post(body)
+                    .build();
+    		
+    		Response response = httpClient.newCall(request).execute();
+	    	userString = response.body().string();
+	    	System.out.println(userString);
+	    	
+	    	JSONParser parser = new JSONParser(); 
+	    	JSONObject obj = (JSONObject) parser.parse(userString);
+	    	
+	    	JSONArray choices_in_list = (JSONArray) obj.get("choices");
+        	JSONObject choices;
+	    	
+	    	if(obj.get("choices") == null) {
+	    		result = userString;
+        	} else {
+            	
+            	for(int i = 0 ; i < choices_in_list.size(); i++) { 
+            		choices = (JSONObject) choices_in_list.get(i);
+            		JSONArray messages_in_list = (JSONArray) choices.get("messages");
+            		JSONObject messages;
+            		for(int j = 0 ; j < messages_in_list.size(); j++) { 
+            			messages = (JSONObject) messages_in_list.get(j);
+            			String text = (String) messages.get("text");
+            			String timestamp = (String) messages.get("timestamp");
+            			System.out.println("▷ 빛나(bot) 수신문 : ["+text+"]");
+            			
+            			JSONObject botmessages_data_jsonObject = new JSONObject();
+            			botmessages_data_jsonObject.put("speaker", "BOT");
+            			botmessages_data_jsonObject.put("timestamp", timestamp);
+            			botmessages_data_jsonObject.put("type", "TEXT");
+            			botmessages_data_jsonObject.put("text", text);
+                    	historyMessagesArray.add(botmessages_data_jsonObject);
+            		}
+            		JSONObject parse_metadata = (JSONObject) choices.get("metadata");
+            		JSONObject parse_scenario = (JSONObject) parse_metadata.get("scenario");
+            		String abusing = (String) parse_scenario.get("abusing");
+            		String queryType = (String) parse_scenario.get("queryType");
+            		String queryPool = (String) parse_scenario.get("queryPool");
+            		System.out.println("▷ bot metadata : [abusing : "+abusing+", queryType : "+queryType+", queryPool : "+queryPool+"]");
+            		
+            		JSONObject parse_metadata2 = (JSONObject) obj.get("metadata");
+            		JSONObject parse_abusing = (JSONObject) parse_metadata2.get("abusing");
+            		boolean sexual = (boolean) parse_abusing.get("sexual");
+            		boolean offensive = (boolean) parse_abusing.get("offensive");
+            		boolean bias = (boolean) parse_abusing.get("bias");
+            		boolean opinion = (boolean) parse_abusing.get("opinion");
+            		System.out.println("▷ bot metadata : [sexual : "+sexual+"/ offensive : "+offensive+"/ bias : "+bias+"/ opinion : " + opinion +"]");
+
+            	}
+        		
+        	}
+    	} else if (Server.equals("하루")) {
+    		Request request = new Request.Builder()
+    				.url("https://suzume.pingpong.us/chat")
+                    .addHeader("Authorization", "Bearer E37A34F6-753C-494D-AB2B-F4520C0D79ED")
+                    .post(body)
+                    .build();
+    		
+    		Response response = httpClient.newCall(request).execute();
+	    	userString = response.body().string();
+	    	System.out.println(userString);
+	    	
+	    	JSONParser parser = new JSONParser(); 
+	    	JSONObject obj = (JSONObject) parser.parse(userString);
+	    	
+	    	JSONArray choices_in_list = (JSONArray) obj.get("choices");
+        	JSONObject choices;
+	    	
+	    	if(obj.get("choices") == null) {
+	    		result = userString;
+        	} else {
+            	
+            	for(int i = 0 ; i < choices_in_list.size(); i++) { 
+            		choices = (JSONObject) choices_in_list.get(i);
+            		JSONArray messages_in_list = (JSONArray) choices.get("messages");
+            		JSONObject messages;
+            		for(int j = 0 ; j < messages_in_list.size(); j++) { 
+            			messages = (JSONObject) messages_in_list.get(j);
+            			String text = (String) messages.get("text");
+            			String timestamp = (String) messages.get("timestamp");
+            			System.out.println("▷ 하루(bot) 수신문 : ["+text+"]");
+            			
+            			JSONObject botmessages_data_jsonObject = new JSONObject();
+            			botmessages_data_jsonObject.put("speaker", "BOT");
+            			botmessages_data_jsonObject.put("timestamp", timestamp);
+            			botmessages_data_jsonObject.put("type", "TEXT");
+            			botmessages_data_jsonObject.put("text", text);
+                    	historyMessagesArray.add(botmessages_data_jsonObject);
+            		}
+            		JSONObject parse_metadata = (JSONObject) choices.get("metadata");
+            		JSONObject parse_scenario = (JSONObject) parse_metadata.get("scenario");
+            		String abusing = (String) parse_scenario.get("abusing");
+            		String queryType = (String) parse_scenario.get("queryType");
+            		String queryPool = (String) parse_scenario.get("queryPool");
+            		System.out.println("▷ bot metadata : [abusing : "+abusing+", queryType : "+queryType+", queryPool : "+queryPool+"]");
+            		
+            		JSONObject parse_metadata2 = (JSONObject) obj.get("metadata");
+            		JSONObject parse_abusing = (JSONObject) parse_metadata2.get("abusing");
+            		boolean sexual = (boolean) parse_abusing.get("sexual");
+            		boolean offensive = (boolean) parse_abusing.get("offensive");
+            		boolean bias = (boolean) parse_abusing.get("bias");
+            		boolean opinion = (boolean) parse_abusing.get("opinion");
+            		System.out.println("▷ bot metadata : [sexual : "+sexual+"/ offensive : "+offensive+"/ bias : "+bias+"/ opinion : " + opinion +"]");
+
+            	}
+        		
+        	}
+    	}
+	}
 }
