@@ -504,5 +504,21 @@ public class ADB {
         }
 		
 	}
+	
+	public void DeepLink(String Device, String URI, String AppPackage) throws Exception {
+		
+		
+		if (os.contains("win")) {
+			runCommand("adb -s "+Device+" shell am start -a android.intent.action.VIEW \"" + URI + "\" " + AppPackage);
+			System.out.println("adb -s "+Device+" shell am start -a android.intent.action.VIEW \"" + URI + "\" " + AppPackage);
+
+        } else if (os.contains("mac")) {
+        	runCommand("/opt/homebrew/bin/adb -s "+Device+" shell am start -a android.intent.action.VIEW \"" + URI + "\" " + AppPackage);
+        	System.out.println("/opt/homebrew/bin/adb -s "+Device+" shell am start -a android.intent.action.VIEW \"" + URI + "\" " + AppPackage);
+
+        }
+		
+		
+	}
 
 }

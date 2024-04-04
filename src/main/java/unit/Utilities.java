@@ -23,6 +23,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -5616,6 +5617,42 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		Assert.assertTrue(resultMessage.contains(Message));
 		
 	}
+	
+	public String DeepLinkJson_URL(String Path,int num) throws Exception {
+    	
+		
+		String filePath = Path;
+ 
+    	
+        // BufferedReader를 사용하여 파일 읽기
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        StringBuilder stringBuilder = new StringBuilder();
+        String line;
+
+        // 파일 내용 읽기
+        while ((line = reader.readLine()) != null) {
+            stringBuilder.append(line);
+        }
+        reader.close();
+    	
+        String jsonString = stringBuilder.toString();
+        
+    	JSONParser parser = new JSONParser(); 
+    	JSONObject obj = (JSONObject) parser.parse(jsonString);
+    	
+    	JSONArray parse_items_list = (JSONArray) obj.get("items");
+    	
+    	JSONObject urlValue;
+    	
+    	urlValue = (JSONObject) parse_items_list.get(num);
+		
+    	String jsonStringURL = (String) urlValue.get("url");
+    	
+    	System.out.println("\n");
+    	System.out.println(jsonStringURL);
+		return jsonStringURL;
+
+    }
 	
 	public static String Random() {
         int min = 1; 

@@ -47,6 +47,7 @@ public class APOLLO_TestCase {
 	
 	public String dID;
 	public String uID;
+	public String AppPackage;
 	
 
 	@Parameters({"OS", "AppName", "hubAddress", "Server", "Project", "TestPlace", "MobileDevice", "ServiceName",
@@ -84,11 +85,15 @@ public class APOLLO_TestCase {
 		
 		System.out.println("\n▒▒ Start Suite : " + util.printClassName(this)+ " ▒▒ ("+ OS + " | "+ Server + " | "+ App +")\n");
 		
+		
+		
 		if(Server.contains("STG")) {
-			adb.permission_BATTERY_OPTIMIZATIONS_On(udid, "com.skt.nugu.apollo.stg");
+			AppPackage = "com.skt.nugu.apollo.stg";
 		} else {
-			adb.permission_BATTERY_OPTIMIZATIONS_On(udid, "com.skt.nugu.apollo");
+			AppPackage = "com.skt.nugu.apollo";
 		}
+		
+		adb.permission_BATTERY_OPTIMIZATIONS_On(udid, AppPackage);
 	
 			
 	}
