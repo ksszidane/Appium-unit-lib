@@ -211,6 +211,45 @@ public class Capabilities {
 		        
 		    
 		}
+
+		if(AppName.equalsIgnoreCase("App_Installer")) {
+
+			String systemOS = System.getProperty("os.name").toLowerCase();
+
+			capability.setCapability("deviceName","Android");
+			capability.setCapability("automationName", "UIAutomator2");
+			capability.setCapability("platformName","Android");
+			capability.setCapability("udid",Device); //여러 디바이스가 설치된 경우, 테스트하고자 하는 디바이스를 선택
+
+			capability.setCapability("appPackage", "dev.firebase.appdistribution");
+			capability.setCapability("appActivity", "dev.firebase.appdistribution.main.MainActivity");
+
+			capability.setCapability("noReset",true);
+			capability.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 6000);
+
+			ChromeOptions chromeOptions = new ChromeOptions();
+			chromeOptions.setExperimentalOption("w3c", true);
+			capability.setCapability("chromedriverArgs", chromeOptions);
+
+			capability.setCapability("recreateChromeDriverSessions", false);
+			capability.setCapability("extractChromeAndroidPackageFromContextName", true);
+
+			//noReset이 true로 처리되어 있으면 아래 명령어가 동작하지 않는다.
+			capability.setCapability("autoGrantPermissions", "true");
+
+			capability.setCapability("focused", true);
+
+			capability.setCapability("showChromedriverLog", true);
+
+			if (systemOS.contains("win")) {
+				capability.setCapability("chromedriverExecutable", "C:\\chromedriver_win32\\chromedriver.exe"); //win
+			} else if (systemOS.contains("mac")) {
+				//capability.setCapability("chromedriverExecutable", "/opt/homebrew/bin/chromedriver");
+				capability.setCapability("chromedriverExecutable", "/Users/1112049/chromedriver_mac_arm64/chromedriver");
+			}
+
+
+		}
 		
 		
 		return capability;		

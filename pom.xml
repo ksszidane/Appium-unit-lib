@@ -3,7 +3,7 @@
   
   <groupId>com.github.ksszidane</groupId>
   <artifactId>Appium-unit-lib</artifactId>
-  <version>1.0.48</version>
+  <version>1.0.49</version>
   <packaging>jar</packaging>
   
   <name>Appium-unit-lib</name>
@@ -207,16 +207,16 @@
 			<artifactId>maven-surefire-plugin</artifactId>
 			<version>3.0.0-M4</version>
 			<configuration>
-				<encoding>UTF-8</encoding>
-				<outputEncoding>UTF-8</outputEncoding>
-				<argLine> -Xms1024m -Xmx2048m -XX:MaxPermSize=256m
-					-Dfile.encoding=UTF-8</argLine>
-			</configuration>
-		</plugin>
+			<encoding>UTF-8</encoding>
+    <!-- <outputEncoding>UTF-8</outputEncoding> -->
+    <argLine> -Xms1024m -Xmx2048m -XX:MaxPermSize=256m
+        -Dfile.encoding=UTF-8</argLine>
+	</configuration>
+	</plugin>
 
-		<!-- <plugin> <artifactId>maven-compiler-plugin</artifactId> <version>3.5.1</version> 
-			<configuration> <encoding>UTF-8</encoding> <source>1.8</source> <target>1.8</target> 
-			</configuration> </plugin> -->
+<!-- <plugin> <artifactId>maven-compiler-plugin</artifactId> <version>3.5.1</version>
+<configuration> <encoding>UTF-8</encoding> <source>1.8</source> <target>1.8</target>
+</configuration> </plugin> -->
 
 
 		<plugin>
@@ -227,57 +227,57 @@
 				<source>1.8</source>
 				<target>1.8</target>
 				<encoding>UTF-8</encoding>
-				<outputEncoding>UTF-8</outputEncoding>
-			</configuration>
-		</plugin>
-		<plugin> 
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-jar-plugin</artifactId> 
-			<version>3.2.0</version> 
-			<configuration>
-            	<encoding>UTF-8</encoding>
-            	<outputEncoding>UTF-8</outputEncoding>
-            </configuration>
-		</plugin>
-		
-		<plugin> 
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-site-plugin</artifactId> 
-			<version>3.9.1</version> 
-			<configuration>
-            	<encoding>UTF-8</encoding>
-            	<outputEncoding>UTF-8</outputEncoding>
-            </configuration>
-		</plugin>
-		
-		<plugin>
-        	<artifactId>maven-deploy-plugin</artifactId>
-        	<version>2.8.2</version>
-        	<configuration>
-               <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
+		<!--	<outputEncoding>UTF-8</outputEncoding> -->
         	</configuration>
     	</plugin>
-		
-		<!--
-		<plugin>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-source-plugin</artifactId>
-			<version>2.3</version>
-			<configuration>
-            	<encoding>UTF-8</encoding>
-            	<outputEncoding>UTF-8</outputEncoding>
-            </configuration>
-			<executions> 
-				<execution> 
-				<id>attach-sources</id> 
-				<phase>verify</phase> 
-				<goals> 
-					<goal>jar</goal> 
-				</goals> 
-			</execution> 
-		</executions>
-		</plugin>
-		-->
+    	<plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.2.0</version>
+        <configuration>
+			<!-- <encoding>UTF-8</encoding>
+             <outputEncoding>UTF-8</outputEncoding> -->
+         </configuration>
+     </plugin>
+
+     <plugin>
+         <groupId>org.apache.maven.plugins</groupId>
+         <artifactId>maven-site-plugin</artifactId>
+         <version>3.9.1</version>
+         <configuration>
+         <!-- <encoding>UTF-8</encoding>
+          <outputEncoding>UTF-8</outputEncoding> -->
+     </configuration>
+ </plugin>
+
+ <plugin>
+     <artifactId>maven-deploy-plugin</artifactId>
+     <version>2.8.2</version>
+     <configuration>
+        <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
+     </configuration>
+ </plugin>
+
+ <!--
+ <plugin>
+     <groupId>org.apache.maven.plugins</groupId>
+     <artifactId>maven-source-plugin</artifactId>
+     <version>2.3</version>
+     <configuration>
+         <encoding>UTF-8</encoding>
+         <outputEncoding>UTF-8</outputEncoding>
+     </configuration>
+     <executions>
+         <execution>
+         <id>attach-sources</id>
+         <phase>verify</phase>
+         <goals>
+             <goal>jar</goal>
+         </goals>
+     </execution>
+ </executions>
+ </plugin>
+ -->
 		<!--
 		<plugin> 
 			<groupId>org.apache.maven.plugins</groupId> 

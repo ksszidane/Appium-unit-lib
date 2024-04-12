@@ -180,7 +180,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 	/**
 	 * Element가 enabled(사용) 되었는지 확인하는 메소드
 	 * 
-	 * @param locator존재
+	 * @param locator 존재
 	 *            확인 할 Element를 지정
 	 * @return boolean
 	 */     
@@ -2287,7 +2287,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     public String DateTime() throws Exception {
 
     	Calendar calendar = Calendar.getInstance();
-        java.util.Date date = calendar.getTime();
+        Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyy.MM.dd HH").format(date));
         
         return today;
@@ -2296,7 +2296,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     public String Time_min() throws Exception {
 
     	Calendar calendar = Calendar.getInstance();
-        java.util.Date date = calendar.getTime();
+        Date date = calendar.getTime();
         String today = (new SimpleDateFormat("mm").format(date));
         
         return today;
@@ -2334,7 +2334,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String transaction_id="";
     	
     	Calendar calendar = Calendar.getInstance();
-        java.util.Date date = calendar.getTime();
+        Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
         String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
@@ -2448,7 +2448,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String transaction_id="";
     	
     	Calendar calendar = Calendar.getInstance();
-        java.util.Date date = calendar.getTime();
+        Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
         String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
@@ -2563,7 +2563,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String access_token = NUGU_Insight_Token(Place);
     	
     	Calendar calendar = Calendar.getInstance();
-        java.util.Date date = calendar.getTime();
+        Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
         String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
@@ -2680,7 +2680,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	
     	Calendar calendar = Calendar.getInstance();
     	calendar.add(Calendar.MINUTE, -4);
-        java.util.Date date = calendar.getTime();
+        Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
         String time = (new SimpleDateFormat("yyyyMMddHHmmss").format(date));
         
@@ -2813,7 +2813,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	
     	Calendar calendar = Calendar.getInstance();
     	calendar.add(Calendar.MINUTE, -4);
-        java.util.Date date = calendar.getTime();
+        Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
         String time = (new SimpleDateFormat("yyyyMMddHHmmss").format(date));
         
@@ -2954,7 +2954,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	
     	Calendar calendar = Calendar.getInstance();
     	calendar.add(Calendar.MINUTE, -4);
-        java.util.Date date = calendar.getTime();
+        Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
         String time = (new SimpleDateFormat("yyyyMMddHHmmss").format(date));
         
@@ -3092,7 +3092,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String access_token = NUGU_Insight_Token(Place);
     	
     	Calendar calendar = Calendar.getInstance();
-        java.util.Date date = calendar.getTime();
+        Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
         String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
@@ -3205,7 +3205,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String access_token = NUGU_Insight_Token(Place);
     	
     	Calendar calendar = Calendar.getInstance();
-        java.util.Date date = calendar.getTime();
+        Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
         String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
 
@@ -3318,7 +3318,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String access_token = NUGU_Insight_Token(Place);
     	
     	Calendar calendar = Calendar.getInstance();
-        java.util.Date date = calendar.getTime();
+        Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
         String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
@@ -3430,7 +3430,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String access_token = NUGU_Insight_Token(Place);
     	
     	Calendar calendar = Calendar.getInstance();
-        java.util.Date date = calendar.getTime();
+        Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
         String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
@@ -3541,7 +3541,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String access_token = NUGU_Insight_Token(Place);
     	
     	Calendar calendar = Calendar.getInstance();
-        java.util.Date date = calendar.getTime();
+        Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
         String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
@@ -3651,7 +3651,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
     	String access_token = NUGU_Insight_Token(Place);
     	
     	Calendar calendar = Calendar.getInstance();
-        java.util.Date date = calendar.getTime();
+        Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
         String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
@@ -3762,7 +3762,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		String access_token = NUGU_Insight_Token(Place);
 		
     	Calendar calendar = Calendar.getInstance();
-        java.util.Date date = calendar.getTime();
+        Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
         String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
@@ -3876,7 +3876,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		Thread.sleep(12000);
 		
     	Calendar calendar = Calendar.getInstance();
-        java.util.Date date = calendar.getTime();
+        Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
         String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
@@ -3989,7 +3989,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		String access_token = NUGU_Insight_Token(Place);
 		
     	Calendar calendar = Calendar.getInstance();
-        java.util.Date date = calendar.getTime();
+        Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
         String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
@@ -4147,7 +4147,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		String access_token = NUGU_Insight_Token(Place);
 		
     	Calendar calendar = Calendar.getInstance();
-        java.util.Date date = calendar.getTime();
+        Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
         String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
 
@@ -4259,7 +4259,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		String access_token = NUGU_Insight_Token("in");
 		
     	Calendar calendar = Calendar.getInstance();
-        java.util.Date date = calendar.getTime();
+        Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
         String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
@@ -4429,7 +4429,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		String access_token = NUGU_Insight_Token("in");
 		
     	Calendar calendar = Calendar.getInstance();
-        java.util.Date date = calendar.getTime();
+        Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
         String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
@@ -4613,7 +4613,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		String access_token = NUGU_Insight_Token(Place);
 		
     	Calendar calendar = Calendar.getInstance();
-        java.util.Date date = calendar.getTime();
+        Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
         String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
@@ -4726,7 +4726,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		String access_token = NUGU_Insight_Token(Place);
 		
     	Calendar calendar = Calendar.getInstance();
-        java.util.Date date = calendar.getTime();
+        Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
         String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
@@ -4853,7 +4853,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		String access_token = NUGU_Insight_Token(Place);
 		
     	Calendar calendar = Calendar.getInstance();
-        java.util.Date date = calendar.getTime();
+        Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
         String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
@@ -4979,7 +4979,7 @@ public class Utilities extends AndroidDriver<WebElement> implements HasTouchScre
 		String access_token = NUGU_Insight_Token(Place);
 		
     	Calendar calendar = Calendar.getInstance();
-        java.util.Date date = calendar.getTime();
+        Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
         String time = (new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
         
