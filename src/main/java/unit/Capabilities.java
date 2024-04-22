@@ -10,15 +10,10 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-import io.appium.java_client.MobileElement;
-import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.MobileElement;
-import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.remote.MobileCapabilityType;
 
 public class Capabilities {
-	
-	public static DesiredCapabilities gridSetUp (String os, String Device, String AppName) throws IOException {		
+
+	public static DesiredCapabilities gridSetUp (String os, String Device, String AppName) throws IOException {
 		//DesiredCapabilities capability = null;	
 		DesiredCapabilities capability = new DesiredCapabilities();
 
@@ -89,7 +84,7 @@ public class Capabilities {
 			 capability.setCapability("appActivity", "com.skt.nugu.sampleapp.activity.LoginActivity");
 			 
 			 capability.setCapability("noReset",true);
-			 capability.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 6000000);
+			 capability.setCapability("newCommandTimeout",60 * 5);
 		        
 		     ChromeOptions chromeOptions = new ChromeOptions();
 		     chromeOptions.setExperimentalOption("w3c", true);
@@ -119,7 +114,7 @@ public class Capabilities {
 			 capability.setCapability("appActivity", "com.skt.nugu.visual.splash.SplashActivity");
 			 
 			 capability.setCapability("noReset",true);
-			 capability.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 6000);
+			 capability.setCapability("newCommandTimeout",60 * 5);
 		        
 		     ChromeOptions chromeOptions = new ChromeOptions();
 		     chromeOptions.setExperimentalOption("w3c", true);
@@ -158,7 +153,7 @@ public class Capabilities {
 			 capability.setCapability("appActivity", "com.skt.nugu.visual.splash.SplashActivity");
 			 
 			 capability.setCapability("noReset",true);
-			 capability.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 6000);
+			 capability.setCapability("newCommandTimeout",60 * 5);
 		        
 		     ChromeOptions chromeOptions = new ChromeOptions();
 		     chromeOptions.setExperimentalOption("w3c", true);
@@ -192,8 +187,8 @@ public class Capabilities {
 			 
 			 capability.setCapability("appPackage", "com.skt.aidev.nugufriends");
 			 capability.setCapability("appActivity", "com.skt.aidev.nugufriends.ui.home.HomeActivity");
-		       
-			 capability.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 6000000);
+
+			 capability.setCapability("newCommandTimeout",60 * 5);
 			 capability.setCapability("adbExecTimeout", 10000);
 			 
 		     ChromeOptions chromeOptions = new ChromeOptions();
@@ -225,7 +220,7 @@ public class Capabilities {
 			capability.setCapability("appActivity", "dev.firebase.appdistribution.main.MainActivity");
 
 			capability.setCapability("noReset",true);
-			capability.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 6000);
+			capability.setCapability("newCommandTimeout",60 * 5);
 
 			ChromeOptions chromeOptions = new ChromeOptions();
 			chromeOptions.setExperimentalOption("w3c", true);
