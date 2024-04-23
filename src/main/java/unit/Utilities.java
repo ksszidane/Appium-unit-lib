@@ -5834,7 +5834,10 @@ public class Utilities extends AndroidDriver implements TakesScreenshot {
 		try {
 			// 현재 시간을 기준으로 최근 10초의 시간을 계산합니다.
 			Instant now = Instant.now();
-			Instant tenSecondsAgo = now.minus(Duration.ofSeconds(10));
+			Instant tenSecondsAgo = now.minus(Duration.ofSeconds(30));
+
+			// 5초 동안 로그를 찾지 못하면 종료하기 위한 시간을 계산합니다.
+			Instant endTime = now.plus(Duration.ofSeconds(5));
 
 			// adb logcat 명령을 실행하여 로그를 가져옵니다.
 			Process process = Runtime.getRuntime().exec("adb logcat");
@@ -5844,31 +5847,42 @@ public class Utilities extends AndroidDriver implements TakesScreenshot {
 
 			String line;
 			String lastReactiveMessage = null;
+			boolean found = false;
 			while ((line = reader.readLine()) != null) {
-				// 로그 메시지가 "[main] #### Last Reactive Message:"를 포함하고 최근 10초 내에 기록된 경우를 찾습니다.
-				if (line.contains("[main] #### Last Reactive Message:")) {
+				// 로그 메시지가 "Last Reactive Message:"를 포함하고 최근 10초 내에 기록된 경우를 찾습니다.
+				if (line.contains("Last Reactive Message:")) {
 					// 로그의 시간을 파싱합니다.
+					System.out.println("\"###### Line : \""+ line);
 					String[] parts = line.split("\\s+", 3); // 첫 번째 공백 기준으로 시간 부분을 분리합니다.
+					System.out.println("###### parts0 : "+ parts[0]);
+					System.out.println("###### parts1 : "+ parts[1]);
+					System.out.println("###### parts2 : "+ parts[2]);
 					if (parts.length > 1) {
 						try {
-							Instant logTime = Instant.parse("2022-" + parts[0] + "T" + parts[1] + "Z");
+							Instant logTime = Instant.parse(parts[0] + " " + parts[1]);
 							// 최근 10초 내에 기록된 로그인 경우에만 저장합니다.
 							if (logTime.isAfter(tenSecondsAgo) && logTime.isBefore(now)) {
 								lastReactiveMessage = line;
+								found = true;
 							}
 						} catch (Exception e) {
 							// 시간을 파싱할 수 없는 경우 무시합니다.
 						}
 					}
 				}
+
+				// 5초가 지나면 프로그램을 종료합니다.
+				if (Instant.now().isAfter(endTime)) {
+					break;
+				}
 			}
 
-			// 가장 최근의 "[main] #### Last Reactive Message:" 로그를 출력합니다.
-			if (lastReactiveMessage != null) {
-				System.out.println("가장 최근 10초 동안의 [main] #### Last Reactive Message: 로그:");
+			// 가장 최근의 "Last Reactive Message:" 로그를 출력합니다.
+			if (found) {
+				System.out.println("가장 최근 10초 동안의 Last Reactive Message: 로그:");
 				System.out.println(lastReactiveMessage);
 			} else {
-				System.out.println("[main] #### Last Reactive Message: 로그를 찾을 수 없습니다.");
+				System.out.println("5초 동안 Last Reactive Message: 로그를 찾지 못했습니다.");
 			}
 
 			// 프로세스 종료
