@@ -5831,58 +5831,40 @@ public class Utilities extends AndroidDriver implements TakesScreenshot {
 
 	public String AndroidLogCat() throws Exception {
 		String logs = "";
+		String logMessage;
+		Thread.sleep(2000);
 		try {
-			// 현재 시간을 기준으로 최근 10초의 시간을 계산합니다.
-			Instant now = Instant.now();
-			Instant tenSecondsAgo = now.minus(Duration.ofSeconds(30));
-
-			// 5초 동안 로그를 찾지 못하면 종료하기 위한 시간을 계산합니다.
-			Instant endTime = now.plus(Duration.ofSeconds(5));
-
-			// adb logcat 명령을 실행하여 로그를 가져옵니다.
+			// adb logcat 명령어를 실행하여 로그를 가져오기
 			Process process = Runtime.getRuntime().exec("adb logcat");
 
 			// 로그를 읽기 위한 BufferedReader 생성
 			BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
+			// 최근 로그를 저장할 변수
+			String recentLog = null;
+
+			// 시작 시간
+			long startTime = System.currentTimeMillis();
+
+			// 최근 5초 동안의 로그를 읽음
 			String line;
-			String lastReactiveMessage = null;
-			boolean found = false;
 			while ((line = reader.readLine()) != null) {
-				// 로그 메시지가 "Last Reactive Message:"를 포함하고 최근 10초 내에 기록된 경우를 찾습니다.
-				if (line.contains("Last Reactive Message:")) {
-					// 로그의 시간을 파싱합니다.
-					System.out.println("\"###### Line : \""+ line);
-					String[] parts = line.split("\\s+", 3); // 첫 번째 공백 기준으로 시간 부분을 분리합니다.
-					System.out.println("###### parts0 : "+ parts[0]);
-					System.out.println("###### parts1 : "+ parts[1]);
-					System.out.println("###### parts2 : "+ parts[2]);
-					if (parts.length > 1) {
-						try {
-							Instant logTime = Instant.parse(parts[0] + " " + parts[1]);
-							// 최근 10초 내에 기록된 로그인 경우에만 저장합니다.
-							if (logTime.isAfter(tenSecondsAgo) && logTime.isBefore(now)) {
-								lastReactiveMessage = line;
-								found = true;
-							}
-						} catch (Exception e) {
-							// 시간을 파싱할 수 없는 경우 무시합니다.
-						}
-					}
+				if (line.contains("#### Last Reactive Message")) {
+					recentLog = line; // 최근 로그 저장
 				}
 
-				// 5초가 지나면 프로그램을 종료합니다.
-				if (Instant.now().isAfter(endTime)) {
+				// 5초 이내에 로그를 찾으면 종료
+				if (System.currentTimeMillis() - startTime >= 5000) {
 					break;
 				}
 			}
 
-			// 가장 최근의 "Last Reactive Message:" 로그를 출력합니다.
-			if (found) {
-				System.out.println("가장 최근 10초 동안의 Last Reactive Message: 로그:");
-				System.out.println(lastReactiveMessage);
+			// 최근 로그 출력
+			if (recentLog != null) {
+				System.out.println("Recent Log with 'Last Reactive Message': " + recentLog);
+				logs = recentLog;
 			} else {
-				System.out.println("5초 동안 Last Reactive Message: 로그를 찾지 못했습니다.");
+				System.out.println("No log with 'Last Reactive Message' found in the last 10 seconds.");
 			}
 
 			// 프로세스 종료
@@ -5890,8 +5872,101 @@ public class Utilities extends AndroidDriver implements TakesScreenshot {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-        return logs;
+
+		String[] parts1 = logs.split("Message\\(text=");
+		String[] parts2 = parts1[1].split("\\)], character");
+		logMessage = parts2[0];
+
+		return logMessage;
     }
 
+
+	public void gemini_api_test(String command, String message) throws Exception {
+
+		String Google_gemini_Key = "AIzaSyAqqfJAQI1D2N0seOYJhLAiRtRkgLxIlcU";
+
+		String CommandText = command;
+
+		JSONObject Main_jsonObject = new JSONObject();
+
+		JSONArray contentsArray = new JSONArray();
+		JSONObject contents_jsonObject = new JSONObject();
+
+		JSONArray partsArray = new JSONArray();
+		JSONObject parts_jsonObject = new JSONObject();
+
+
+		parts_jsonObject.put("text", "command");
+		partsArray.add(parts_jsonObject);
+
+		contents_jsonObject.put("parts", partsArray);
+		contentsArray.add(contents_jsonObject);
+		Main_jsonObject.put("contents", contentsArray);
+
+
+		System.out.println(Main_jsonObject);
+		last_json = Main_jsonObject.toJSONString();
+
+
+		MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+		// form parameters
+		@SuppressWarnings("deprecation")
+		RequestBody body = RequestBody.create(JSON, Main_jsonObject.toString());
+
+		Request request = new Request.Builder()
+				.url("https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=" + Google_gemini_Key)
+				.post(body)
+				.build();
+
+		Response response = httpClient.newCall(request).execute();
+		userString = response.body().string();
+		System.out.println(userString);
+
+		JSONParser parser = new JSONParser();
+		JSONObject obj = (JSONObject) parser.parse(userString);
+
+		JSONArray choices_in_list = (JSONArray) obj.get("choices");
+		JSONObject choices;
+
+		if (obj.get("choices") == null) {
+			result = userString;
+		} else {
+
+			for (int i = 0; i < choices_in_list.size(); i++) {
+				choices = (JSONObject) choices_in_list.get(i);
+				JSONArray messages_in_list = (JSONArray) choices.get("messages");
+				JSONObject messages;
+				for (int j = 0; j < messages_in_list.size(); j++) {
+					messages = (JSONObject) messages_in_list.get(j);
+					String text = (String) messages.get("text");
+					String timestamp = (String) messages.get("timestamp");
+					System.out.println("▷ 제이(bot) 수신문 : [" + text + "]");
+
+					JSONObject botmessages_data_jsonObject = new JSONObject();
+					botmessages_data_jsonObject.put("speaker", "BOT");
+					botmessages_data_jsonObject.put("timestamp", timestamp);
+					botmessages_data_jsonObject.put("type", "TEXT");
+					botmessages_data_jsonObject.put("text", text);
+
+				}
+				JSONObject parse_metadata = (JSONObject) choices.get("metadata");
+				JSONObject parse_scenario = (JSONObject) parse_metadata.get("scenario");
+				String abusing = (String) parse_scenario.get("abusing");
+				String queryType = (String) parse_scenario.get("queryType");
+				String queryPool = (String) parse_scenario.get("queryPool");
+				System.out.println("▷ bot metadata : [abusing : " + abusing + ", queryType : " + queryType + ", queryPool : " + queryPool + "]");
+
+				JSONObject parse_metadata2 = (JSONObject) obj.get("metadata");
+				JSONObject parse_abusing = (JSONObject) parse_metadata2.get("abusing");
+				boolean sexual = (boolean) parse_abusing.get("sexual");
+				boolean offensive = (boolean) parse_abusing.get("offensive");
+				boolean bias = (boolean) parse_abusing.get("bias");
+				boolean opinion = (boolean) parse_abusing.get("opinion");
+				System.out.println("▷ bot metadata : [sexual : " + sexual + "/ offensive : " + offensive + "/ bias : " + bias + "/ opinion : " + opinion + "]");
+
+			}
+		}
+	}
 }
 
