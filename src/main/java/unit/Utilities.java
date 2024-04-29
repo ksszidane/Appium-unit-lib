@@ -5881,11 +5881,11 @@ public class Utilities extends AndroidDriver implements TakesScreenshot {
     }
 
 
-	public void gemini_api_test(String command, String message) throws Exception {
+	public String gemini_api_test(String command, String message) throws Exception {
 
 		String Google_gemini_Key = "AIzaSyAqqfJAQI1D2N0seOYJhLAiRtRkgLxIlcU";
-
-		String CommandText = command;
+		String text = "";
+		String CommandText = "'" + message + "'라는 메세지가 '" +command+ "' 동작에 대한 답변이 맞는지 유사도를 5점 만점의 점수로 알려줘";
 
 		JSONObject Main_jsonObject = new JSONObject();
 
@@ -5896,7 +5896,7 @@ public class Utilities extends AndroidDriver implements TakesScreenshot {
 		JSONObject parts_jsonObject = new JSONObject();
 
 
-		parts_jsonObject.put("text", "command");
+		parts_jsonObject.put("text", CommandText);
 		partsArray.add(parts_jsonObject);
 
 		contents_jsonObject.put("parts", partsArray);
@@ -5926,47 +5926,28 @@ public class Utilities extends AndroidDriver implements TakesScreenshot {
 		JSONParser parser = new JSONParser();
 		JSONObject obj = (JSONObject) parser.parse(userString);
 
-		JSONArray choices_in_list = (JSONArray) obj.get("choices");
-		JSONObject choices;
+		JSONArray candidates_in_list = (JSONArray) obj.get("candidates");
+		JSONObject candidates;
 
-		if (obj.get("choices") == null) {
+		if (obj.get("candidates") == null) {
 			result = userString;
 		} else {
 
-			for (int i = 0; i < choices_in_list.size(); i++) {
-				choices = (JSONObject) choices_in_list.get(i);
-				JSONArray messages_in_list = (JSONArray) choices.get("messages");
-				JSONObject messages;
-				for (int j = 0; j < messages_in_list.size(); j++) {
-					messages = (JSONObject) messages_in_list.get(j);
-					String text = (String) messages.get("text");
-					String timestamp = (String) messages.get("timestamp");
-					System.out.println("▷ 제이(bot) 수신문 : [" + text + "]");
-
-					JSONObject botmessages_data_jsonObject = new JSONObject();
-					botmessages_data_jsonObject.put("speaker", "BOT");
-					botmessages_data_jsonObject.put("timestamp", timestamp);
-					botmessages_data_jsonObject.put("type", "TEXT");
-					botmessages_data_jsonObject.put("text", text);
-
+			for (int i = 0; i < candidates_in_list.size(); i++) {
+				candidates = (JSONObject) candidates_in_list.get(i);
+				JSONObject parse_content = (JSONObject) candidates.get("content");
+				JSONArray parts_in_list = (JSONArray) parse_content.get("parts");
+				JSONObject parts;
+				for (int j = 0; j < parts_in_list.size(); j++) {
+					parts = (JSONObject) parts_in_list.get(j);
+					text = (String) parts.get("text");
 				}
-				JSONObject parse_metadata = (JSONObject) choices.get("metadata");
-				JSONObject parse_scenario = (JSONObject) parse_metadata.get("scenario");
-				String abusing = (String) parse_scenario.get("abusing");
-				String queryType = (String) parse_scenario.get("queryType");
-				String queryPool = (String) parse_scenario.get("queryPool");
-				System.out.println("▷ bot metadata : [abusing : " + abusing + ", queryType : " + queryType + ", queryPool : " + queryPool + "]");
-
-				JSONObject parse_metadata2 = (JSONObject) obj.get("metadata");
-				JSONObject parse_abusing = (JSONObject) parse_metadata2.get("abusing");
-				boolean sexual = (boolean) parse_abusing.get("sexual");
-				boolean offensive = (boolean) parse_abusing.get("offensive");
-				boolean bias = (boolean) parse_abusing.get("bias");
-				boolean opinion = (boolean) parse_abusing.get("opinion");
-				System.out.println("▷ bot metadata : [sexual : " + sexual + "/ offensive : " + offensive + "/ bias : " + bias + "/ opinion : " + opinion + "]");
-
+				System.out.println("▷ text : " + text);
 			}
 		}
+
+		return text;
 	}
+
 }
 
