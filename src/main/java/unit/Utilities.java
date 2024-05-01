@@ -5829,10 +5829,11 @@ public class Utilities extends AndroidDriver implements TakesScreenshot {
 		}
 	}
 
-	public String AndroidLogCat() throws Exception {
+	public String[] AndroidLogCat() throws Exception {
 		String logs = "";
 		String logMessage;
-		Thread.sleep(2000);
+		String dialogRequestId;
+		String[] result = new String[2];
 		try {
 			// adb logcat 명령어를 실행하여 로그를 가져오기
 			Process process = Runtime.getRuntime().exec("adb logcat");
@@ -5854,7 +5855,7 @@ public class Utilities extends AndroidDriver implements TakesScreenshot {
 				}
 
 				// 5초 이내에 로그를 찾으면 종료
-				if (System.currentTimeMillis() - startTime >= 5000) {
+				if (System.currentTimeMillis() - startTime >= 7000) {
 					break;
 				}
 			}
@@ -5877,16 +5878,23 @@ public class Utilities extends AndroidDriver implements TakesScreenshot {
 		String[] parts2 = parts1[1].split("\\)], character");
 		logMessage = parts2[0];
 
-		return logMessage;
-    }
+		String[] parts3 = parts1[0].split("dialogRequestId=");
+		String[] parts4 = parts3[1].split(", messageId=");
+		dialogRequestId = parts4[0];
+
+		result[0] = logMessage;
+		result[1] = dialogRequestId;
+
+		return result;
+	}
 
 
 	public String gemini_api_test(String command, String message) throws Exception {
 
 		String Google_gemini_Key = "AIzaSyAqqfJAQI1D2N0seOYJhLAiRtRkgLxIlcU";
 		String text = "";
-		String CommandText = "'" + message + "'라는 메세지가 '" +command+ "' 동작에 대한 답변이 맞는지 유사도를 5점 만점의 점수로 알려줘";
-
+		//String CommandText = "'" + message + "'라는 메세지가 '" +command+ "' 동작에 대한 답변이 맞는지 정합성과 유사성을 5점 만점의 점수로 알려줘";
+		String CommandText = "'" + command + "'대한 문의로 '" +message+ "'라는 답변이 유사성과 정합성을 종합으로 5점 만점의 점수로 표현해줘";
 		JSONObject Main_jsonObject = new JSONObject();
 
 		JSONArray contentsArray = new JSONArray();
@@ -5921,7 +5929,7 @@ public class Utilities extends AndroidDriver implements TakesScreenshot {
 
 		Response response = httpClient.newCall(request).execute();
 		userString = response.body().string();
-		System.out.println(userString);
+		//System.out.println(userString);
 
 		JSONParser parser = new JSONParser();
 		JSONObject obj = (JSONObject) parser.parse(userString);
