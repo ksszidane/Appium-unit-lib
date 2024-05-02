@@ -5881,6 +5881,7 @@ public class Utilities extends AndroidDriver implements TakesScreenshot {
 		String[] parts4 = parts3[1].split(", messageId=");
 		dialogRequestId = parts4[0];
 
+
 		result[0] = logMessage;
 		result[1] = dialogRequestId;
 
