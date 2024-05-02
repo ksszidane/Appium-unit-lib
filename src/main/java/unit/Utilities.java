@@ -13,13 +13,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.ByteArrayInputStream;
-import java.io.BufferedReader;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
@@ -81,6 +75,11 @@ import static org.testng.Assert.fail;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 import com.relevantcodes.extentreports.LogStatus;
+
+import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.*;
 
 
 public class Utilities extends AndroidDriver implements TakesScreenshot {
@@ -5956,6 +5955,40 @@ public class Utilities extends AndroidDriver implements TakesScreenshot {
 
 		return text;
 	}
+	public void excelWrite(String excelFilePath, String score, String dialogRequestId, String logMegssage, int i) {
+		try (FileInputStream fileInputStream = new FileInputStream(excelFilePath)) {
+			Workbook workbook = WorkbookFactory.create(fileInputStream);
+			Sheet sheet = workbook.getSheetAt(0); // 첫 번째 시트를 사용하도록 가정
 
+			int rowNum = sheet.getLastRowNum();
+
+			Row row = (rowNum >= i) ? sheet.getRow(i) : sheet.createRow(i);
+			Cell cellB = row.createCell(1); // B열에 셀 생성
+			cellB.setCellValue(score);
+
+			Cell cellC = row.createCell(2); // D열에 셀 생성
+			cellC.setCellValue(dialogRequestId);
+
+			Cell cellD = row.createCell(3); // D열에 셀 생성
+			cellD.setCellValue(logMegssage);
+
+			// 데이터에 숫자 0,1,2,3이 포함되어 있는지 확인하고 셀의 배경색을 빨강색으로 변경
+			if (score.contains("0") || score.contains("1") || score.contains("2")) {
+				CellStyle style = workbook.createCellStyle();
+				style.setFillForegroundColor(IndexedColors.RED.getIndex());
+				style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+				cellB.setCellStyle(style);
+			}
+
+			try (FileOutputStream fileOutputStream = new FileOutputStream(excelFilePath)) {
+				workbook.write(fileOutputStream);
+				System.out.println("데이터가 성공적으로 삽입되었습니다.");
+			} catch (IOException e) {
+				System.out.println("파일 쓰기 중 오류 발생: " + e.getMessage());
+			}
+		} catch (IOException e) {
+			System.out.println("파일 열기 중 오류 발생: " + e.getMessage());
+		}
+	}
 }
 

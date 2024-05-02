@@ -3,6 +3,7 @@ package TestNG_Set;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
+import org.openqa.selenium.NoSuchSessionException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.LocalFileDetector;
@@ -17,6 +18,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.util.concurrent.TimeUnit;
 
 public class A_LLM_TestCase {
@@ -43,6 +45,11 @@ public class A_LLM_TestCase {
 	public String dID;
 	public String uID;
 	public String AppPackage;
+
+	public String MobileDevice;
+	public String AppName;
+
+	int n = 0;
 	
 
 	@Parameters({"OS", "AppName", "hubAddress", "Server", "Project", "TestPlace", "MobileDevice", "ServiceName",
@@ -102,19 +109,27 @@ public class A_LLM_TestCase {
 	}
 	
 	//@AfterMethod (alwaysRun=true && result=failure)
+	@Parameters({"OS", "AppName", "hubAddress", "Server", "Project", "TestPlace", "MobileDevice", "ServiceName",
+			"userID", "deviceID" })
 	@AfterMethod
-	 public void AfterMethod(ITestResult result) throws Exception {
+	 public void AfterMethod(ITestResult result, String OS, String AppName, String hubAddress, String Server, String Project, String TestPlace, String MobileDevice,
+							 String ServiceName, String userID, String deviceID) throws Exception {
+
+		String excelFilePath = "/Users/1112049/Downloads/vux.xlsx";
 
 		if (result.getStatus() == ITestResult.FAILURE) {
 			test.fail("[Test Result] : [Fail] - 테스트 실패");
 	        System.out.println("[Test Result] : [Fail] - 테스트 실패");
-
+			util.excelWrite(excelFilePath, "0", "테스트실패", "테스트실패", n-1);
+			n = n+1;
 		} else if (result.getStatus() == ITestResult.SUCCESS) {
 			test.pass("[Test Result] : [Pass] - 테스트 성공");
 			 System.out.println("[Test Result] : [Pass] - 테스트 성공");
+			n = n+1;
 		} else if (result.getStatus() == ITestResult.SKIP) {
 			test.skip("[Test Result] : [Skip] - 테스트 스킵");
 			 System.out.println("[Test Result] : [Skip] - 테스트 스킵");
+			n = n+1;
 		}
 		System.out.println("\n");
 		//util.CaptureScreen(result);
@@ -125,9 +140,40 @@ public class A_LLM_TestCase {
 			System.out.println("앱이 종료되었습니다.");
 			Thread.sleep(1500);
 
+			while (true) {
+				try {
+					capability = Capabilities.gridSetUp(OS, MobileDevice, AppName);
+					util = new Utilities(hubAddress, capability);
+
+					util.unlockDevice();
+
+					util.setFileDetector(new LocalFileDetector());
+					util.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
+					// 성공적으로 세션 시작했으면 반복문 종료
+					break;
+				} catch (NoSuchSessionException e) {
+					// NoSuchSessionException이 발생했을 때 세션 재시작
+					System.out.println("Session not found. Restarting session...");
+					e.printStackTrace();
+
+					// 이전 세션 종료
+					if (util != null) {
+						util.quit();
+					}
+
+
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				}
+			}
+
 			String url = "skt.adot://plugin/chat?agent_id=music";
 			util.get(url);
 			Thread.sleep(1500);
+
+			System.out.println("앱을 다시 실행하였습니다.");
+
 		} else {
 			System.out.println("앱이 실행 중입니다.");
 		}
