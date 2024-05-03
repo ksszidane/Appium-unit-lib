@@ -48,8 +48,7 @@ public class A_LLM_TestCase {
 
 	public String MobileDevice;
 	public String AppName;
-
-	int n = 0;
+	public int row;
 	
 
 	@Parameters({"OS", "AppName", "hubAddress", "Server", "Project", "TestPlace", "MobileDevice", "ServiceName",
@@ -69,7 +68,11 @@ public class A_LLM_TestCase {
 		
 		dID = deviceID;
 		uID = userID;
-		
+
+		row = 0;
+
+		System.out.println("BeforeClass " + row);
+
 		adb = new ADB();
 		
 		adb.ADB_SetCommand(udid); 
@@ -105,7 +108,7 @@ public class A_LLM_TestCase {
 	public void BeforeMethod(Method method) throws Exception {
 		System.out.println("\n - method name :" + method.getName() + " 시작 \n");
 		test = extent.createTest(method.getName()+" | "+OS_ClassName, ServerName).assignCategory(ProjectName+" | "+OS_ClassName+" | "+ServerName);
-		
+		System.out.println("BeforeMethod " + row);
 	}
 	
 	//@AfterMethod (alwaysRun=true && result=failure)
@@ -115,21 +118,21 @@ public class A_LLM_TestCase {
 	 public void AfterMethod(ITestResult result, String OS, String AppName, String hubAddress, String Server, String Project, String TestPlace, String MobileDevice,
 							 String ServiceName, String userID, String deviceID) throws Exception {
 
-		String excelFilePath = "/Users/1112049/Downloads/vux.xlsx";
-
+		String excelFilePath = "/Users/kei/Downloads/vux.xlsx";
+		System.out.println("AfterMethod " + row);
 		if (result.getStatus() == ITestResult.FAILURE) {
 			test.fail("[Test Result] : [Fail] - 테스트 실패");
 	        System.out.println("[Test Result] : [Fail] - 테스트 실패");
-			util.excelWrite(excelFilePath, "0", "테스트실패", "테스트실패", n-1);
-			n = n+1;
+			util.excelWrite(excelFilePath, "0", "0", "테스트실패", "테스트실패", row);
+			row = row+1;
 		} else if (result.getStatus() == ITestResult.SUCCESS) {
 			test.pass("[Test Result] : [Pass] - 테스트 성공");
 			 System.out.println("[Test Result] : [Pass] - 테스트 성공");
-			n = n+1;
+			row = row+1;
 		} else if (result.getStatus() == ITestResult.SKIP) {
 			test.skip("[Test Result] : [Skip] - 테스트 스킵");
 			 System.out.println("[Test Result] : [Skip] - 테스트 스킵");
-			n = n+1;
+			row = row+1;
 		}
 		System.out.println("\n");
 		//util.CaptureScreen(result);
@@ -186,7 +189,7 @@ public class A_LLM_TestCase {
 		
 		//util.sendPost("그만", userID_nuguqa001, deviceID_SampleApp, Server, Place, Auth_Token_SampleApp);
 		System.out.println("\n");
-		
+		System.out.println("AfterClass " + row);
 		
 		try {
 			extent.flush();

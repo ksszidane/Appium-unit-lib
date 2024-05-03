@@ -5956,7 +5956,7 @@ public class Utilities extends AndroidDriver implements TakesScreenshot {
 
 		return text;
 	}
-	public void excelWrite(String excelFilePath, String score, String dialogRequestId, String logMegssage, int i) {
+	public void excelWrite(String excelFilePath, String score1, String score2, String dialogRequestId, String logMegssage, int i) {
 		try (FileInputStream fileInputStream = new FileInputStream(excelFilePath)) {
 			Workbook workbook = WorkbookFactory.create(fileInputStream);
 			Sheet sheet = workbook.getSheetAt(0); // 첫 번째 시트를 사용하도록 가정
@@ -5965,20 +5965,31 @@ public class Utilities extends AndroidDriver implements TakesScreenshot {
 
 			Row row = (rowNum >= i) ? sheet.getRow(i) : sheet.createRow(i);
 			Cell cellB = row.createCell(1); // B열에 셀 생성
-			cellB.setCellValue(score);
+			cellB.setCellValue(score1);
 
-			Cell cellC = row.createCell(2); // D열에 셀 생성
-			cellC.setCellValue(dialogRequestId);
+			Cell cellC = row.createCell(2); // C열에 셀 생성
+			cellC.setCellValue(score2);
 
 			Cell cellD = row.createCell(3); // D열에 셀 생성
-			cellD.setCellValue(logMegssage);
+			cellD.setCellValue(dialogRequestId);
+
+			Cell cellE = row.createCell(4); // D열에 셀 생성
+			cellE.setCellValue(logMegssage);
 
 			// 데이터에 숫자 0,1,2,3이 포함되어 있는지 확인하고 셀의 배경색을 빨강색으로 변경
-			if (score.contains("0") || score.contains("1") || score.contains("2")) {
+			if (score1.contains("0") || score1.contains("1") || score1.contains("2")) {
 				CellStyle style = workbook.createCellStyle();
 				style.setFillForegroundColor(IndexedColors.RED.getIndex());
 				style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 				cellB.setCellStyle(style);
+			}
+
+			// 데이터에 숫자 0,1,2,3이 포함되어 있는지 확인하고 셀의 배경색을 빨강색으로 변경
+			if (score2.contains("0") || score2.contains("1") || score2.contains("2")) {
+				CellStyle style = workbook.createCellStyle();
+				style.setFillForegroundColor(IndexedColors.RED.getIndex());
+				style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+				cellC.setCellStyle(style);
 			}
 
 			try (FileOutputStream fileOutputStream = new FileOutputStream(excelFilePath)) {
