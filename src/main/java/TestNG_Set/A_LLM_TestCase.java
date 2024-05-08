@@ -118,7 +118,7 @@ public class A_LLM_TestCase {
 	 public void AfterMethod(ITestResult result, String OS, String AppName, String hubAddress, String Server, String Project, String TestPlace, String MobileDevice,
 							 String ServiceName, String userID, String deviceID) throws Exception {
 
-		String excelFilePath = "/Users/kei/Downloads/vux.xlsx";
+		String excelFilePath = "/Users/1112049/Downloads/vux.xlsx";
 		System.out.println("AfterMethod " + row);
 		if (result.getStatus() == ITestResult.FAILURE) {
 			test.fail("[Test Result] : [Fail] - 테스트 실패");
