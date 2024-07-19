@@ -1,10 +1,13 @@
 package unit;
 
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.nativekey.AndroidKey;
 import io.appium.java_client.android.nativekey.KeyEvent;
 
+import io.appium.java_client.touch.TapOptions;
+import io.appium.java_client.touch.offset.ElementOption;
 import junit.framework.Assert;
 
 import okhttp3.MediaType;
@@ -82,7 +85,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.*;
 
 
-public class Utilities extends AndroidDriver implements TakesScreenshot {
+public class Utilities<MobileElement> extends AndroidDriver implements TakesScreenshot {
 
 	public WebDriverWait Wait;
 
@@ -135,6 +138,17 @@ public class Utilities extends AndroidDriver implements TakesScreenshot {
 		return superElement;
 	}
 
+	public MobileElement MobileElement(By locator) throws Exception {
+
+		WebDriverWait wait = (WebDriverWait) new WebDriverWait(this, Duration.ofSeconds(TIME_OUT_SEC));
+		// AndroidUIAutomator를 사용하여 요소 찾기 및 클릭
+
+		MobileElement element = (MobileElement) wait.until(ExpectedConditions.elementToBeClickable(locator));
+
+
+        return element;
+    }
+
 
 	public WebElement findElementLocated(By locator) throws Exception {
 
@@ -146,6 +160,11 @@ public class Utilities extends AndroidDriver implements TakesScreenshot {
 
 
 	}
+
+
+
+
+	// 입력 필드를 클릭하여 키패드를 나타나게 함
 
 
 	/**
@@ -1408,6 +1427,7 @@ public class Utilities extends AndroidDriver implements TakesScreenshot {
 		}
 
 	}
+
 
 	/**
 	 * Element click / toggle & switch off
