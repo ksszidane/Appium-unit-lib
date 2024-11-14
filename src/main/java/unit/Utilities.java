@@ -1060,6 +1060,29 @@ public class Utilities<MobileElement> extends AndroidDriver implements TakesScre
 
 	}
 
+	public boolean isElementPresentCheck(By locator) throws Exception {
+
+		boolean result = false;
+		manage().timeouts().implicitlyWait(MIN_WAIT_TIME, TimeUnit.SECONDS);
+		WebDriverWait wait = (WebDriverWait) new WebDriverWait(this, Duration.ofSeconds(PAGE_LOAD_TIME_OUT));
+
+		try {
+			WebElement element = locator.findElement((SearchContext) this);
+			//WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+
+			if (element.isDisplayed()) {
+				manage().timeouts().implicitlyWait(MAX_WAIT_TIME, TimeUnit.SECONDS);
+				result = true;
+			}
+		} catch (NoSuchElementException e) {
+			manage().timeouts().implicitlyWait(MAX_WAIT_TIME, TimeUnit.SECONDS);
+			return false;
+		}
+		manage().timeouts().implicitlyWait(MAX_WAIT_TIME, TimeUnit.SECONDS);
+		return result;
+
+	}
+
 	/*
 	public void connectingDevice() throws Exception {
 
