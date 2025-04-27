@@ -43,16 +43,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.SearchContext;
-import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
@@ -1038,26 +1029,29 @@ public class Utilities<MobileElement> extends AndroidDriver implements TakesScre
 	 * @throws Exception - Selenium Exception
 	 */
 	public boolean isElementPresent(By locator) throws Exception {
-
 		boolean result = false;
-		manage().timeouts().implicitlyWait(MIN_WAIT_TIME, TimeUnit.SECONDS);
-		WebDriverWait wait = (WebDriverWait) new WebDriverWait(this, Duration.ofSeconds(PAGE_LOAD_TIME_OUT));
-
 		try {
+			manage().timeouts().implicitlyWait(MIN_WAIT_TIME, TimeUnit.SECONDS);
+			WebDriverWait wait = new WebDriverWait(this, Duration.ofSeconds(PAGE_LOAD_TIME_OUT));
+
 			WebElement element = locator.findElement((SearchContext) this);
-			//WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+			// WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(locator));
 
 			if (element.isDisplayed()) {
-				manage().timeouts().implicitlyWait(MAX_WAIT_TIME, TimeUnit.SECONDS);
 				result = true;
 			}
-		} catch (NoSuchElementException e) {
-			manage().timeouts().implicitlyWait(MAX_WAIT_TIME, TimeUnit.SECONDS);
+		} catch (NoSuchSessionException e) {
+			System.out.println("[WARN] 드라이버 세션이 존재하지 않습니다: " + e.getMessage());
 			return false;
+		} catch (NoSuchElementException e) {
+			return false;
+		} catch (Exception e) {
+			System.out.println("[ERROR] isElementPresent 중 알 수 없는 예외 발생: " + e.getMessage());
+			throw e; // 필요시 재던짐
+		} finally {
+			manage().timeouts().implicitlyWait(MAX_WAIT_TIME, TimeUnit.SECONDS);
 		}
-		manage().timeouts().implicitlyWait(MAX_WAIT_TIME, TimeUnit.SECONDS);
 		return result;
-
 	}
 
 	public boolean isElementPresentCheck(By locator) throws Exception {
